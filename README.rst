@@ -1,20 +1,60 @@
-======================
-CTAPipe Wavelet Filter
-======================
+=======================================================
+PyWI CTA - A CTA wrapper for the Python Wavelet Imaging
+=======================================================
 
-Copyright (c) 2016,2017,2018 Jeremie DECOCK (www.jdhp.org) and Tino Michael
+Copyright (c) 2016-2018 Jeremie DECOCK (www.jdhp.org)
 
-* Online documentation: https://jdhp-sap.github.io/ctapipe-wavelet-filter/
-* Source code: https://github.com/jdhp-sap/ctapipe-wavelet-filter
-* Issue tracker: https://github.com/jdhp-sap/ctapipe-wavelet-filter/issues
-* CTAPipe wavelet filter on PyPI: https://pypi.python.org/pypi/ctapipe-wavelet-filter
+* Online documentation: https://jeremiedecock.github.io/pywicta/
+* Source code: https://github.com/jeremiedecock/pywicta
+* Issue tracker: https://github.com/jeremiedecock/pywicta/issues
+* PyWI on PyPI: https://pypi.org/project/pywicta/
+* PyWI on Anaconda Cloud: https://anaconda.org/jdhp/pywicta
 
 .. Former documentation: http://sap-cta-data-pipeline.readthedocs.io/en/latest/
 
 Description
 ===========
 
-Signal processing for gamma-ray science.
+PyWI is an image filtering library aimed at removing additive background noise
+from raster graphics images.
+
+* Input: a FITS file containing the raster graphics to clean (i.e. an image
+  defined as a classic rectangular lattice of square pixels).
+* Output: a FITS file containing the cleaned raster graphics.
+
+The image filter relies on multiresolution analysis methods (Wavelet
+transforms) that remove some scales (frequencies) locally in space. These
+methods are particularly efficient when signal and noise are located at
+different scales (or frequencies). Optional features improve the SNR ratio when
+the (clean) signal constitute a single cluster of pixels on the image (e.g.
+electromagnetic showers produced with Imaging Atmospheric Cherenkov
+Telescopes). This library is written in Python and is based on the existing
+Cosmostat tools iSAp (Interactive Sparse Astronomical data analysis Packages
+http://www.cosmostat.org/software/isap/).
+
+The PyWI library also contains a dedicated package to optimize the image filter
+parameters for a given set of images (i.e. to adapt the filter to a specific
+problem). From a given training set of images (containing pairs of noised and
+clean images) and a given performance estimator (a function that assess the
+image filter parameters comparing the cleaned image to the actual clean image),
+the optimizer can determine the optimal filtering level for each scale.
+
+The PyWI library contains:
+
+* wavelet transform and wavelet filtering functions for image multiresolution
+  analysis and filtering;
+* additional filter to remove some image components (non-significant pixels
+  clusters);
+* a set of generic filtering performance estimators (MSE, NRMSE, SSIM, PSNR,
+  image moment's difference), some relying on the scikit-image Python library
+  (supplementary estimators can be easily added to meet particular needs);
+* a graphical user interface to visualize the filtering process in the wavelet
+  transformed space;
+* an Evolution Strategies (ES) algorithm known in the mathematical optimization
+  community for its good convergence rate on generic derivative-free continuous
+  global optimization problems (Beyer, H. G. (2013) "The theory of evolution
+  strategies", Springer Science & Business Media);
+* additional tools to manage and monitor the parameter optimization.
 
 Note:
 
@@ -24,33 +64,106 @@ Note:
 Dependencies
 ============
 
-*  Python >= 3.0
+.. Highly inspired by http://docs.astropy.org/en/stable/_sources/install.rst.txt
+
+PyWI has the following strict requirements:
+
+* `Python <https://www.python.org/>`_ 3.5 or 3.6
+* `Numpy <http://www.numpy.org/>`_
+
+PyWI also depends on other packages for optional features:
+
+* `Scipy <https://www.scipy.org/>`_
+* `Scikit-image <http://scikit-image.org/>`_
+* `Pillow (a.k.a. PIL) <https://pillow.readthedocs.io/en/latest/>`_ to read and write many image formats (PNG, JPEG, TIFF, ...)
+* `Astropy <http://www.astropy.org/>`_ to provide Fits file format
+* `Pandas <http://pandas.pydata.org/>`_
+* `Matplotlib <http://matplotlib.org/>`_ 1.5 or later to provide plotting functionality
+* `Cosmostat iSAP Sparce2D <http://www.cosmostat.org/software/isap/>`_
+
+However, note that these only need to be installed if those particular features
+are needed. PyWI will import even if these dependencies are not installed.
 
 .. _install:
 
 Installation
 ============
 
-Gnu/Linux
+Using pip
 ---------
 
-You can install, upgrade, uninstall SAp CTA data pipeline with these commands (in a
-terminal)::
+Most major projects upload official packages to the *Python Package Index*.
+They can be installed on most operating systems using Python standard `pip`
+package manager.
 
-    pip install --pre ctapipe-wavelet-filter
-    pip install --upgrade ctapipe-wavelet-filter
-    pip uninstall ctapipe-wavelet-filter
+Note that you need to have `Python3.x` and `pip` already installed on your system.
 
-Or, if you have downloaded the SAp CTA data pipeline source code::
+.. warning::
 
-    python3 setup.py install
+    Users of the Anaconda python distribution should follow the instructions
+    for Anaconda install (see `Using conda`_ bellow).
+
+.. note::
+
+    You will need a C compiler (e.g. ``gcc`` or ``clang``) to be installed to
+    install some dependencies (e.g. Numpy).
+
+.. note::
+
+    The ``--no-deps`` flag is optional, but highly recommended if you already
+    have Numpy installed, since otherwise pip will sometimes try to "help" you
+    by upgrading your Numpy installation, which may not always be desired.
+
+.. note::
+
+    If you get a ``PermissionError`` this means that you do not have the
+    required administrative access to install new packages to your Python
+    installation.  In this case you may consider using the ``--user`` option
+    to install the package into your home directory. You can read more
+    about how to do this in the `pip documentation
+    <https://pip.pypa.io/en/stable/user_guide/#user-installs>`_.
+
+    Alternatively, if you intend to do development on other software that uses
+    PyWI, such as an affiliated package, consider installing PyWI into a
+    `virtualenv <http://docs.astropy.org/en/stable/development/workflow/virtualenv_detail.html#using-virtualenv>`_.
+
+    Do **not** install PyWI or other third-party packages using ``sudo``
+    unless you are fully aware of the risks.
+
+On MacOSX and Gnu/Linux
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You can install PyWI using the following command (in a terminal)::
+
+    pip install pywicta --no-deps
+
+.. python -m pip install --user numpy scipy matplotlib pandas
+
+.. It is recommended to use the --user flag to ``pip`` (note: do not use sudo pip,
+.. which can cause problems) to install packages in your local user space instead
+.. of the shared system directories.
+.. TODO: the --user flag has an issue (bug?): console scripts (pywicta-mrfilter, ...)
+.. are not directly (i.e. without updating the PATH variable) available anymore (at
+.. least on MacOSX/Anaconda).
+
+As an alternative, you can install PyWI from the downloaded source code::
+
+    python3 setup.py install --no-deps
 
 .. There's also a package for Debian/Ubuntu::
 .. 
-..     sudo apt-get install ctapipe-wavelet-filter
+..     sudo apt-get install pywicta
 
-Windows
--------
+If PyWI is already installed on your system you can upgrade it with this command::
+
+    pip install --upgrade pywicta
+
+To uninstall PyWI, type::
+
+    pip uninstall pywicta
+
+On Windows
+~~~~~~~~~~
 
 .. Note:
 .. 
@@ -58,67 +171,53 @@ Windows
 ..     3.4 under Windows 7.
 ..     It should also work with recent Windows systems.
 
-You can install, upgrade, uninstall SAp CTA data pipeline with these commands (in a
-`command prompt`_)::
+You can install PyWI using the following command (in a `command prompt`_)::
 
-    py -m pip install --pre ctapipe-wavelet-filter
-    py -m pip install --upgrade ctapipe-wavelet-filter
-    py -m pip uninstall ctapipe-wavelet-filter
+    py -m pip install pywicta --no-deps
 
-Or, if you have downloaded the SAp CTA data pipeline source code::
+.. It is recommended to use the --user flag to ``pip`` (note: do not use sudo pip,
+.. which can cause problems) to install packages in your local user space instead
+.. of the shared system directories.
+.. TODO: the --user flag has an issue (bug?): console scripts (pywicta-mrfilter, ...)
+.. are not directly (i.e. without updating the PATH variable) available anymore (at
+.. least on MacOSX/Anaconda).
 
-    py setup.py install
+As an alternative, you can install PyWI from the downloaded source code::
 
-MacOSX
--------
+    py setup.py install --no-deps
 
-.. Note:
-.. 
-..     The following installation procedure has been tested to work with Python
-..     3.5 under MacOSX 10.9 (*Mavericks*).
-..     It should also work with recent MacOSX systems.
+If PyWI is already installed on your system you can upgrade it with this command::
 
-You can install, upgrade, uninstall SAp CTA data pipeline with these commands (in a
-terminal)::
+    py -m pip install --upgrade pywicta
 
-    pip install --pre ctapipe-wavelet-filter
-    pip install --upgrade ctapipe-wavelet-filter
-    pip uninstall ctapipe-wavelet-filter
+To uninstall PyWI, type::
 
-Or, if you have downloaded the SAp CTA data pipeline source code::
+    py -m uninstall pywicta
 
-    python3 setup.py install
 
-Image cleaning guidelines
-=========================
+.. _anaconda_install:
 
-Here is the basic guidelines to clean images (and assess cleaning algorithms).
+Using conda
+-----------
 
-Step 1
-------
+To install this package with conda run in a terminal::
 
-Extract images from Simtel files, crop them, convert them to "regular" 2D
-images and write them into fits files (one fits file per image with the ADC
-signal in HDU0 and the photoelectron signal in HDU1):
+    conda install -c jdhp pywicta
 
-1. clone http://github.com/jdhp-sap/snippets
-2. check snippets/ctapipe/extract_and_crop_simtel_images.py on lines 64 and 66,
-   these lines may need to be fixed
-3. in snippets/ctapipe run ``./extract_crop_and_plot_all_astri_images.sh ASTRI_SIMTEL_FILE``
+So far, the PyWI Anaconda package is only available for MacOSX.
+A package for Linux and Windows will be available soon.
 
-Step 1.4 generate a lot of fits files in your current directory ;
-its execution may be long (up to several hours) as the script is not optimized
-at all and many instructions are redundant (but this is not a big deal because
-you only need to run it once to generate your input files).
+.. note::
 
-Step 2
-------
+    Attempting to use `pip <https://pip.pypa.io>`__ to upgrade your installation of PyWI may result
+    in a corrupted installation.
 
-Install mr_transform (the cosmostat wavelet transform tool):
+Cosmostat iSAP Sparce2D installation
+====================================
 
-1. download http://www.cosmostat.org/wp-content/uploads/2014/12/ISAP_V3.1.tgz (see http://www.cosmostat.org/software/isap/)
-2. unzip this archive, go to the "sparse2d" directory and compile the sparse2d
-   library. It should generate an executable named "mr_transform"::
+1. Download http://www.cosmostat.org/wp-content/uploads/2014/12/ISAP_V3.1.tgz (see http://www.cosmostat.org/software/isap/)
+2. Unzip this archive, go to the "sparse2d" directory and compile the sparse2d
+   library. It should generate two executables named ``mr_transform`` and ``mr_filter``::
 
     tar -xzvf ISAP_V3.1.tgz
     cd ISAP_V3.1/cxx
@@ -126,41 +225,43 @@ Install mr_transform (the cosmostat wavelet transform tool):
     cd sparse2d
     compile the content of this directory
 
-Step 3
-------
+An automated compilation and installation script for Linux is available
+`there <https://github.com/tino-michael/tino_cta/blob/master/grid/compile_mrfilter_pilot.sh>`_
+(author: `Tino Michael <https://github.com/tino-michael>`_).
 
-Clean images generated in step 1:
+.. Also available in `utils/compile_isap_sparce2d.sh`
 
-1. clone and install
-   http://github.com/jdhp-sap/data-pipeline-standalone-scripts (see
-   https://github.com/jdhp-sap/data-pipeline-standalone-scripts#installation)
-2. to clean one fits file (see for instance run_experiments.sh):
+Example
+=======
 
-   - with Tailcut : in data-pipeline-standalone-scripts, run ``./pywicta/denoising/tailcut.py -T 0.75 -t 0.5 FITS_FILE`` (-T = max threshold, -t = min threshold, use the -h option to see command usage)
-   - with FFT : in data-pipeline-standalone-scripts, run ``./pywicta/denoising/fft.py -s -t 0.02 FITS_FILE`` (-t = threshold in the Fourier space, use the -h option to see command usage)
-   - with Wavelets : in data-pipeline-standalone-scripts, run ``./pywicta/denoising/wavelets_mrtrransform.py FITS_FILE`` (use the -h option to see command usage)
+1. Download a sample image (e.g. `archives_ngc3576.png <https://gist.githubusercontent.com/jeremiedecock/144c83f74e46b171ab3a426230d40848/raw/4a9ea99dd18504baff404a074a4e7541d98a50c5/archives_ngc3576.png>`_)
+2. In your system terminal, from the directory that contains the sample image, type::
+  
+    pywicta-mrtransform -t 256,256,256,0 --plot archives_ngc3576.png
+    pywicta-mrfilter -s 256,256,256,0 --plot archives_ngc3576.png
 
-3. instead of the step 3.2, the "benchmark mode" can be set to clean
-   images and assess cleaning algorithms (it's still a bit experimental) : use
-   the same instructions than for step 3.2 with the additional option "-b 1" in
-   each command (and put several fits files in input e.g. "\*.fits")
+3. Type ``pywicta-mrtransform -h`` or ``pywicta-mrfilter -h`` to display the list of
+   available options and their documentation.
 
-Step 4
-------
+.. A "benchmark mode" can also be used to clean images and assess cleaning
+.. algorithms (it's still a bit experimental): use the additional option ``-b all``
+.. in each command (and put several fits files in input e.g. ``\*.fits``)
 
-Optionally, plot some stats about scores:
-in data-pipeline-standalone-scripts/utils, use the plot_score_*.py scripts on
-the JSON files generated in step 3.3 (use the -h option to see command usage)
+IPython/Jupyter Notebooks
+=========================
 
+PyWI provide some Jupyter notebooks that can be used as examples or tutorials.
+
+* PyWI Notebooks on GitHub: https://github.com/jeremiedecock/pywicta-notebooks
+* PyWI Notebooks on Anaconda Cloud: https://anaconda.org/jdhp/notebooks
 
 Bug reports
 ===========
 
-To search for bugs or report them, please use the SAp Data Pipeline Standalone
-Scripts Bug Tracker at:
+To search for bugs or report them, please use the PyWI Bug Tracker at:
 
-    https://github.com/jdhp-sap/sap-cta-data-pipeline/issues
+    https://github.com/jeremiedecock/pywicta/issues
 
 
-.. _SAp CTA data pipeline: http://www.jdhp.org/software_en.html#pywicta
+.. _PyWI: https://github.com/jeremiedecock/pywicta
 .. _command prompt: https://en.wikipedia.org/wiki/Cmd.exe
