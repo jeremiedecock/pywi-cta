@@ -1,6 +1,6 @@
-=======================================================
-PyWI CTA - A CTA wrapper for the Python Wavelet Imaging
-=======================================================
+=================================
+PyWI CTA - A CTA wrapper for PyWI
+=================================
 
 Copyright (c) 2016-2018 Jeremie DECOCK (www.jdhp.org)
 
