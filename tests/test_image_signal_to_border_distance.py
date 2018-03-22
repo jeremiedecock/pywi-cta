@@ -24,9 +24,9 @@
 This module contains unit tests for the "image.signal_to_border_distance" module.
 """
 
-from datapipe.image.signal_to_border_distance import signal_to_border
-from datapipe.image.signal_to_border_distance import signal_to_border_distance
-from datapipe.image.signal_to_border_distance import pemax_on_border
+from pywicta.image.signal_to_border_distance import signal_to_border
+from pywicta.image.signal_to_border_distance import signal_to_border_distance
+from pywicta.image.signal_to_border_distance import pemax_on_border
 
 import numpy as np
 

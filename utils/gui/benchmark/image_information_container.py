@@ -25,7 +25,7 @@ from gi.repository import Gtk as gtk
 import json
 import os
 
-from datapipe.io import images
+from pywicta.io import images
 
 class ImageInformationContainer(gtk.Grid):
 

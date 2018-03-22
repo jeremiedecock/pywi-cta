@@ -36,7 +36,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from datapipe.io import images
+from pywicta.io import images
 
 
 def main():

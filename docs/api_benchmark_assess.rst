@@ -2,6 +2,6 @@
 benchmark.assess
 ================
 
-.. automodule:: datapipe.benchmark.assess
+.. automodule:: pywicta.benchmark.assess
    :members:
 

@@ -26,7 +26,7 @@ import json
 import math
 import os
 
-from datapipe.io import images
+from pywicta.io import images
 
 class ImagesListModel(object):
 

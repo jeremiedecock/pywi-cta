@@ -26,14 +26,14 @@ import astropy.units as u
 from ctapipe.image.hillas import hillas_parameters_1 as hillas_parameters_1
 from ctapipe.image.hillas import hillas_parameters_2 as hillas_parameters_2
 
-from datapipe.denoising import tailcut as tailcut_mod
-from datapipe.denoising import wavelets_mrfilter as wavelets_mod
-from datapipe.benchmark import assess as assess_mod
+from pywicta.denoising import tailcut as tailcut_mod
+from pywicta.denoising import wavelets_mrfilter as wavelets_mod
+from pywicta.benchmark import assess as assess_mod
 
-from datapipe.io import geometry_converter
-import datapipe.io.geom as geom_mod
+from pywicta.io import geometry_converter
+import pywicta.io.geom as geom_mod
 
-from datapipe.image.hillas_parameters import get_hillas_parameters
+from pywicta.image.hillas_parameters import get_hillas_parameters
 
 
 COLOR_MAP = cm.gnuplot2

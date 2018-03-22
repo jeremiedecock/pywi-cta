@@ -37,11 +37,11 @@ import ctapipe
 from ctapipe.io.hessio import hessio_event_source
 import pyhessio
 
-from datapipe.io import images
-from datapipe.io import geometry_converter
-import datapipe.io.montecarlo_calibration_gct as mc_calibration
+from pywicta.io import images
+from pywicta.io import geometry_converter
+import pywicta.io.montecarlo_calibration_gct as mc_calibration
 
-from datapipe import __version__ as VERSION
+from pywicta import __version__ as VERSION
 
 DEFAULT_TEL_FILTER = list(range(1, 32))   # TODO
 
@@ -151,7 +151,7 @@ def extract_images(simtel_file_path,
 
                     metadata = {}
 
-                    metadata['version'] = 1    # Version of the datapipe fits format
+                    metadata['version'] = 1    # Version of the pywicta fits format
 
                     metadata['cam_id'] = "GCT"
 

@@ -69,7 +69,7 @@ copyright = u'2010-2015, %s' % (authors)
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-project_version = __import__('datapipe').__version__.split('.')
+project_version = __import__('pywicta').__version__.split('.')
 # The short X.Y version.
 version = '.'.join(project_version[:2])
 # The full version, including alpha/beta/rc tags.
@@ -249,7 +249,7 @@ html_static_path = ['_static']
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'SApCTAdatapipelinedoc'
+htmlhelp_basename = 'SApCTApywictalinedoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -275,7 +275,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'SApCTAdatapipeline.tex', 'SAp CTA data pipeline Documentation',
+    (master_doc, 'SApCTApywictaline.tex', 'SAp CTA data pipeline Documentation',
      authors, 'manual'),
 ]
 
@@ -317,7 +317,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'sapctadatapipeline', 'SAp CTA data pipeline Documentation',
+    (master_doc, 'sapctapywictaline', 'SAp CTA data pipeline Documentation',
      [authors], 1)
 ]
 
@@ -332,8 +332,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'SApCTAdatapipeline', 'SAp CTA data pipeline Documentation',
-     authors, 'SApCTAdatapipeline', 'One line description of project.',
+    (master_doc, 'SApCTApywictaline', 'SAp CTA data pipeline Documentation',
+     authors, 'SApCTApywictaline', 'One line description of project.',
      'Miscellaneous'),
 ]
 

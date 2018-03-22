@@ -24,7 +24,7 @@ Contents:
 * Online documentation: https://jdhp-sap.github.io/ctapipe-wavelet-filter/
 * Source code: https://github.com/jdhp-sap/ctapipe-wavelet-filter
 * Issue tracker: https://github.com/jdhp-sap/ctapipe-wavelet-filter/issues
-* datapipe on PyPI: https://pypi.python.org/pypi/datapipe
+* pywicta on PyPI: https://pypi.python.org/pypi/pywicta
 
 Indices and tables
 ==================

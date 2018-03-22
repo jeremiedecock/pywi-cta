@@ -2,6 +2,6 @@
 image.pixel_clusters
 ====================
 
-.. automodule:: datapipe.image.pixel_clusters
+.. automodule:: pywicta.image.pixel_clusters
    :members:
 

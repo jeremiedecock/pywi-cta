@@ -1,4 +1,4 @@
-.. currentmodule:: datapipe
+.. currentmodule:: pywicta
 
 ============
 Introduction

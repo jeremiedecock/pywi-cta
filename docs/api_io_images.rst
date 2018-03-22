@@ -2,6 +2,6 @@
 io.images
 =========
 
-.. automodule:: datapipe.io.images
+.. automodule:: pywicta.io.images
    :members:
 

@@ -44,14 +44,14 @@ except ImportError:
 
 # SETUP VARIABLES #############################################################
 
-from datapipe import __version__ as VERSION
+from pywicta import __version__ as VERSION
 
 AUTHOR_NAME = 'Jeremie DECOCK and Tino Michael'
 AUTHOR_EMAIL = 'jd.jdhp@gmail.com'
 
-PYTHON_PACKAGE_NAME = 'datapipe'
-PROJECT_SHORT_DESC = 'Signal processing for gamma-ray science'
-PROJECT_WEB_SITE_URL = 'http://www.jdhp.org/software_en.html#datapipe'
+PYTHON_PACKAGE_NAME = 'pywicta'
+PROJECT_SHORT_DESC = 'PyWI CTA wrapper - a signal processing library for Imaging Atmospheric Cherenkov Telescopes'
+PROJECT_WEB_SITE_URL = 'http://www.jdhp.org/software_en.html#pywicta'
 
 # See :  http://pypi.python.org/pypi?%3Aaction=list_classifiers
 CLASSIFIERS = ['Development Status :: 4 - Beta',
@@ -64,14 +64,14 @@ CLASSIFIERS = ['Development Status :: 4 - Beta',
                'Topic :: Software Development :: Libraries :: Python Modules',
                'Topic :: Software Development :: Libraries :: Application Frameworks']
 
-KEYWORDS = 'sap data pipeline'
+KEYWORDS = 'wavelet imaging Cherenkov Telescope Array'
 
 # You can either specify manually the list of packages to include in the
 # distribution or use "setuptools.find_packages()" to include them
 # automatically with a recursive search (from the root directory of the
 # project).
 PACKAGES = find_packages()
-#PACKAGES = ['datapipe']
+#PACKAGES = ['pywicta']
 
 
 # The following list contains all dependencies that Python will try to
@@ -95,10 +95,10 @@ SCRIPTS = []
 #   }
 ENTRY_POINTS = {
   'console_scripts': [
-      'dp-simtel-count = datapipe.io.simtel:main_count_simtel_events',
-      'dp-simtel-ls = datapipe.io.simtel:main_list_simtel_content',
-      'dp-simtel-show = datapipe.io.simtel:main_show_image',
-      'dp-simtel-show-pe = datapipe.io.simtel:main_show_pe_image',
+      'dp-simtel-count = pywicta.io.simtel:main_count_simtel_events',
+      'dp-simtel-ls = pywicta.io.simtel:main_list_simtel_content',
+      'dp-simtel-show = pywicta.io.simtel:main_show_image',
+      'dp-simtel-show-pe = pywicta.io.simtel:main_show_pe_image',
   ],
 }
 
@@ -118,7 +118,7 @@ setup(author=AUTHOR_NAME,
       maintainer=AUTHOR_NAME,
       maintainer_email=AUTHOR_EMAIL,
 
-      name='ctapipe-wavelet-filter',
+      name='pywicta',
       description=PROJECT_SHORT_DESC,
       long_description=get_long_description(),
       url=PROJECT_WEB_SITE_URL,
