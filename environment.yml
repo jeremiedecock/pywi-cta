@@ -1,4 +1,4 @@
-name: pywicta-dev
+name: pywi-cta-dev
 channels:
   - jdhp
   - cta-observatory
