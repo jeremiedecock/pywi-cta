@@ -15,7 +15,7 @@ Copyright (c) 2016-2018 Jeremie DECOCK (www.jdhp.org)
 Description
 ===========
 
-PyWI-CTA is a `ctapipe <https://github.com/cta-observatory/ctapipe>`_ wrapper for `PyWI <https://github.com/jeremiedecock/pywi>`_.
+PyWI-CTA is a `ctapipe <https://github.com/cta-observatory/ctapipe>`_ wrapper for PyWI_.
 
 Note:
 
@@ -40,7 +40,7 @@ PyWI also depends on other packages for optional features:
 * `Astropy <http://www.astropy.org/>`_ to provide Fits file format
 * `Pandas <http://pandas.pydata.org/>`_
 * `Matplotlib <http://matplotlib.org/>`_ 1.5 or later to provide plotting functionality
-* `PyWI <https://github.com/jeremiedecock/pywi>`_
+* PyWI_
 * `Cosmostat iSAP Sparce2D <http://www.cosmostat.org/software/isap/>`_
 
 However, note that these only need to be installed if those particular features
@@ -188,7 +188,7 @@ Cosmostat iSAP Sparce2D installation
     compile the content of this directory
 
 An automated compilation and installation script for Linux is available
-`there <https://github.com/tino-michael/tino_cta/blob/master/grid/compile_mrfilter_pilot.sh>`_
+`here <https://github.com/tino-michael/tino_cta/blob/master/grid/compile_mrfilter_pilot.sh>`_
 (author: `Tino Michael <https://github.com/tino-michael>`_).
 
 .. Also available in `utils/compile_isap_sparce2d.sh`
@@ -227,4 +227,5 @@ To search for bugs or report them, please use the PyWI Bug Tracker at:
     https://github.com/jeremiedecock/pywi-cta/issues
 
 
+.. _PyWI: https://github.com/jeremiedecock/pywi
 .. _command prompt: https://en.wikipedia.org/wiki/Cmd.exe
