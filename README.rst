@@ -196,11 +196,13 @@ An automated compilation and installation script for Linux is available
 Example
 =======
 
-1. Download a sample image (e.g. `archives_ngc3576.png <https://gist.githubusercontent.com/jeremiedecock/144c83f74e46b171ab3a426230d40848/raw/4a9ea99dd18504baff404a074a4e7541d98a50c5/archives_ngc3576.png>`_)
-2. In your system terminal, from the directory that contains the sample image, type::
+1. Get a simtel file (e.g. from `there <https://forge.in2p3.fr/projects/cta_analysis-and-simulations/wiki/Monte_Carlo_Productions>`_)
+2. In your system terminal, from the directory that contains the sample image,
+   type the following commands (where `SIMTEL_FILE` is the path to your simtel
+   file)::
   
-    pywicta-mrtransform -t 256,256,256,0 --plot archives_ngc3576.png
-    pywicta-mrfilter -s 256,256,256,0 --plot archives_ngc3576.png
+    pywicta-mrtransform -f common_hard_filtering -t 13.,1.5 -L mask --camid LSTCam --max-images 1 --plot SIMTEL_FILE
+    pywicta-mrfilter -K -k -C1 -m3 -n4 -s2,4.5,3.5,3 --kill-isolated-pixels --camid LSTCam --max-images 1 --plot SIMTEL_FILE
 
 3. Type ``pywicta-mrtransform -h`` or ``pywicta-mrfilter -h`` to display the list of
    available options and their documentation.
