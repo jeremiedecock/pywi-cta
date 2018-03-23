@@ -167,11 +167,15 @@ class AbstractCleaningAlgorithm(object):
         else:
             raise ValueError('Unknown cam_id "{}"'.format(cam_id))
 
+        rejection_criteria = None
+        #rejection_criteria = lambda image: not 50 < np.nansum(image.reference_image) < 2000
+
         for image in image_generator(input_file_or_dir_path_list,
                                      max_num_images=max_num_img,
                                      tel_filter_list=tel_id,
                                      ev_filter_list=event_id,
                                      cam_filter_list=[cam_id],
+                                     rejection_criteria=rejection_criteria,
                                      ctapipe_format=False,
                                      integrator='LocalPeakIntegrator',
                                      integrator_window_width=integrator_window_width,
