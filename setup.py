@@ -44,14 +44,16 @@ except ImportError:
 
 # SETUP VARIABLES #############################################################
 
-from pywicta import __version__ as VERSION
+from pywi import get_version
+
+VERSION = get_version()
 
 AUTHOR_NAME = 'Jeremie DECOCK and Tino Michael'
 AUTHOR_EMAIL = 'jd.jdhp@gmail.com'
 
-PYTHON_PACKAGE_NAME = 'pywicta'
+PYPI_PACKAGE_NAME = 'pywicta'
 PROJECT_SHORT_DESC = 'PyWI CTA wrapper - a signal processing library for Imaging Atmospheric Cherenkov Telescopes'
-PROJECT_WEB_SITE_URL = 'http://www.jdhp.org/software_en.html#pywicta'
+PROJECT_WEB_SITE_URL = 'https://github.com/jeremiedecock/pywi-cta'
 
 # See :  http://pypi.python.org/pypi?%3Aaction=list_classifiers
 CLASSIFIERS = ['Development Status :: 4 - Beta',
@@ -64,7 +66,7 @@ CLASSIFIERS = ['Development Status :: 4 - Beta',
                'Topic :: Software Development :: Libraries :: Python Modules',
                'Topic :: Software Development :: Libraries :: Application Frameworks']
 
-KEYWORDS = 'wavelet imaging Cherenkov Telescope Array'
+KEYWORDS = 'wavelet imaging cherenkov telescope array'
 
 # You can either specify manually the list of packages to include in the
 # distribution or use "setuptools.find_packages()" to include them
@@ -102,10 +104,8 @@ SCRIPTS = []
 #   }
 ENTRY_POINTS = {
   'console_scripts': [
-      'dp-simtel-count = pywicta.io.simtel:main_count_simtel_events',
-      'dp-simtel-ls = pywicta.io.simtel:main_list_simtel_content',
-      'dp-simtel-show = pywicta.io.simtel:main_show_image',
-      'dp-simtel-show-pe = pywicta.io.simtel:main_show_pe_image',
+      'pywicta-mrtransform = pywicta.denoising.wavelets_mrtransform:main',
+      'pywicta-mrfilter = pywicta.denoising.wavelets_mrfilter:main',
   ],
 }
 
@@ -125,7 +125,7 @@ setup(author=AUTHOR_NAME,
       maintainer=AUTHOR_NAME,
       maintainer_email=AUTHOR_EMAIL,
 
-      name='pywicta',
+      name=PYPI_PACKAGE_NAME,
       description=PROJECT_SHORT_DESC,
       long_description=get_long_description(),
       url=PROJECT_WEB_SITE_URL,
