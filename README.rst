@@ -5,8 +5,8 @@ PyWI CTA - A CTA wrapper for PyWI
 Copyright (c) 2016-2018 Jeremie DECOCK (www.jdhp.org)
 
 * Online documentation: https://jeremiedecock.github.io/pywicta/
-* Source code: https://github.com/jeremiedecock/pywicta
-* Issue tracker: https://github.com/jeremiedecock/pywicta/issues
+* Source code: https://github.com/jeremiedecock/pywi-cta
+* Issue tracker: https://github.com/jeremiedecock/pywi-cta/issues
 * PyWI on PyPI: https://pypi.org/project/pywicta/
 * PyWI on Anaconda Cloud: https://anaconda.org/jdhp/pywicta
 
@@ -260,8 +260,8 @@ Bug reports
 
 To search for bugs or report them, please use the PyWI Bug Tracker at:
 
-    https://github.com/jeremiedecock/pywicta/issues
+    https://github.com/jeremiedecock/pywi-cta/issues
 
 
-.. _PyWI: https://github.com/jeremiedecock/pywicta
+.. _PyWI: https://github.com/jeremiedecock/pywi-cta
 .. _command prompt: https://en.wikipedia.org/wiki/Cmd.exe
