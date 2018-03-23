@@ -227,5 +227,4 @@ To search for bugs or report them, please use the PyWI Bug Tracker at:
     https://github.com/jeremiedecock/pywi-cta/issues
 
 
-.. _PyWI: https://github.com/jeremiedecock/pywi-cta
 .. _command prompt: https://en.wikipedia.org/wiki/Cmd.exe

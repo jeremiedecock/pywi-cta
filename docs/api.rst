@@ -34,7 +34,6 @@ Image package:
    :maxdepth: 1
 
    pywicta.image.hillas_parameters <api_image_hillas_parameters>
-   pywicta.image.pixel_clusters <api_image_pixel_clusters>
    pywicta.image.signal_to_border_distance <api_image_signal_to_border_distance>
 
 I/O package:
