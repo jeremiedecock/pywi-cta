@@ -44,7 +44,7 @@ except ImportError:
 
 # SETUP VARIABLES #############################################################
 
-from pywi import get_version
+from pywicta import get_version
 
 VERSION = get_version()
 
