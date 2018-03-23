@@ -1,12 +1,12 @@
-.. SAp CTA data pipeline documentation master file, created by
+.. PyWI-CTA documentation master file, created by
    sphinx-quickstart on Fri Dec  2 12:16:06 2016.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-SAp CTA data pipeline's documentation
-=====================================
+Python Wavelet Imaging CTA Documentation
+========================================
 
-Signal processing for gamma-ray science.
+A multiresolution image analyser for ctapipe.
 
 Note:
 
@@ -21,10 +21,10 @@ Contents:
    API <api>
    developer
 
-* Online documentation: https://jdhp-sap.github.io/ctapipe-wavelet-filter/
-* Source code: https://github.com/jdhp-sap/ctapipe-wavelet-filter
-* Issue tracker: https://github.com/jdhp-sap/ctapipe-wavelet-filter/issues
-* pywicta on PyPI: https://pypi.python.org/pypi/pywicta
+* Online documentation: https://jeremiedecock.github.io/pywi-cta/
+* Source code: https://github.com/jeremiedecock/pywi-cta
+* Issue tracker: https://github.com/jeremiedecock/pywi-cta/issues
+* PyWI-CTA on PyPI: https://pypi.python.org/pypi/pywicta
 
 Indices and tables
 ==================
