@@ -1,4 +1,4 @@
-# SAp Data Pipeline Standalone Scripts
+# PyWI-CTA wrapper
 
 # The MIT License
 #
@@ -37,14 +37,14 @@
 #
 # Dev branch marker is: 'X.Y.dev' or 'X.Y.devN' where N is an integer.
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
-#
+
 __version__ = '0.1.dev6'
 
-__all__ = ['benchmark',
-           'classifiers',
-           'denoising',
-           'image',
-           'io',
-           'optimization',
-           'reco',
-           'utils']
+def get_version():
+    return __version__
+
+from . import benchmark
+from . import denoising
+from . import image
+from . import io
+from . import optimization
