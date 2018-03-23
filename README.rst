@@ -171,7 +171,7 @@ A package for Linux and Windows will be available soon.
 
 .. note::
 
-    Attempting to use `pip <https://pip.pypa.io>`__ to upgrade your installation of PyWI may result
+    Attempting to use `pip <https://pip.pypa.io>`_ to upgrade your installation of PyWI may result
     in a corrupted installation.
 
 Cosmostat iSAP Sparce2D installation
