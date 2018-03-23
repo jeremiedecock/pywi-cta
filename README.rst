@@ -4,7 +4,7 @@ PyWI CTA - A CTA wrapper for PyWI
 
 Copyright (c) 2016-2018 Jeremie DECOCK (www.jdhp.org)
 
-* Online documentation: https://jeremiedecock.github.io/pywicta/
+* Online documentation: https://jeremiedecock.github.io/pywi-cta/
 * Source code: https://github.com/jeremiedecock/pywi-cta
 * Issue tracker: https://github.com/jeremiedecock/pywi-cta/issues
 * PyWI on PyPI: https://pypi.org/project/pywicta/
@@ -252,7 +252,7 @@ IPython/Jupyter Notebooks
 
 PyWI provide some Jupyter notebooks that can be used as examples or tutorials.
 
-* PyWI Notebooks on GitHub: https://github.com/jeremiedecock/pywicta-notebooks
+* PyWI Notebooks on GitHub: https://github.com/jeremiedecock/pywi-cta-notebooks
 * PyWI Notebooks on Anaconda Cloud: https://anaconda.org/jdhp/notebooks
 
 Bug reports
