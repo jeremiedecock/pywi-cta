@@ -79,6 +79,7 @@ PyWI also depends on other packages for optional features:
 * `Astropy <http://www.astropy.org/>`_ to provide Fits file format
 * `Pandas <http://pandas.pydata.org/>`_
 * `Matplotlib <http://matplotlib.org/>`_ 1.5 or later to provide plotting functionality
+* `PyWI <https://github.com/jeremiedecock/pywi>`_
 * `Cosmostat iSAP Sparce2D <http://www.cosmostat.org/software/isap/>`_
 
 However, note that these only need to be installed if those particular features
