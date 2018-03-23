@@ -1,5 +1,7 @@
 .. currentmodule:: pywicta
 
+.. _introduction_section:
+
 ============
 Introduction
 ============
