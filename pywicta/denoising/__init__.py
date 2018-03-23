@@ -1,32 +1,15 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+"""Denoising
 
-# Copyright (c) 2016 Jérémie DECOCK (http://www.jdhp.org)
+This package contains scripts used to operate a specific stream of image
+processing.
+"""
 
-# This script is provided under the terms and conditions of the MIT license:
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
-
-__all__ = ['abstract_cleaning_algorithm',
-           'cdf',
-           'fft',
-           'null',
-           'null_ref',
-           'tailcut',
-           'wavelets_mrfilter',
-           'wavelets_mrtransform',
-           'inverse_transform_sampling']
-
+from . import abstract_cleaning_algorithm
+from . import cdf
+from . import fft
+from . import null
+from . import null_ref
+from . import tailcut
+from . import wavelets_mrfilter
+from . import wavelets_mrtransform
+from . import inverse_transform_sampling
