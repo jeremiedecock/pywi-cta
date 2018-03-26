@@ -86,7 +86,7 @@ INSTALL_REQUIRES = ['numpy >= 1.14.0',
                     'astropy >= 2.0.3',
                     'pandas >= 0.22.0',
                     'matplotlib >= 2.1.2',
-                    'traitlets >= 4.3.2'
+                    'traitlets >= 4.3.2',
                     'pywi']
 
 
