@@ -9,12 +9,11 @@ NUM_IMG=15000
 
 # INSTRUMENT ##########################
 
-#INST="astri_mini_inaf"
 #INST="astri_mini_konrad"
 #INST="gct_mini_konrad"
 #INST="digicam_mini_konrad"
 
-#INST="flashcam_mini_inaf"
+#INST="flashcam_grid_prod3b_north"
 #INST="nectarcam_grid_prod3b_north"
 
 INST="lstcam_grid_prod3b_north"
@@ -87,7 +86,7 @@ astri_mini_inaf)
     GAMMA_FITS_DIR=~/data/astri_mini_array/fits/astri/gamma ;
     PROTON_FITS_DIR=~/data/astri_mini_array/fits/astri/proton ;
 
-    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/astri_inaf_cdf_gamma.json ;
+    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/astri_konrad_cdf_gamma_mars_like.json ;
 
     #TC_HTH="10" ; # HESS
     #TC_LTH="5" ;  # HESS
@@ -121,7 +120,7 @@ astri_mini_konrad)
     GAMMA_FITS_DIR=~/data/astri_mini_array_konrad/simtel/astri_v2/gamma/ ;
     PROTON_FITS_DIR=~/data/astri_mini_array_konrad/simtel/astri_v2/proton/ ;
 
-    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/astri_konrad_cdf_gamma.json ;
+    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/astri_konrad_cdf_gamma_mars_like.json ;
 
     #TC_HTH="10" ; # HESS
     #TC_LTH="5" ;  # HESS
@@ -151,7 +150,7 @@ gct_mini_konrad)
     GAMMA_FITS_DIR=~/data/gct_mini_array_konrad/simtel/gct/gamma/ ;
     PROTON_FITS_DIR=~/data/gct_mini_array_konrad/simtel/gct/proton/ ;
 
-    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/gct_konrad_cdf_gamma.json ;
+    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/gct_konrad_cdf_gamma_mars_like.json ;
 
     #TC_HTH="10" ; # HESS
     #TC_LTH="5" ;  # HESS
@@ -176,7 +175,7 @@ digicam_mini_konrad)
     GAMMA_FITS_DIR=~/data/sst1m_mini_array_konrad/simtel/sst1m/gamma ;
     PROTON_FITS_DIR=~/data/sst1m_mini_array_konrad/simtel/sst1m/proton ;
 
-    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/digicam_konrad_cdf_gamma.json ;
+    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/digicam_konrad_cdf_gamma_mars_like.json ;
 
     #TC_HTH="10" ;  # HESS
     #TC_LTH="5" ;   # HESS
@@ -202,7 +201,7 @@ digicam_mini_konrad)
     WT_MRF_PARAMS="-K -k -C1 -m3 -n4 -s6.274,2.629,7.755,0.076 --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
     WT_MRF_LABEL="WT-K-k-C1-m3-n4-s6.274-2.629-7.755-0.076" ;
     ;;
-flashcam_mini_inaf)
+flashcam_grid_prod3b_north)
     CAM_ID="FlashCam"
 
     #GAMMA_FITS_DIR=~/data/astri_mini_array/fits/flashcam/gamma ;
@@ -210,7 +209,7 @@ flashcam_mini_inaf)
     GAMMA_FITS_DIR=~/data/grid_prod3b_north/simtel/gamma ;
     PROTON_FITS_DIR=~/data/grid_prod3b_north/simtel/proton ;
 
-    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/flashcam_grid_prod3b_north_cdf_gamma.json ;
+    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/flashcam_grid_prod3b_north_cdf_gamma_mars_like.json ;
 
     #TC_HTH="10" ; # HESS
     #TC_LTH="5" ;  # HESS
@@ -240,7 +239,7 @@ nectarcam_grid_prod3b_north)
     GAMMA_FITS_DIR=~/data/grid_prod3b_north/simtel/gamma ;
     PROTON_FITS_DIR=~/data/grid_prod3b_north/simtel/proton ;
 
-    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/nectarcam_grid_prod3b_north_cdf_gamma.json ;
+    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/nectarcam_grid_prod3b_north_cdf_gamma_mars_like.json ;
 
     #TC_HTH="10" ; # HESS
     #TC_LTH="5" ;  # HESS
@@ -278,7 +277,7 @@ lstcam_grid_prod3b_north)
     GAMMA_FITS_DIR=~/data/grid_prod3b_north/simtel/gamma ;
     PROTON_FITS_DIR=~/data/grid_prod3b_north/simtel/proton ;
 
-    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/lstcam_grid_prod3b_north_cdf_gamma.json ;
+    WT_NAN_NOISE_CDF_FILE=./pywicta/denoising/cdf/lstcam_grid_prod3b_north_cdf_gamma_mars_like.json ;
 
     # TAILCUT #################################################################
 
