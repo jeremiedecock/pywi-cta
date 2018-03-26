@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/jeremiedecock/pywi-cta.svg?branch=master
+    :target: https://travis-ci.org/jeremiedecock/pywi-cta
+
 =================================
 PyWI CTA - A CTA wrapper for PyWI
 =================================
