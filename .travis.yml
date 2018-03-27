@@ -9,7 +9,7 @@ install:
     # Cannot use pip to install pywicta as ctapipe isn't available on pypi.org.
     # Install miniconda following instructions at http://conda.pydata.org/docs/travis.html
 
-    - sudo apt-get update
+    #- sudo apt-get update
     # We do this conditionally because it saves us some downloading if the
     # version is the same.
     - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
