@@ -2,7 +2,7 @@ language: python
 
 python:
     # ctapipe does not support Python less than 3.5
-    - 3.5
+    #- 3.5
     - 3.6
 
 install:
@@ -26,7 +26,8 @@ install:
     # Useful for debugging any issues with conda
     - conda info -a
 
-    - conda create -q -n pywi-cta --file environment.yml python=$TRAVIS_PYTHON_VERSION
+    #- conda create -q -n pywi-cta --file environment.yml python=$TRAVIS_PYTHON_VERSION
+    - conda env create -n pywi-cta -f environment.yml
     - source activate pywi-cta
     - python setup.py install
 
