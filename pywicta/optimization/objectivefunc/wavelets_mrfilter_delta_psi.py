@@ -40,7 +40,13 @@ def norm_angle_diff(angle_in_degrees):
 
 class ObjectiveFunction:
 
-    def __init__(self, input_files, noise_distribution=None, max_num_img=None, aggregation_method="mean"):
+    def __init__(self,
+                 input_files,
+                 cam_id,
+                 noise_distribution=None,
+                 max_num_img=None,
+                 aggregation_method="mean"):
+
         self.call_number = 0
 
         # Init the wavelet class
@@ -49,6 +55,8 @@ class ObjectiveFunction:
         # Make the image list
         self.input_files = input_files
         self.max_num_img = max_num_img
+
+        self.cam_id = cam_id
 
         self.noise_distribution = noise_distribution
 
@@ -121,6 +129,7 @@ class ObjectiveFunction:
                                                       benchmark_method=benchmark_method,
                                                       output_file_path=output_file_path,
                                                       max_num_img=self.max_num_img,
+                                                      cam_id=self.cam_id,
                                                       rejection_criteria=rejection_criteria)
 
             score_list = []

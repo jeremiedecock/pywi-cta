@@ -39,12 +39,12 @@ def main():
     #algo = "wavelet_mrtransform"
     #algo = "tailcut"
 
-    #instrument = "astri"
-    #instrument = "astri_konrad"
-    #instrument = "digicam"
-    #instrument = "flashcam"
-    #instrument = "nectarcam"
-    instrument = "lstcam"
+    #instrument = "ASTRICam"
+    #instrument = "CHEC"
+    #instrument = "DigiCam"
+    #instrument = "FlashCam"
+    #instrument = "NectarCam"
+    instrument = "LSTCam"
 
     #max_num_img = None
     max_num_img = 500
@@ -55,7 +55,7 @@ def main():
     print("algo:", algo)
     print("instrument:", instrument)
 
-    if instrument == "astri":
+    if instrument == "ASTRICam":
 
         input_files = ["/dev/shm/.jd/astri/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.ASTRI_CDF_FILE)
@@ -67,19 +67,19 @@ def main():
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
 
-    elif instrument == "astri_konrad":
+    elif instrument == "CHEC":
 
-        input_files = ["/dev/shm/.jd/astri_konrad/gamma/"]
-        noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.ASTRI_CDF_FILE)
+        input_files = ["/dev/shm/.jd/gct/gamma/"]
+        noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.GCT_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([0., 0., 0., 0.])  # TODO
-            init_max_val = np.array([5., 5., 5., 5.])  # TODO
+            init_min_val = np.array([-3., -4., -3., 0.])
+            init_max_val = np.array([10., 8., 7., 5.])
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
 
-    elif instrument == "digicam":
+    elif instrument == "DigiCam":
 
         input_files = ["/dev/shm/.jd/digicam/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.DIGICAM_CDF_FILE)
@@ -91,7 +91,7 @@ def main():
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
 
-    elif instrument == "flashcam":
+    elif instrument == "FlashCam":
 
         input_files = ["/dev/shm/.jd/flashcam/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.FLASHCAM_CDF_FILE)
@@ -103,7 +103,7 @@ def main():
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
 
-    elif instrument == "nectarcam":
+    elif instrument == "NectarCam":
 
         input_files = ["/dev/shm/.jd/nectarcam/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.NECTARCAM_CDF_FILE)
@@ -115,7 +115,7 @@ def main():
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
 
-    elif instrument == "lstcam":
+    elif instrument == "LSTCam":
 
         #input_files = ["/dev/shm/.jd/lstcam/gamma/"]
         input_files = ["~/data/grid_prod3b_north/simtel/gamma"]
@@ -135,6 +135,7 @@ def main():
     if algo == "wavelet_mrfilter":
 
         func = WaveletObjectiveFunction(input_files=input_files,
+                                        cam_id=instrument,
                                         noise_distribution=noise_distribution,
                                         max_num_img=max_num_img,
                                         aggregation_method=aggregation_method)  # "mean" or "median"
