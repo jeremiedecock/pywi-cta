@@ -36,14 +36,21 @@ from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 def main():
 
     algo = "wavelet_mrfilter"
+    #algo = "wavelet_mrtransform"
     #algo = "tailcut"
 
-    instrument = "astri"
+    #instrument = "astri"
     #instrument = "astri_konrad"
     #instrument = "digicam"
     #instrument = "flashcam"
     #instrument = "nectarcam"
-    #instrument = "lstcam"
+    instrument = "lstcam"
+
+    #max_num_img = None
+    max_num_img = 500
+
+    aggregation_method = "mean"
+    #aggregation_method = "median"
 
     print("algo:", algo)
     print("instrument:", instrument)
@@ -110,11 +117,12 @@ def main():
 
     elif instrument == "lstcam":
 
-        input_files = ["/dev/shm/.jd/lstcam/gamma/"]
+        #input_files = ["/dev/shm/.jd/lstcam/gamma/"]
+        input_files = ["~/data/grid_prod3b_north/simtel/gamma"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.LSTCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([-4., -5., -4., 0.])
+            init_min_val = np.array([0.01, 0.01, 0.01, 0.01])
             init_max_val = np.array([14., 9., 6., 4.])
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
@@ -128,14 +136,14 @@ def main():
 
         func = WaveletObjectiveFunction(input_files=input_files,
                                         noise_distribution=noise_distribution,
-                                        max_num_img=None,
-                                        aggregation_method="mean")  # "mean" or "median"
+                                        max_num_img=max_num_img,
+                                        aggregation_method=aggregation_method)  # "mean" or "median"
 
     elif algo == "tailcut":
 
         func = TailcutObjectiveFunction(input_files=input_files,
-                                        max_num_img=None,
-                                        aggregation_method="mean")  # "mean" or "median"
+                                        max_num_img=max_num_img,
+                                        aggregation_method=aggregation_method)  # "mean" or "median"
 
     else:
 
@@ -153,7 +161,7 @@ def main():
     res = minimize(func,
                    init_min_val=init_min_val,
                    init_max_val=init_max_val,
-                   num_gen=100,
+                   num_gen=20,
                    mu=3,
                    lmb=6,
                    callback=callback)

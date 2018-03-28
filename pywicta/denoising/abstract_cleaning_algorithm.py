@@ -90,7 +90,8 @@ class AbstractCleaningAlgorithm(object):
             tel_id=None,
             event_id=None,
             cam_id=None,
-            debug=False):
+            debug=False,
+            rejection_criteria=None):
         """A convenient optional wrapper to simplify the image cleaning analysis.
 
         Apply the image cleaning analysis on `input_file_or_dir_path_list`,
@@ -166,9 +167,6 @@ class AbstractCleaningAlgorithm(object):
             integrator_window_shift = 2
         else:
             raise ValueError('Unknown cam_id "{}"'.format(cam_id))
-
-        rejection_criteria = None
-        #rejection_criteria = lambda image: not 50 < np.nansum(image.reference_image) < 2000
 
         for image in image_generator(input_file_or_dir_path_list,
                                      max_num_images=max_num_img,

@@ -114,11 +114,14 @@ class ObjectiveFunction:
             # TODO: randomly make a subset fo self.input_files
             input_files = self.input_files
 
+            rejection_criteria = lambda image: not 50 < np.nansum(image.reference_image) < 200
+
             output_dict = self.cleaning_algorithm.run(algo_params,
                                                       input_file_or_dir_path_list=input_files,
                                                       benchmark_method=benchmark_method,
                                                       output_file_path=output_file_path,
-                                                      max_num_img=self.max_num_img)
+                                                      max_num_img=self.max_num_img,
+                                                      rejection_criteria=rejection_criteria)
 
             score_list = []
 
