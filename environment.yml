@@ -4,6 +4,7 @@ channels:
   - cta-observatory
   - conda-forge
 dependencies:
+  - python=3.6
   - ctapipe
   - ctapipe-extra=0.2.*
   - ipython
