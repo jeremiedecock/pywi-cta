@@ -30,7 +30,8 @@ install:
     - sed -i "s/  - python=3.6/  - python=${TRAVIS_PYTHON_VERSION}/" environment.yml
     - conda env create -n pywi-cta -f environment.yml
     - source activate pywi-cta
-    - python setup.py install
+    - pip install pywicta --no-deps
+    #- python setup.py install
 
 script:
     - ./run_tests.sh

@@ -10,15 +10,15 @@ Copyright (c) 2016-2018 Jeremie DECOCK (www.jdhp.org)
 * Online documentation: https://jeremiedecock.github.io/pywi-cta/
 * Source code: https://github.com/jeremiedecock/pywi-cta
 * Issue tracker: https://github.com/jeremiedecock/pywi-cta/issues
-* PyWI on PyPI: https://pypi.org/project/pywicta/
-* PyWI on Anaconda Cloud: https://anaconda.org/jdhp/pywicta
+* PyWI-CTA on PyPI: https://pypi.org/project/pywicta/
+* PyWI-CTA on Anaconda Cloud: https://anaconda.org/jdhp/pywicta
 
 .. Former documentation: http://sap-cta-data-pipeline.readthedocs.io/en/latest/
 
 Description
 ===========
 
-PyWI-CTA is a `ctapipe <https://github.com/cta-observatory/ctapipe>`_ wrapper for PyWI_.
+PyWI-CTA is a ctapipe_ wrapper for PyWI_.
 
 Note:
 
@@ -30,12 +30,13 @@ Dependencies
 
 .. Highly inspired by http://docs.astropy.org/en/stable/_sources/install.rst.txt
 
-PyWI has the following strict requirements:
+PyWI-CTA has the following strict requirements:
 
 * `Python <https://www.python.org/>`_ 3.5 or 3.6
 * `Numpy <http://www.numpy.org/>`_
+* ctapipe_ 0.5.3
 
-PyWI also depends on other packages for optional features:
+PyWI-CTA also depends on other packages for optional features:
 
 * `Scipy <https://www.scipy.org/>`_
 * `Scikit-image <http://scikit-image.org/>`_
@@ -47,135 +48,50 @@ PyWI also depends on other packages for optional features:
 * `Cosmostat iSAP Sparce2D <http://www.cosmostat.org/software/isap/>`_
 
 However, note that these only need to be installed if those particular features
-are needed. PyWI will import even if these dependencies are not installed.
+are needed. `pywicta` will import even if these dependencies are not installed.
 
 .. _install:
 
 Installation
 ============
 
-Using pip
----------
+PyWI-CTA and its dependencies may be installed using the *Anaconda* or
+*Miniconda* package system. We recommend creating a conda virtual environment
+first, to isolate the installed version and dependencies from your master
+environment (this is optional).
 
-Most major projects upload official packages to the *Python Package Index*.
-They can be installed on most operating systems using Python standard `pip`
-package manager.
+The following command will set up a conda virtual environment, add the
+necessary package channels, and download PyWI-CTA and its dependencies. The
+file *environment.yml* can be found in this repository. 
+Note this is *beta* stage software and is not yet stable enough for end-users
+(expect large API changes until the first stable 1.0 release).
 
-Note that you need to have `Python3.x` and `pip` already installed on your system.
+::
 
-.. warning::
-
-    Users of the Anaconda python distribution should follow the instructions
-    for Anaconda install (see `Using conda`_ bellow).
-
-.. note::
-
-    You will need a C compiler (e.g. ``gcc`` or ``clang``) to be installed to
-    install some dependencies (e.g. Numpy).
-
-.. note::
-
-    The ``--no-deps`` flag is optional, but highly recommended if you already
-    have Numpy installed, since otherwise pip will sometimes try to "help" you
-    by upgrading your Numpy installation, which may not always be desired.
-
-.. note::
-
-    If you get a ``PermissionError`` this means that you do not have the
-    required administrative access to install new packages to your Python
-    installation.  In this case you may consider using the ``--user`` option
-    to install the package into your home directory. You can read more
-    about how to do this in the `pip documentation
-    <https://pip.pypa.io/en/stable/user_guide/#user-installs>`_.
-
-    Alternatively, if you intend to do development on other software that uses
-    PyWI, such as an affiliated package, consider installing PyWI into a
-    `virtualenv <http://docs.astropy.org/en/stable/development/workflow/virtualenv_detail.html#using-virtualenv>`_.
-
-    Do **not** install PyWI or other third-party packages using ``sudo``
-    unless you are fully aware of the risks.
-
-On MacOSX and Gnu/Linux
-~~~~~~~~~~~~~~~~~~~~~~~
-
-You can install PyWI using the following command (in a terminal)::
-
+    conda env create -n pywi-cta -f environment.yml
+    source activate pywi-cta
     pip install pywicta --no-deps
 
-.. python -m pip install --user numpy scipy matplotlib pandas
+If you have already installed *ctapipe* following the
+`official installation procedure <https://github.com/cta-observatory/ctapipe#installation-for-users>`_,
+you can add PyWI-CTA to the *cta* virtual environment like this::
 
-.. It is recommended to use the --user flag to ``pip`` (note: do not use sudo pip,
-.. which can cause problems) to install packages in your local user space instead
-.. of the shared system directories.
-.. TODO: the --user flag has an issue (bug?): console scripts (pywicta-mrfilter, ...)
-.. are not directly (i.e. without updating the PATH variable) available anymore (at
-.. least on MacOSX/Anaconda).
+    source activate cta
+    pip install pywicta --no-deps
 
-As an alternative, you can install PyWI from the downloaded source code::
-
-    python3 setup.py install --no-deps
-
-.. There's also a package for Debian/Ubuntu::
-.. 
-..     sudo apt-get install pywicta
-
-If PyWI is already installed on your system you can upgrade it with this command::
-
-    pip install --upgrade pywicta
-
-To uninstall PyWI, type::
-
-    pip uninstall pywicta
-
-On Windows
-~~~~~~~~~~
-
-.. Note:
-.. 
-..     The following installation procedure has been tested to work with Python
-..     3.4 under Windows 7.
-..     It should also work with recent Windows systems.
-
-You can install PyWI using the following command (in a `command prompt`_)::
-
-    py -m pip install pywicta --no-deps
-
-.. It is recommended to use the --user flag to ``pip`` (note: do not use sudo pip,
-.. which can cause problems) to install packages in your local user space instead
-.. of the shared system directories.
-.. TODO: the --user flag has an issue (bug?): console scripts (pywicta-mrfilter, ...)
-.. are not directly (i.e. without updating the PATH variable) available anymore (at
-.. least on MacOSX/Anaconda).
-
-As an alternative, you can install PyWI from the downloaded source code::
-
-    py setup.py install --no-deps
-
-If PyWI is already installed on your system you can upgrade it with this command::
-
-    py -m pip install --upgrade pywicta
-
-To uninstall PyWI, type::
-
-    py -m uninstall pywicta
-
-
-.. _anaconda_install:
-
-Using conda
------------
-
-To install this package with conda run in a terminal::
-
-    conda install -c jdhp pywicta
-
-So far, the PyWI Anaconda package is only available for MacOSX.
-A package for Linux and Windows will be available soon.
+Developers should follow the development install instructions found in the
+`documentation <https://jeremiedecock.github.io/pywi-cta/developer.html#getting-started-for-developers>`_.
 
 .. note::
 
-    Attempting to use `pip <https://pip.pypa.io>`_ to upgrade your installation of PyWI may result
-    in a corrupted installation.
+    As *ctapipe* is not tested to work on Microsoft Windows systems, PyWI-CTA
+    does not officially support these systems neither.
+
+.. note::
+
+    The ``--no-deps`` flag is optional, but highly recommended otherwise pip
+    will sometimes try to "help" you by upgrading PyWI-CTA dependencies like
+    Numpy, which may not always be desired.
 
 Cosmostat iSAP Sparce2D installation
 ====================================
@@ -231,4 +147,5 @@ To search for bugs or report them, please use the PyWI Bug Tracker at:
 
 
 .. _PyWI: https://github.com/jeremiedecock/pywi
+.. _ctapipe: https://github.com/cta-observatory/ctapipe
 .. _command prompt: https://en.wikipedia.org/wiki/Cmd.exe

@@ -5,7 +5,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.6
-  - ctapipe
+  - ctapipe=0.5.3
   - ctapipe-extra=0.2.*
   - ipython
   - ipywidgets
