@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>io.images &mdash; SAp CTA data pipeline 0.1.dev21 documentation</title>
+  <title>io.images &mdash; SAp CTA data pipeline 0.1.dev24 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="SAp CTA data pipeline 0.1.dev21 documentation" href="index.html"/>
+    <link rel="top" title="SAp CTA data pipeline 0.1.dev24 documentation" href="index.html"/>
         <link rel="up" title="SAp CTA data pipeline API" href="api.html"/>
         <link rel="next" title="optimization.bruteforce" href="api_optimization_bruteforce.html"/>
         <link rel="prev" title="io.geometry_converter" href="api_io_geometry_converter.html"/> 
@@ -215,18 +215,18 @@ is defined by the instruction <cite>np.isnan(image)</cite>.</p>
 <p><cite>NaN</cite> values are replaced <strong>in-place</strong> in the provided <cite>image</cite>
 parameter.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">6</span><span class="p">],[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fill_nan_pixels</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 <span class="gp">... </span>
 <span class="go">array([[False, False,  True],</span>
 <span class="go">       [False,  True, False],</span>
-<span class="go">       [ True, False,  True]], dtype=bool)</span>
+<span class="go">       [ True, False,  True]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span>
 <span class="gp">... </span>
-<span class="go">array([[ 1., 2., 0.],</span>
-<span class="go">       [ 4., 0., 6.],</span>
-<span class="go">       [ 0., 8., 0.]])</span>
+<span class="go">array([[1., 2., 0.],</span>
+<span class="go">       [4., 0., 6.],</span>
+<span class="go">       [0., 8., 0.]])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -281,19 +281,24 @@ and directories path).</li>
 
 <dl class="function">
 <dt id="pywicta.io.images.image_generator">
-<code class="descclassname">pywicta.io.images.</code><code class="descname">image_generator</code><span class="sig-paren">(</span><em>path_list</em>, <em>max_num_images=None</em>, <em>tel_filter_list=None</em>, <em>ev_filter_list=None</em>, <em>cam_filter_list=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywicta/io/images.html#image_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywicta.io.images.image_generator" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pywicta.io.images.</code><code class="descname">image_generator</code><span class="sig-paren">(</span><em>path_list</em>, <em>max_num_images=None</em>, <em>tel_filter_list=None</em>, <em>ev_filter_list=None</em>, <em>cam_filter_list=None</em>, <em>rejection_criteria=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywicta/io/images.html#image_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywicta.io.images.image_generator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an iterable sequence all calibrated images in <cite>path_list</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path_list</strong> – The path of files containing the images to extract. It can contain
+<li><strong>path_list</strong> (<em>list of str</em>) – The path of files containing the images to extract. It can contain
 FITS/Simtel files and directories.</li>
-<li><strong>max_num_images</strong> – The maximum number of images to iterate.</li>
-<li><strong>tel_filter_list</strong> – Only iterate images from telescopes defined in this list.</li>
-<li><strong>ev_filter_list</strong> – Only iterate images from events defined in this list.</li>
-<li><strong>cam_filter_list</strong> – Only iterate images from cameras defined in this list.</li>
+<li><strong>max_num_images</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The maximum number of images to iterate.</li>
+<li><strong>tel_filter_list</strong> (<em>list of int</em>) – Only iterate images from telescopes defined in this list.</li>
+<li><strong>ev_filter_list</strong> (<em>list of int</em>) – Only iterate images from events defined in this list.</li>
+<li><strong>cam_filter_list</strong> (<em>list of string</em>) – Only iterate images from cameras defined in this list.</li>
+<li><strong>rejection_criteria</strong> (<em>function</em>) – A function that contains image rejection criteria. This function takes
+images and return True for images that should be ignored by the generator
+and False otherwise. It can be used to ignore images that are not in a
+given range of energy or images with a shower too close to the borders
+for instance.</li>
 </ul>
 </td>
 </tr>
@@ -319,7 +324,7 @@ in <cite>path_list</cite>.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">WrongFitsFileStructure</span></code> – If <cite>input_file_path</cite> doesn’t contain a valid structure</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">WrongFitsFileStructure</span></code> – If <cite>input_file_path</cite> doesn’t contain a valid structure</td>
 </tr>
 </tbody>
 </table>
@@ -347,8 +352,8 @@ images stored in different HDU)</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">WrongHDUError</span></code> – If <cite>input_file_path</cite> doesn’t contain the HDU <cite>hdu_index</cite></li>
-<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotAnImageError</span></code> – If <cite>input_file_path</cite> doesn’t contain a valid image in the HDU
+<li><code class="xref py py-exc docutils literal"><span class="pre">WrongHDUError</span></code> – If <cite>input_file_path</cite> doesn’t contain the HDU <cite>hdu_index</cite></li>
+<li><code class="xref py py-exc docutils literal"><span class="pre">NotAnImageError</span></code> – If <cite>input_file_path</cite> doesn’t contain a valid image in the HDU
 <cite>hdu_index</cite></li>
 </ul>
 </td>
@@ -459,7 +464,7 @@ Supported str arguments are
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">WrongDimensionError</span></code> – If <cite>img</cite> has more than 3 dimensions or less than 2 dimensions.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">WrongDimensionError</span></code> – If <cite>img</cite> has more than 3 dimensions or less than 2 dimensions.</p>
 </td>
 </tr>
 </tbody>
@@ -495,7 +500,7 @@ ctapipe <cite>event</cite>.</p>
 
 <dl class="function">
 <dt id="pywicta.io.images.simtel_images_generator">
-<code class="descclassname">pywicta.io.images.</code><code class="descname">simtel_images_generator</code><span class="sig-paren">(</span><em>file_path</em>, <em>tel_filter_list=None</em>, <em>ev_filter_list=None</em>, <em>cam_filter_list=None</em>, <em>ctapipe_format=False</em>, <em>integrator='LocalPeakIntegrator'</em>, <em>integrator_window_width=5</em>, <em>integrator_window_shift=2</em>, <em>integrator_t0=None</em>, <em>integrator_sig_amp_cut_hg=None</em>, <em>integrator_sig_amp_cut_lg=None</em>, <em>integrator_lwt=None</em>, <em>integration_correction=False</em>, <em>debug=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywicta/io/images.html#simtel_images_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywicta.io.images.simtel_images_generator" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pywicta.io.images.</code><code class="descname">simtel_images_generator</code><span class="sig-paren">(</span><em>file_path</em>, <em>tel_filter_list=None</em>, <em>ev_filter_list=None</em>, <em>cam_filter_list=None</em>, <em>ctapipe_format=False</em>, <em>integrator='LocalPeakIntegrator'</em>, <em>integrator_window_width=5</em>, <em>integrator_window_shift=2</em>, <em>integrator_t0=None</em>, <em>integrator_sig_amp_cut_hg=None</em>, <em>integrator_sig_amp_cut_lg=None</em>, <em>integrator_lwt=None</em>, <em>integration_correction=False</em>, <em>debug=False</em>, <em>rejection_criteria=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywicta/io/images.html#simtel_images_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywicta.io.images.simtel_images_generator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an iterable sequence all calibrated images in <cite>file_path</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -504,14 +509,14 @@ ctapipe <cite>event</cite>.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The path of a Simtel file.</li>
 <li><strong>tel_filter_list</strong> (<em>sequence of int</em>) – If defined, the generator iterator returns only images from telescopes
-listed in <code class="docutils literal notranslate"><span class="pre">tel_filter_list</span></code>.</li>
+listed in <code class="docutils literal"><span class="pre">tel_filter_list</span></code>.</li>
 <li><strong>ev_filter_list</strong> (<em>sequence of int</em>) – If defined, the generator iterator returns only images from events
-listed in <code class="docutils literal notranslate"><span class="pre">ev_filter_list</span></code>.</li>
+listed in <code class="docutils literal"><span class="pre">ev_filter_list</span></code>.</li>
 <li><strong>cam_filter_list</strong> (<em>sequence of str</em>) – If defined, the generator iterator returns only images from instrument
-listed in <code class="docutils literal notranslate"><span class="pre">cam_filter_list</span></code>.</li>
-<li><strong>ctapipe_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – The generator iterator returns ctapipe compliant 1D images if <code class="docutils literal notranslate"><span class="pre">True</span></code>;
+listed in <code class="docutils literal"><span class="pre">cam_filter_list</span></code>.</li>
+<li><strong>ctapipe_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – The generator iterator returns ctapipe compliant 1D images if <code class="docutils literal"><span class="pre">True</span></code>;
 it returns 2D converted images compliant with <cite>iSAP/Sparce2D</cite> otherwise.</li>
-<li><strong>integrator</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Define the trace integration method used in <code class="docutils literal notranslate"><span class="pre">ctapipe.calib.camera.dl1</span></code>.
+<li><strong>integrator</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Define the trace integration method used in <code class="docutils literal"><span class="pre">ctapipe.calib.camera.dl1</span></code>.
 Should be one of the following:
 * None:                      use the default integrator with the default parameters (NeighbourPeakIntegrator);
 * ‘FullIntegrator’:          integrates the entire waveform;
@@ -535,18 +540,23 @@ PeakFindingIntegrators.</li>
 <li><strong>integrator_lwt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Weight of the local pixel (0: peak from neighbours only, 1: local pixel
 counts as much as any neighbour). Only applicable to
 NeighbourPeakIntegrator.</li>
-<li><strong>integration_correction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, switch off the integration correction occurring in
-<code class="docutils literal notranslate"><span class="pre">ctapipe.calib.camera.dl1.CameraDL1Calibrator.calibrate()</span></code>.</li>
-<li><strong>debug</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Print additional values if <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
+<li><strong>integration_correction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If <code class="docutils literal"><span class="pre">False</span></code>, switch off the integration correction occurring in
+<code class="docutils literal"><span class="pre">ctapipe.calib.camera.dl1.CameraDL1Calibrator.calibrate()</span></code>.</li>
+<li><strong>debug</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Print additional values if <code class="docutils literal"><span class="pre">True</span></code>.</li>
+<li><strong>rejection_criteria</strong> (<em>function</em>) – A function that contains image rejection criteria. This function takes
+images and return True for images that should be ignored by the generator
+and False otherwise. It can be used to ignore images that are not in a
+given range of energy or images with a shower too close to the borders
+for instance.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
-<p>For more information about the integrator (<code class="docutils literal notranslate"><span class="pre">integrator*</span></code>) parameters,
-see the <code class="docutils literal notranslate"><span class="pre">ChargeExtractorFactory</span></code> class definition in <code class="docutils literal notranslate"><span class="pre">ctapipe/image/charge_extractors.py</span></code>
-or type (in a terminal) <code class="docutils literal notranslate"><span class="pre">ctapipe-chargeres-extract</span> <span class="pre">--help-all</span></code>.</p>
+<p>For more information about the integrator (<code class="docutils literal"><span class="pre">integrator*</span></code>) parameters,
+see the <code class="docutils literal"><span class="pre">ChargeExtractorFactory</span></code> class definition in <code class="docutils literal"><span class="pre">ctapipe/image/charge_extractors.py</span></code>
+or type (in a terminal) <code class="docutils literal"><span class="pre">ctapipe-chargeres-extract</span> <span class="pre">--help-all</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -603,7 +613,7 @@ or type (in a terminal) <code class="docutils literal notranslate"><span class="
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.dev21',
+            VERSION:'0.1.dev24',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
