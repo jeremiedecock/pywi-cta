@@ -821,7 +821,7 @@ def simtel_images_generator(file_path,
 
                         # MAKE METADATA ###########################################
 
-                        image.meta['version'] = 1    # Version of the pywicta data format
+                        #image.meta['version'] = 1    # Version of the pywicta data format
 
                         image.meta['tel_id'] = tel_id
                         image.meta['event_id'] = event_id
@@ -842,10 +842,19 @@ def simtel_images_generator(file_path,
                         image.meta['run_id'] = int(event.dl0.run_id)
                         image.meta['num_tel_with_data'] = len(event.dl0.tels_with_data)
 
-                        image.meta['optical_foclen'] = quantity_to_tuple(event.inst.optical_foclen[tel_id], 'm')
+                        #image.meta['optical_foclen'] = quantity_to_tuple(event.inst.optical_foclen[tel_id], 'm')
                         image.meta['tel_pos_x'] = quantity_to_tuple(event.inst.tel_pos[tel_id][0], 'm')
                         image.meta['tel_pos_y'] = quantity_to_tuple(event.inst.tel_pos[tel_id][1], 'm')
                         image.meta['tel_pos_z'] = quantity_to_tuple(event.inst.tel_pos[tel_id][2], 'm')
+
+                        image.meta['integrator'] = integrator
+                        image.meta['integrator_window_width'] = integrator_window_width
+                        image.meta['integrator_window_shift'] = integrator_window_shift
+                        image.meta['integrator_t0'] = integrator_t0
+                        image.meta['integrator_sig_amp_cut_hg'] = integrator_sig_amp_cut_hg
+                        image.meta['integrator_sig_amp_cut_lg'] = integrator_sig_amp_cut_lg
+                        image.meta['integrator_lwt'] = integrator_lwt
+                        image.meta['integration_correction'] = integration_correction
 
                         # IMAGES ##################################################
 

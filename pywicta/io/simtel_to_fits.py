@@ -40,6 +40,9 @@ def extract_images(input_file_or_dir_path_list,
                    rejection_criteria=None,
                    noise_distribution=None):
 
+        integrator = 'LocalPeakIntegrator'
+        integration_correction = False
+
         if cam_id == "ASTRICam":
             integrator_window_width = 1
             integrator_window_shift = 1
@@ -68,10 +71,10 @@ def extract_images(input_file_or_dir_path_list,
                                      cam_filter_list=[cam_id],
                                      rejection_criteria=rejection_criteria,
                                      ctapipe_format=False,
-                                     integrator='LocalPeakIntegrator',
+                                     integrator=integrator,
                                      integrator_window_width=integrator_window_width,
                                      integrator_window_shift=integrator_window_shift,
-                                     integration_correction=False,
+                                     integration_correction=integration_correction,
                                      mix_channels=True):
 
             simtel_basename = os.path.basename(image.meta['file_path'])
@@ -79,13 +82,12 @@ def extract_images(input_file_or_dir_path_list,
             del image.meta['file_path'] # = simtel_basename  # TODO: for some reason it doesn't work anymore even if len(simtel_basename) < 80...
             del image.meta['simtel_path']
 
-            del image.meta['optical_foclen']                 # Useless metadata
-
             # INJECT NOISE IN NAN ##################################
 
             # See https://stackoverflow.com/questions/29365194/replacing-missing-values-with-random-in-a-numpy-array
 
-            nan_mask = fill_nan_pixels(image.input_image, noise_distribution)
+            if noise_distribution is not None:
+                nan_mask = fill_nan_pixels(image.input_image, noise_distribution)
 
             # SAVE THE IMAGE ##########################################
 
