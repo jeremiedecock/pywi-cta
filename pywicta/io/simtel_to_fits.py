@@ -29,6 +29,8 @@ __all__ = ['extract_images']
 import argparse
 import os
 
+from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
+
 from pywicta.io.images import image_generator, save_benchmark_images, fill_nan_pixels
 
 def extract_images(input_file_or_dir_path_list,
@@ -137,6 +139,9 @@ def main():
                         metavar="DIRECTORY",
                         help="The output directory")
 
+    parser.add_argument("--noise-cdf-file", metavar="FILE",
+                        help="The JSON file containing the Cumulated Distribution Function of the noise model used to inject artificial noise in blank pixels (those with a NaN value). Default=None.")
+
     parser.add_argument("fileargs", nargs="+", metavar="FILE",
                         help="The simtel files to process")
 
@@ -158,6 +163,12 @@ def main():
     print("Telescopes:", tel_id_filter_list)
     print("Events:", event_id_filter_list)
 
+    noise_cdf_file = args.noise_cdf_file
+    if noise_cdf_file is not None:
+        noise_distribution = EmpiricalDistribution(noise_cdf_file)
+    else:
+        noise_distribution = None
+
     output_directory = args.output
     input_file_or_dir_path_list = args.fileargs
 
@@ -173,7 +184,8 @@ def main():
                    max_num_img=max_images,
                    tel_id=tel_id_filter_list,
                    event_id=event_id_filter_list,
-                   rejection_criteria=None)
+                   rejection_criteria=None,
+                   noise_distribution=noise_distribution)
 
 
 if __name__ == "__main__":
