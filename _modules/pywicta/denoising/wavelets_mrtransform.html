@@ -264,16 +264,14 @@
 <span class="kn">from</span> <span class="nn">pywicta.denoising.inverse_transform_sampling</span> <span class="k">import</span> <span class="n">EmpiricalDistribution</span>
 <span class="kn">from</span> <span class="nn">pywicta.io</span> <span class="k">import</span> <span class="n">images</span>
 
-<span class="kn">from</span> <span class="nn">pywi.filtering</span> <span class="k">import</span> <span class="n">hard_filter</span>
-<span class="kn">from</span> <span class="nn">pywi.filtering.hard_filter</span> <span class="k">import</span> <span class="n">filter_planes</span>
-
-<span class="kn">from</span> <span class="nn">pywi.image.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels</span> <span class="k">as</span> <span class="n">scipy_kill_isolated_pixels</span>
-<span class="kn">from</span> <span class="nn">pywi.image.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels_stats</span>
-<span class="kn">from</span> <span class="nn">pywi.image.pixel_clusters</span> <span class="k">import</span> <span class="n">number_of_islands</span>
-
-<span class="kn">from</span> <span class="nn">pywi.transform</span> <span class="k">import</span> <span class="n">mrtransform_wrapper</span>
-<span class="kn">from</span> <span class="nn">pywi.transform.mrtransform_wrapper</span> <span class="k">import</span> <span class="n">inverse_wavelet_transform</span>
-<span class="kn">from</span> <span class="nn">pywi.transform.mrtransform_wrapper</span> <span class="k">import</span> <span class="n">wavelet_transform</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering</span> <span class="k">import</span> <span class="n">hard_filter</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.hard_filter</span> <span class="k">import</span> <span class="n">filter_planes</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels</span> <span class="k">as</span> <span class="n">scipy_kill_isolated_pixels</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels_stats</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">number_of_islands</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.transform</span> <span class="k">import</span> <span class="n">mrtransform_wrapper</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.transform.mrtransform_wrapper</span> <span class="k">import</span> <span class="n">inverse_wavelet_transform</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.transform.mrtransform_wrapper</span> <span class="k">import</span> <span class="n">wavelet_transform</span>
 
 <span class="kn">from</span> <span class="nn">pywi.ui.argparse_commons</span> <span class="k">import</span> <span class="n">add_common_arguments</span>
 <span class="kn">from</span> <span class="nn">pywi.ui.filter_with_mrtransform</span> <span class="k">import</span> <span class="n">add_arguments</span>
@@ -284,6 +282,7 @@
 
 <span class="c1">##############################################################################</span>
 
+<span class="c1"># TODO: remove this redundant class (already defined in pywi.processing.compositing)</span>
 <div class="viewcode-block" id="WaveletTransform"><a class="viewcode-back" href="../../../api_filter_wavelet_mrtransform.html#pywicta.denoising.wavelets_mrtransform.WaveletTransform">[docs]</a><span class="k">class</span> <span class="nc">WaveletTransform</span><span class="p">(</span><span class="n">AbstractCleaningAlgorithm</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The wavelet transform wrapper for ctapipe.&quot;&quot;&quot;</span>
 

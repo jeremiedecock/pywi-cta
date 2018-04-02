@@ -204,8 +204,8 @@
 <span class="kn">from</span> <span class="nn">pywicta.image.hillas_parameters</span> <span class="k">import</span> <span class="n">get_hillas_parameters</span>
 <span class="kn">from</span> <span class="nn">pywicta.io.geometry_converter</span> <span class="k">import</span> <span class="n">image_2d_to_1d</span>
 
-<span class="kn">from</span> <span class="nn">pywi.image.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels</span>
-<span class="kn">from</span> <span class="nn">pywi.image.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels_stats</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels_stats</span>
 
 <span class="kn">from</span> <span class="nn">skimage.measure</span> <span class="k">import</span> <span class="n">compare_ssim</span> <span class="k">as</span> <span class="n">ssim</span>
 <span class="kn">from</span> <span class="nn">skimage.measure</span> <span class="k">import</span> <span class="n">compare_psnr</span> <span class="k">as</span> <span class="n">psnr</span>
@@ -273,8 +273,8 @@
     <span class="n">max_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">input_array</span><span class="p">)</span>
 
     <span class="n">output_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_array</span> <span class="o">-</span> <span class="n">min_value</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_value</span> <span class="o">-</span> <span class="n">min_value</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="n">output_array</span>
+
+    <span class="k">return</span> <span class="n">output_array</span></div>
 
 
 <span class="k">def</span> <span class="nf">norm_angle_diff</span><span class="p">(</span><span class="n">angle_in_degrees</span><span class="p">):</span>
@@ -346,8 +346,8 @@
     <span class="n">reference_image</span> <span class="o">=</span> <span class="n">reference_image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     
     <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">output_image</span> <span class="o">-</span> <span class="n">reference_image</span><span class="p">))</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></div>
 
 
 <span class="c1"># Normalized Root Mean-Squared Error (NRMSE) ##################################</span>
@@ -408,8 +408,8 @@
     <span class="n">mse</span> <span class="o">=</span> <span class="n">metric_mse</span><span class="p">(</span><span class="n">input_img</span><span class="p">,</span> <span class="n">output_image</span><span class="p">,</span> <span class="n">reference_image</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">((</span><span class="n">reference_image</span> <span class="o">*</span> <span class="n">output_image</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
     <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></div>
 
 
 <span class="c1"># Unusual Normalized Root Mean-Squared Error (uNRMSE) #########################</span>
@@ -472,8 +472,8 @@
     <span class="n">reference_image</span> <span class="o">=</span> <span class="n">normalize_array</span><span class="p">(</span><span class="n">reference_image</span><span class="p">)</span>
 
     <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">output_image</span> <span class="o">-</span> <span class="n">reference_image</span><span class="p">))</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></div>
 
 
 <span class="c1"># Mean Pixel Difference 2 #####################################################</span>
@@ -529,8 +529,8 @@
         <span class="k">raise</span> <span class="n">EmptyReferenceImageError</span><span class="p">()</span>
 
     <span class="n">mark</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">output_image</span> <span class="o">/</span> <span class="n">sum_output_image</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">reference_image</span> <span class="o">/</span> <span class="n">sum_reference_image</span><span class="p">)))</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span></div>
 
 
 <span class="c1"># Relative Total Counts Difference (mpdspd) ###################################</span>
@@ -581,8 +581,8 @@
         <span class="k">raise</span> <span class="n">EmptyReferenceImageError</span><span class="p">()</span>
 
     <span class="n">mark</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sum_output_image</span> <span class="o">-</span> <span class="n">sum_reference_image</span><span class="p">)</span> <span class="o">/</span> <span class="n">sum_reference_image</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span></div>
 
 
 <span class="c1"># Signed Relative Total Counts Difference (sspd) ##############################</span>
@@ -633,8 +633,8 @@
         <span class="k">raise</span> <span class="n">EmptyReferenceImageError</span><span class="p">()</span>
 
     <span class="n">mark</span> <span class="o">=</span> <span class="p">(</span><span class="n">sum_output_image</span> <span class="o">-</span> <span class="n">sum_reference_image</span><span class="p">)</span> <span class="o">/</span> <span class="n">sum_reference_image</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span></div>
 
 
 <span class="c1"># Structural Similarity Index Measure (SSIM) ##################################</span>
@@ -712,8 +712,8 @@
     <span class="n">reference_image</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">reference_image</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="n">ssim_val</span><span class="p">,</span> <span class="n">ssim_image</span> <span class="o">=</span> <span class="n">ssim</span><span class="p">(</span><span class="n">output_image</span><span class="p">,</span> <span class="n">reference_image</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gaussian_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">ssim_val</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">ssim_val</span><span class="p">)</span></div>
 
 
 <span class="c1"># Peak Signal-to-Noise Ratio (PSNR) ###########################################</span>
@@ -758,8 +758,8 @@
 
     <span class="c1">#psnr_val = psnr(output_image, reference_image, dynamic_range=1e3)</span>
     <span class="n">psnr_val</span> <span class="o">=</span> <span class="n">psnr</span><span class="p">(</span><span class="n">output_image</span><span class="p">,</span> <span class="n">reference_image</span><span class="p">,</span> <span class="n">data_range</span><span class="o">=</span><span class="mf">1e3</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">psnr_val</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">psnr_val</span><span class="p">)</span></div>
 
 
 <span class="c1"># Delta psi ###################################################################</span>
@@ -814,8 +814,8 @@
     <span class="n">delta_psi_rad</span> <span class="o">=</span> <span class="n">reference_image_parameter_psi_rad</span> <span class="o">-</span> <span class="n">output_image_parameter_psi_rad</span>
 
     <span class="n">normalized_delta_psi_deg</span> <span class="o">=</span> <span class="n">norm_angle_diff</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">delta_psi_rad</span><span class="p">))</span>
-</div>
-    <span class="k">return</span> <span class="n">normalized_delta_psi_deg</span>
+
+    <span class="k">return</span> <span class="n">normalized_delta_psi_deg</span></div>
 
 
 <span class="c1"># Hillas delta ################################################################</span>
@@ -946,8 +946,8 @@
                  <span class="p">))</span>
 
     <span class="n">Score</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Score&#39;</span><span class="p">,</span> <span class="n">score_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-</div>
-    <span class="k">return</span> <span class="n">Score</span><span class="p">(</span><span class="o">**</span><span class="n">score_dict</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Score</span><span class="p">(</span><span class="o">**</span><span class="n">score_dict</span><span class="p">)</span></div>
 
 
 <span class="c1"># Hillas delta 2 ##############################################################</span>
@@ -982,8 +982,8 @@
     <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;kill_threshold&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span>   <span class="c1"># TODO: don&#39;t give an hardcoded value</span>
 
     <span class="n">scores</span> <span class="o">=</span> <span class="n">metric_hillas_delta</span><span class="p">(</span><span class="n">input_img</span><span class="p">,</span> <span class="n">output_image</span><span class="p">,</span> <span class="n">reference_image</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="n">scores</span>
+
+    <span class="k">return</span> <span class="n">scores</span></div>
 
 
 <span class="c1"># Kill isolated pixels ########################################################</span>
@@ -1094,8 +1094,8 @@
 
     <span class="c1">#for s, m in zip(score_list, metric_name_list):</span>
     <span class="c1">#    print(m, &quot;:&quot;, s, type(s))</span>
-</div>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">score_list</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">metric_name_list</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">score_list</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">metric_name_list</span><span class="p">)</span></div>
 
 </pre></div>
 

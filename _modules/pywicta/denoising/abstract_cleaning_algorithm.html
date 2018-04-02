@@ -194,8 +194,8 @@
 <span class="kn">from</span> <span class="nn">pywicta.benchmark</span> <span class="k">import</span> <span class="n">assess</span>
 <span class="kn">from</span> <span class="nn">pywicta.image.hillas_parameters</span> <span class="k">import</span> <span class="n">get_hillas_parameters</span>
 
-<span class="kn">from</span> <span class="nn">pywi.image.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels_stats</span>
-<span class="kn">from</span> <span class="nn">pywi.image.pixel_clusters</span> <span class="k">import</span> <span class="n">number_of_islands</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels_stats</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">number_of_islands</span>
 
 <span class="kn">from</span> <span class="nn">pywicta.image.signal_to_border_distance</span> <span class="k">import</span> <span class="n">signal_to_border</span>
 <span class="kn">from</span> <span class="nn">pywicta.image.signal_to_border_distance</span> <span class="k">import</span> <span class="n">signal_to_border_distance</span>
@@ -214,6 +214,7 @@
 <span class="sd">    Common processing to run and assess the image cleaning procedure on a set</span>
 <span class="sd">    of images and save results. This class gather some common procedures to</span>
 <span class="sd">    avoid code duplication in image cleaning modules:</span>
+
 <span class="sd">    - call the cleaning algorithm on an image set;</span>
 <span class="sd">    - assess the cleaning procedure using a set of estimators;</span>
 <span class="sd">    - apply various pre-processing and post-processing procedures (e.g.</span>

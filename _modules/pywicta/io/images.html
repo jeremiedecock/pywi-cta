@@ -1150,12 +1150,8 @@
 
 <div class="viewcode-block" id="save_benchmark_images"><a class="viewcode-back" href="../../../api_io_images.html#pywicta.io.images.save_benchmark_images">[docs]</a><span class="k">def</span> <span class="nf">save_benchmark_images</span><span class="p">(</span><span class="n">img</span><span class="p">,</span>
                           <span class="n">pe_img</span><span class="p">,</span>
-                          <span class="n">adc_sums_img</span><span class="p">,</span>
-                          <span class="n">pedestal_img</span><span class="p">,</span>
-                          <span class="n">gains_img</span><span class="p">,</span>
-                          <span class="c1">#calibration_img,</span>
-                          <span class="n">pixel_pos</span><span class="p">,</span>
-                          <span class="n">pixel_mask</span><span class="p">,</span>
+                          <span class="c1">#pixel_pos,</span>
+                          <span class="c1">#pixel_mask,</span>
                           <span class="n">metadata</span><span class="p">,</span>
                           <span class="n">output_file_path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Write a FITS file containing pe_img, output_file_path and metadata.</span>
@@ -1178,43 +1174,25 @@
     <span class="k">if</span> <span class="n">pe_img</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The input image should be a 2D numpy array.&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">adc_sums_img</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The input image should be a 3D numpy array.&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">pedestal_img</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The input image should be a 3D numpy array.&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">gains_img</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The input image should be a 3D numpy array.&quot;</span><span class="p">)</span>
-
-    <span class="c1">#if calibration_img.ndim != 3:</span>
+    <span class="c1">#if pixel_pos.ndim != 3:</span>
     <span class="c1">#    raise Exception(&quot;The input image should be a 3D numpy array.&quot;)</span>
 
-    <span class="k">if</span> <span class="n">pixel_pos</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The input image should be a 3D numpy array.&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">pixel_mask</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The input image should be a 2D numpy array.&quot;</span><span class="p">)</span>
+    <span class="c1">#if pixel_mask.ndim != 2:</span>
+    <span class="c1">#    raise Exception(&quot;The input image should be a 2D numpy array.&quot;)</span>
 
     <span class="c1"># http://docs.astropy.org/en/stable/io/fits/appendix/faq.html#how-do-i-create-a-multi-extension-fits-file-from-scratch</span>
     <span class="c1"># http://docs.astropy.org/en/stable/generated/examples/io/create-mef.html#sphx-glr-generated-examples-io-create-mef-py</span>
     <span class="n">hdu0</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">PrimaryHDU</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
     <span class="n">hdu1</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">ImageHDU</span><span class="p">(</span><span class="n">pe_img</span><span class="p">)</span>
-    <span class="n">hdu2</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">ImageHDU</span><span class="p">(</span><span class="n">adc_sums_img</span><span class="p">)</span>
-    <span class="n">hdu3</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">ImageHDU</span><span class="p">(</span><span class="n">pedestal_img</span><span class="p">)</span>
-    <span class="n">hdu4</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">ImageHDU</span><span class="p">(</span><span class="n">gains_img</span><span class="p">)</span>
-    <span class="c1">#hdu5 = fits.ImageHDU(calibration_img)</span>
-    <span class="n">hdu6</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">ImageHDU</span><span class="p">(</span><span class="n">pixel_pos</span><span class="p">)</span>
-    <span class="n">hdu7</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">ImageHDU</span><span class="p">(</span><span class="n">pixel_mask</span><span class="p">)</span>
+    <span class="c1">#hdu6 = fits.ImageHDU(pixel_pos)</span>
+    <span class="c1">#hdu7 = fits.ImageHDU(pixel_mask)</span>
 
     <span class="n">hdu0</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;calibrated image&quot;</span>
     <span class="n">hdu1</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pe image&quot;</span>
-    <span class="n">hdu2</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;adc sum images&quot;</span>
-    <span class="n">hdu3</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pedestal images&quot;</span>
-    <span class="n">hdu4</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;gains images&quot;</span>
-    <span class="c1">#hdu5.header[&quot;desc&quot;] = &quot;calibration images&quot;</span>
-    <span class="n">hdu6</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pixels position&quot;</span>
-    <span class="n">hdu7</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pixels mask&quot;</span>
+    <span class="c1">#hdu6.header[&quot;desc&quot;] = &quot;pixels position&quot;</span>
+    <span class="c1">#hdu7.header[&quot;desc&quot;] = &quot;pixels mask&quot;</span>
+
+    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
 
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span> <span class="p">:</span>
@@ -1226,7 +1204,7 @@
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">)</span>
 
-    <span class="n">hdu_list</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">HDUList</span><span class="p">([</span><span class="n">hdu0</span><span class="p">,</span> <span class="n">hdu1</span><span class="p">,</span> <span class="n">hdu2</span><span class="p">,</span> <span class="n">hdu3</span><span class="p">,</span> <span class="n">hdu4</span><span class="p">,</span> <span class="n">hdu6</span><span class="p">,</span> <span class="n">hdu7</span><span class="p">])</span>
+    <span class="n">hdu_list</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">HDUList</span><span class="p">([</span><span class="n">hdu0</span><span class="p">,</span> <span class="n">hdu1</span><span class="p">])</span>
 
     <span class="n">hdu_list</span><span class="o">.</span><span class="n">writeto</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">)</span></div>
 
