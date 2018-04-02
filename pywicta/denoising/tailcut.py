@@ -38,9 +38,9 @@ from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgori
 
 from pywicta.io import geometry_converter
 
-from pywi.image.pixel_clusters import kill_isolated_pixels as scipy_kill_isolated_pixels
-from pywi.image.pixel_clusters import kill_isolated_pixels_stats
-from pywi.image.pixel_clusters import number_of_islands
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels as scipy_kill_isolated_pixels
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
+from pywi.processing.filtering.pixel_clusters import number_of_islands
 
 from ctapipe.image.cleaning import tailcuts_clean
 

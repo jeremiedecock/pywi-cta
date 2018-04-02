@@ -226,9 +226,9 @@ from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgori
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 from pywicta.io import images
 
-from pywi.image.pixel_clusters import kill_isolated_pixels as scipy_kill_isolated_pixels
-from pywi.image.pixel_clusters import kill_isolated_pixels_stats
-from pywi.image.pixel_clusters import number_of_islands
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels as scipy_kill_isolated_pixels
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
+from pywi.processing.filtering.pixel_clusters import number_of_islands
 
 from pywi.ui.argparse_commons import add_common_arguments
 from pywi.ui.filter_with_mrfilter import add_arguments

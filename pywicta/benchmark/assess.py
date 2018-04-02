@@ -45,8 +45,8 @@ import math
 from pywicta.image.hillas_parameters import get_hillas_parameters
 from pywicta.io.geometry_converter import image_2d_to_1d
 
-from pywi.image.pixel_clusters import kill_isolated_pixels
-from pywi.image.pixel_clusters import kill_isolated_pixels_stats
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
 
 from skimage.measure import compare_ssim as ssim
 from skimage.measure import compare_psnr as psnr

@@ -105,16 +105,14 @@ from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgori
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 from pywicta.io import images
 
-from pywi.filtering import hard_filter
-from pywi.filtering.hard_filter import filter_planes
-
-from pywi.image.pixel_clusters import kill_isolated_pixels as scipy_kill_isolated_pixels
-from pywi.image.pixel_clusters import kill_isolated_pixels_stats
-from pywi.image.pixel_clusters import number_of_islands
-
-from pywi.transform import mrtransform_wrapper
-from pywi.transform.mrtransform_wrapper import inverse_wavelet_transform
-from pywi.transform.mrtransform_wrapper import wavelet_transform
+from pywi.processing.filtering import hard_filter
+from pywi.processing.filtering.hard_filter import filter_planes
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels as scipy_kill_isolated_pixels
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
+from pywi.processing.filtering.pixel_clusters import number_of_islands
+from pywi.processing.transform import mrtransform_wrapper
+from pywi.processing.transform.mrtransform_wrapper import inverse_wavelet_transform
+from pywi.processing.transform.mrtransform_wrapper import wavelet_transform
 
 from pywi.ui.argparse_commons import add_common_arguments
 from pywi.ui.filter_with_mrtransform import add_arguments
@@ -125,6 +123,7 @@ DEBUG = False
 
 ##############################################################################
 
+# TODO: remove this redundant class (already defined in pywi.processing.compositing)
 class WaveletTransform(AbstractCleaningAlgorithm):
     """The wavelet transform wrapper for ctapipe."""
 

@@ -35,8 +35,8 @@ import astropy.units as u
 from pywicta.benchmark import assess
 from pywicta.image.hillas_parameters import get_hillas_parameters
 
-from pywi.image.pixel_clusters import kill_isolated_pixels_stats
-from pywi.image.pixel_clusters import number_of_islands
+from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
+from pywi.processing.filtering.pixel_clusters import number_of_islands
 
 from pywicta.image.signal_to_border_distance import signal_to_border
 from pywicta.image.signal_to_border_distance import signal_to_border_distance
@@ -55,6 +55,7 @@ class AbstractCleaningAlgorithm(object):
     Common processing to run and assess the image cleaning procedure on a set
     of images and save results. This class gather some common procedures to
     avoid code duplication in image cleaning modules:
+
     - call the cleaning algorithm on an image set;
     - assess the cleaning procedure using a set of estimators;
     - apply various pre-processing and post-processing procedures (e.g.
