@@ -29,7 +29,7 @@ __all__ = ['extract_images']
 import argparse
 import os
 
-from pywicta.io.images import image_generator, save_benchmark_images
+from pywicta.io.images import image_generator, save_benchmark_images, fill_nan_pixels
 
 def extract_images(input_file_or_dir_path_list,
                    cam_id,
@@ -37,7 +37,8 @@ def extract_images(input_file_or_dir_path_list,
                    max_num_img=None,
                    tel_id=None,
                    event_id=None,
-                   rejection_criteria=None):
+                   rejection_criteria=None,
+                   noise_distribution=None):
 
         if cam_id == "ASTRICam":
             integrator_window_width = 1
@@ -79,6 +80,12 @@ def extract_images(input_file_or_dir_path_list,
             del image.meta['simtel_path']
 
             del image.meta['optical_foclen']                 # Useless metadata
+
+            # INJECT NOISE IN NAN ##################################
+
+            # See https://stackoverflow.com/questions/29365194/replacing-missing-values-with-random-in-a-numpy-array
+
+            nan_mask = fill_nan_pixels(image.input_image, noise_distribution)
 
             # SAVE THE IMAGE ##########################################
 
