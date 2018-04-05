@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywicta.io.images &mdash; SAp CTA data pipeline 0.1.dev25 documentation</title>
+  <title>pywicta.io.images &mdash; SAp CTA data pipeline 0.1.dev26 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="SAp CTA data pipeline 0.1.dev25 documentation" href="../../../index.html"/>
+    <link rel="top" title="SAp CTA data pipeline 0.1.dev26 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -980,7 +980,7 @@
 
                         <span class="c1"># MAKE METADATA ###########################################</span>
 
-                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>    <span class="c1"># Version of the pywicta data format</span>
+                        <span class="c1">#image.meta[&#39;version&#39;] = 1    # Version of the pywicta data format</span>
 
                         <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;tel_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tel_id</span>
                         <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_id</span>
@@ -1001,10 +1001,19 @@
                         <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;run_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">dl0</span><span class="o">.</span><span class="n">run_id</span><span class="p">)</span>
                         <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;num_tel_with_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">dl0</span><span class="o">.</span><span class="n">tels_with_data</span><span class="p">)</span>
 
-                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;optical_foclen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantity_to_tuple</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">inst</span><span class="o">.</span><span class="n">optical_foclen</span><span class="p">[</span><span class="n">tel_id</span><span class="p">],</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+                        <span class="c1">#image.meta[&#39;optical_foclen&#39;] = quantity_to_tuple(event.inst.optical_foclen[tel_id], &#39;m&#39;)</span>
                         <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;tel_pos_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantity_to_tuple</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">inst</span><span class="o">.</span><span class="n">tel_pos</span><span class="p">[</span><span class="n">tel_id</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
                         <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;tel_pos_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantity_to_tuple</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">inst</span><span class="o">.</span><span class="n">tel_pos</span><span class="p">[</span><span class="n">tel_id</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
                         <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;tel_pos_z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantity_to_tuple</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">inst</span><span class="o">.</span><span class="n">tel_pos</span><span class="p">[</span><span class="n">tel_id</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integrator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integrator</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integrator_window_width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integrator_window_width</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integrator_window_shift&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integrator_window_shift</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integrator_t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integrator_t0</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integrator_sig_amp_cut_hg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integrator_sig_amp_cut_hg</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integrator_sig_amp_cut_lg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integrator_sig_amp_cut_lg</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integrator_lwt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integrator_lwt</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;integration_correction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">integration_correction</span>
 
                         <span class="c1"># IMAGES ##################################################</span>
 
@@ -1769,7 +1778,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.dev25',
+            VERSION:'0.1.dev26',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
