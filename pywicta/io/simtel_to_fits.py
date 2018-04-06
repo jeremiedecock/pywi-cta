@@ -71,7 +71,7 @@ class Criteria:
 
         return ellipticity
 
-    def hillas_centroid(self, image, hillas_params):
+    def hillas_centroid_dist(self, image, hillas_params):
         x = hillas_params.cen_x.value
         y = hillas_params.cen_y.value
 
@@ -84,9 +84,10 @@ class Criteria:
 
         npe_contained = self.min_npe < np.nansum(ref_image_1d) < self.max_npe
         ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(ref_image_1d, hillas_params) < self.max_ellipticity
-        #radius_contained = atan(self.min_radius * foclen) < self.hillas_centroid(ref_image_1d, hillas_params) < atan(self.max_radius * foclen)
+        radius_contained = self.min_radius < self.hillas_centroid_dist(ref_image_1d, hillas_params) < self.max_radius
+        #radius_contained = atan(self.min_radius * foclen) < self.hillas_centroid_dist(ref_image_1d, hillas_params) < atan(self.max_radius * foclen)
 
-        return not (npe_contained and ellipticity_contained)  # and radius_contained)
+        return not (npe_contained and ellipticity_contained and radius_contained)
 
 
 def extract_images(input_file_or_dir_path_list,
