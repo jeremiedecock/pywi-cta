@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywicta.io.geometry_converter &mdash; SAp CTA data pipeline 0.1.dev26 documentation</title>
+  <title>pywicta.io.geometry_converter &mdash; SAp CTA data pipeline 0.1.dev28 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="SAp CTA data pipeline 0.1.dev26 documentation" href="../../../index.html"/>
+    <link rel="top" title="SAp CTA data pipeline 0.1.dev28 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -186,6 +186,7 @@
 <span class="kn">import</span> <span class="nn">ctapipe.image.geometry_converter</span> <span class="k">as</span> <span class="nn">geomconv</span>
 <span class="kn">from</span> <span class="nn">ctapipe.instrument</span> <span class="k">import</span> <span class="n">camera</span>
 
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
@@ -229,8 +230,8 @@
 
         <span class="n">geom1d</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">CameraGeometry</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="n">cam_id</span><span class="p">)</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">geometry_converter_module</span><span class="p">,</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">geom1d</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="n">geom1d</span>
+
+    <span class="k">return</span> <span class="n">geom1d</span></div>
 
 <span class="k">def</span> <span class="nf">get_geom2d</span><span class="p">(</span><span class="n">cam_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;TODO!!!!!!!!!!!!!</span>
@@ -309,20 +310,25 @@
 
     <span class="n">geom1d</span> <span class="o">=</span> <span class="n">get_geom1d</span><span class="p">(</span><span class="n">cam_id</span><span class="p">)</span>  <span class="c1"># TODO: should be avoided...</span>
 
-    <span class="k">if</span> <span class="n">cam_id</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;DigiCam&quot;</span><span class="p">,</span> <span class="s2">&quot;NectarCam&quot;</span><span class="p">,</span> <span class="s2">&quot;FlashCam&quot;</span><span class="p">,</span> <span class="s2">&quot;LSTCam&quot;</span><span class="p">):</span>
-        <span class="n">rotation</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># TODO: should be avoided...</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">image1d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">convert_geometry_rect2d_back_to_hexe1d</span><span class="p">(</span><span class="n">geom1d</span><span class="p">,</span>
-                                                                     <span class="n">image2d</span><span class="p">,</span>
-                                                                     <span class="n">cam_id</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rotation</span><span class="p">),</span>
-                                                                     <span class="n">add_rot</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span> <span class="c1"># TODO</span>
-    <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;ASTRICam&quot;</span><span class="p">:</span>
-        <span class="n">image1d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">array_2d_to_astri</span><span class="p">(</span><span class="n">image2d</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;CHEC&quot;</span><span class="p">:</span>
-        <span class="n">image1d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">array_2d_to_chec</span><span class="p">(</span><span class="n">image2d</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">image2d</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cam_id</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;DigiCam&quot;</span><span class="p">,</span> <span class="s2">&quot;NectarCam&quot;</span><span class="p">,</span> <span class="s2">&quot;FlashCam&quot;</span><span class="p">,</span> <span class="s2">&quot;LSTCam&quot;</span><span class="p">):</span>
+            <span class="n">rotation</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># TODO: should be avoided...</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">image1d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">convert_geometry_rect2d_back_to_hexe1d</span><span class="p">(</span><span class="n">geom1d</span><span class="p">,</span>
+                                                                         <span class="n">image2d</span><span class="p">,</span>
+                                                                         <span class="n">cam_id</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rotation</span><span class="p">),</span>
+                                                                         <span class="n">add_rot</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span> <span class="c1"># TODO</span>
+        <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;ASTRICam&quot;</span><span class="p">:</span>
+            <span class="n">image1d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">array_2d_to_astri</span><span class="p">(</span><span class="n">image2d</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;CHEC&quot;</span><span class="p">:</span>
+            <span class="n">image1d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">array_2d_to_chec</span><span class="p">(</span><span class="n">image2d</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;2D to 1D image converter: unknown camera </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cam_id</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">image2d</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>   <span class="c1"># TODO</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;2D to 1D image converter: unknown camera </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cam_id</span><span class="p">))</span>
-</div>
-    <span class="k">return</span> <span class="n">image1d</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input array must have 1 or 2 dimensions&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">image1d</span></div>
 
 <div class="viewcode-block" id="image_1d_to_2d"><a class="viewcode-back" href="../../../api_io_geometry_converter.html#pywicta.io.geometry_converter.image_1d_to_2d">[docs]</a><span class="k">def</span> <span class="nf">image_1d_to_2d</span><span class="p">(</span><span class="n">image1d</span><span class="p">,</span> <span class="n">cam_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a ctapipe compliant 1D image to a wavelet compatible 2D image.</span>
@@ -345,20 +351,30 @@
 
     <span class="n">geom1d</span> <span class="o">=</span> <span class="n">get_geom1d</span><span class="p">(</span><span class="n">cam_id</span><span class="p">)</span>  <span class="c1"># TODO: should be avoided...</span>
 
-    <span class="k">if</span> <span class="n">cam_id</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;DigiCam&quot;</span><span class="p">,</span> <span class="s2">&quot;NectarCam&quot;</span><span class="p">,</span> <span class="s2">&quot;FlashCam&quot;</span><span class="p">,</span> <span class="s2">&quot;LSTCam&quot;</span><span class="p">):</span>
-        <span class="n">rotation</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># TODO: should be avoided...</span>
-        <span class="n">geom2d</span><span class="p">,</span> <span class="n">image2d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">convert_geometry_hex1d_to_rect2d</span><span class="p">(</span><span class="n">geom1d</span><span class="p">,</span>
-                                                                    <span class="n">image1d</span><span class="p">,</span>
-                                                                    <span class="n">cam_id</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rotation</span><span class="p">),</span>
-                                                                    <span class="n">add_rot</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span> <span class="c1"># TODO</span>
-    <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;ASTRICam&quot;</span><span class="p">:</span>
-        <span class="n">image2d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">astri_to_2d_array</span><span class="p">(</span><span class="n">image1d</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;CHEC&quot;</span><span class="p">:</span>
-        <span class="n">image2d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">chec_to_2d_array</span><span class="p">(</span><span class="n">image1d</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">image1d</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cam_id</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;DigiCam&quot;</span><span class="p">,</span> <span class="s2">&quot;NectarCam&quot;</span><span class="p">,</span> <span class="s2">&quot;FlashCam&quot;</span><span class="p">,</span> <span class="s2">&quot;LSTCam&quot;</span><span class="p">):</span>
+            <span class="n">rotation</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># TODO: should be avoided...</span>
+            <span class="n">geom2d</span><span class="p">,</span> <span class="n">image2d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">convert_geometry_hex1d_to_rect2d</span><span class="p">(</span><span class="n">geom1d</span><span class="p">,</span>
+                                                                        <span class="n">image1d</span><span class="p">,</span>
+                                                                        <span class="n">cam_id</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rotation</span><span class="p">),</span>
+                                                                        <span class="n">add_rot</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span> <span class="c1"># TODO</span>
+        <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;ASTRICam&quot;</span><span class="p">:</span>
+            <span class="n">image2d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">astri_to_2d_array</span><span class="p">(</span><span class="n">image1d</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;CHEC&quot;</span><span class="p">:</span>
+            <span class="n">image2d</span> <span class="o">=</span> <span class="n">geomconv</span><span class="o">.</span><span class="n">chec_to_2d_array</span><span class="p">(</span><span class="n">image1d</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;1D to 2D image converter: unknown camera </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cam_id</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">image1d</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">image1d</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cam_id</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">num_time_samples</span> <span class="o">=</span> <span class="n">image1d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">image2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_time_samples</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">time_sample_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">image1d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">image2d</span><span class="p">[</span><span class="n">time_sample_index</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">image1d</span><span class="p">[:,</span> <span class="n">time_sample_index</span><span class="p">],</span> <span class="n">cam_id</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;1D to 2D image converter: unknown camera </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cam_id</span><span class="p">))</span>
-</div>
-    <span class="k">return</span> <span class="n">image2d</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input array must have 1 or 2 dimensions&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">image2d</span></div>
 </pre></div>
 
            </div>
@@ -395,7 +411,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.dev26',
+            VERSION:'0.1.dev28',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
