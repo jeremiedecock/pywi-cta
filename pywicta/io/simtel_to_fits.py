@@ -28,10 +28,66 @@ __all__ = ['extract_images']
 
 import argparse
 import os
+import numpy as np
 
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 
 from pywicta.io.images import image_generator, save_benchmark_images, fill_nan_pixels
+
+from pywicta.io import geometry_converter
+from pywicta.image.hillas_parameters import get_hillas_parameters
+
+class Criteria:
+
+    def __init__(self, cam_id, min_npe, max_npe, min_radius, max_radius, min_ellipticity, max_ellipticity):
+        self.cam_id = cam_id
+        self.geom1d = geometry_converter.get_geom1d(self.cam_id)
+        self.hillas_implementation = 2
+
+        self.min_npe = min_npe
+        self.max_npe = max_npe
+        self.min_radius = min_radius
+        self.max_radius = max_radius
+        self.min_ellipticity = min_ellipticity
+        self.max_ellipticity = max_ellipticity
+
+        #self.foclen = ...
+        #self.radius = ...
+        #self.min_radius_abs = ...
+        #self.max_radius_abs = ...
+
+    def hillas_parameters(self, image):
+        hillas_params = get_hillas_parameters(self.geom1d, image, self.hillas_implementation)
+        return hillas_params
+
+    def hillas_ellipticity(self, image, hillas_params):
+        length = hillas_params.length.value
+        width = hillas_params.width.value
+
+        if length == 0:
+            ellipticity = 0
+        else:
+            ellipticity = width / length
+
+        return ellipticity
+
+    def hillas_centroid(self, image, hillas_params):
+        x = hillas_params.cen_x.value
+        y = hillas_params.cen_y.value
+
+        return math.sqrt(x**2 + y**2)
+
+    def __call__(self, images2d):
+        ref_image_2d = images2d.reference_image
+        ref_image_1d = geometry_converter.image_2d_to_1d(ref_image_2d, self.cam_id)
+        hillas_params = self.hillas_parameters(ref_image_1d)
+
+        npe_contained = self.min_npe < np.nansum(ref_image_1d) < self.max_npe
+        ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(ref_image_1d, hillas_params) < self.max_ellipticity
+        #radius_contained = atan(self.min_radius * foclen) < self.hillas_centroid(ref_image_1d, hillas_params) < atan(self.max_radius * foclen)
+
+        return not (npe_contained and ellipticity_contained)  # and radius_contained)
+
 
 def extract_images(input_file_or_dir_path_list,
                    cam_id,
@@ -131,7 +187,25 @@ def main():
                         help="Only process images from the specified camera: {}".format(str(CAM_IDS)))
 
     parser.add_argument("--max-images", type=int, metavar="INTEGER", 
-                        help="The maximum number of images to process")
+                        help="The maximum number of images to export")
+
+    parser.add_argument("--min-npe", type=float, metavar="FLOAT", default=0,
+                        help="Only export images where the MC reference image has more than min-npe PE counts.")
+
+    parser.add_argument("--max-npe", type=float, metavar="FLOAT", default=100000,
+                        help="Only export images where the MC reference image has less than max-npe PE counts.")
+
+    parser.add_argument("--min-radius", type=float, metavar="FLOAT", default=0,
+                        help="Only export images where the shower Hillascentroid in the MC reference image is outside a disc of min-radius percent degrees (centered on the center of the camera).")
+
+    parser.add_argument("--max-radius", type=float, metavar="FLOAT", default=100,
+                        help="Only export images where the shower Hillascentroid in the MC reference image is inside a disc of max-radius percent degrees (centered on the center of the camera).")
+
+    parser.add_argument("--min-ellipticity", type=float, metavar="FLOAT", default=0,
+                        help="Only export images where the shower Hillas ellipsis in the MC reference image has a ratio of width over length greater than this min-ellipticity parameter.")
+
+    parser.add_argument("--max-ellipticity", type=float, metavar="FLOAT", default=1,
+                        help="Only export images where the shower Hillas ellipsis in the MC reference image has a ratio of width over length lower than this max-ellipticity parameter.")
 
     parser.add_argument("--telescope", "-t",
                         metavar="INTEGER LIST",
@@ -159,6 +233,24 @@ def main():
     export_time_slices = args.time_slices
     cam_id = args.camid
     max_images = args.max_images
+    max_npe = args.max_npe
+    min_npe = args.min_npe
+    max_radius = args.max_radius
+    min_radius = args.min_radius
+    max_ellipticity = args.max_ellipticity
+    min_ellipticity = args.min_ellipticity
+
+    assert min_npe <= max_npe
+    assert min_radius <= max_radius
+    assert min_ellipticity <= max_ellipticity
+
+    rejection_criteria = Criteria(cam_id=cam_id,
+                                  min_npe=min_npe,
+                                  max_npe=max_npe,
+                                  min_radius=min_radius,
+                                  max_radius=max_radius,
+                                  min_ellipticity=min_ellipticity,
+                                  max_ellipticity=max_ellipticity)
 
     if args.telescope is None:
         tel_id_filter_list = None
@@ -194,7 +286,7 @@ def main():
                    max_num_img=max_images,
                    tel_id=tel_id_filter_list,
                    event_id=event_id_filter_list,
-                   rejection_criteria=None,
+                   rejection_criteria=rejection_criteria,
                    noise_distribution=noise_distribution,
                    export_time_slices=export_time_slices)
 
