@@ -27,6 +27,7 @@ __all__ = ['get_geom1d',
 import ctapipe.image.geometry_converter as geomconv
 from ctapipe.instrument import camera
 
+import math
 import numpy as np
 import sys
 
@@ -150,18 +151,23 @@ def image_2d_to_1d(image2d, cam_id):
 
     geom1d = get_geom1d(cam_id)  # TODO: should be avoided...
 
-    if cam_id in ("DigiCam", "NectarCam", "FlashCam", "LSTCam"):
-        rotation = 0  # TODO: should be avoided...
-        _, image1d = geomconv.convert_geometry_rect2d_back_to_hexe1d(geom1d,
-                                                                     image2d,
-                                                                     cam_id + str(rotation),
-                                                                     add_rot=rotation) # TODO
-    elif cam_id == "ASTRICam":
-        image1d = geomconv.array_2d_to_astri(image2d)
-    elif cam_id == "CHEC":
-        image1d = geomconv.array_2d_to_chec(image2d)
+    if image2d.ndim == 2:
+        if cam_id in ("DigiCam", "NectarCam", "FlashCam", "LSTCam"):
+            rotation = 0  # TODO: should be avoided...
+            _, image1d = geomconv.convert_geometry_rect2d_back_to_hexe1d(geom1d,
+                                                                         image2d,
+                                                                         cam_id + str(rotation),
+                                                                         add_rot=rotation) # TODO
+        elif cam_id == "ASTRICam":
+            image1d = geomconv.array_2d_to_astri(image2d)
+        elif cam_id == "CHEC":
+            image1d = geomconv.array_2d_to_chec(image2d)
+        else:
+            raise ValueError("2D to 1D image converter: unknown camera {}.".format(cam_id))
+    elif image2d.ndim == 3:
+        raise NotImplementedError()   # TODO
     else:
-        raise ValueError("2D to 1D image converter: unknown camera {}.".format(cam_id))
+        raise ValueError("Input array must have 1 or 2 dimensions")
 
     return image1d
 
@@ -186,17 +192,27 @@ def image_1d_to_2d(image1d, cam_id):
 
     geom1d = get_geom1d(cam_id)  # TODO: should be avoided...
 
-    if cam_id in ("DigiCam", "NectarCam", "FlashCam", "LSTCam"):
-        rotation = 0  # TODO: should be avoided...
-        geom2d, image2d = geomconv.convert_geometry_hex1d_to_rect2d(geom1d,
-                                                                    image1d,
-                                                                    cam_id + str(rotation),
-                                                                    add_rot=rotation) # TODO
-    elif cam_id == "ASTRICam":
-        image2d = geomconv.astri_to_2d_array(image1d)
-    elif cam_id == "CHEC":
-        image2d = geomconv.chec_to_2d_array(image1d)
+    if image1d.ndim == 1:
+        if cam_id in ("DigiCam", "NectarCam", "FlashCam", "LSTCam"):
+            rotation = 0  # TODO: should be avoided...
+            geom2d, image2d = geomconv.convert_geometry_hex1d_to_rect2d(geom1d,
+                                                                        image1d,
+                                                                        cam_id + str(rotation),
+                                                                        add_rot=rotation) # TODO
+        elif cam_id == "ASTRICam":
+            image2d = geomconv.astri_to_2d_array(image1d)
+        elif cam_id == "CHEC":
+            image2d = geomconv.chec_to_2d_array(image1d)
+        else:
+            raise ValueError("1D to 2D image converter: unknown camera {}.".format(cam_id))
+    elif image1d.ndim == 2:
+        size = image_1d_to_2d(image1d[:, 0], cam_id).shape[0]
+        num_time_samples = image1d.shape[1]
+
+        image2d = np.zeros(shape=(num_time_samples, size, size))
+        for time_sample_index in range(image1d.shape[1]):
+            image2d[time_sample_index, :, :] = image_1d_to_2d(image1d[:, time_sample_index], cam_id)
     else:
-        raise ValueError("1D to 2D image converter: unknown camera {}.".format(cam_id))
+        raise ValueError("Input array must have 1 or 2 dimensions")
 
     return image2d

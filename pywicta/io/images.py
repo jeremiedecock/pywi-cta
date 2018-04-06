@@ -359,14 +359,13 @@ def image_generator(path_list,
                         yield image
             elif file_path.lower().endswith((".fits", ".fit")):
                 # FITS FILES
-                image_dict, fits_metadata_dict = load_benchmark_images(file_path)   # TODO: named tuple
-                if (tel_filter_list is None) or (fits_metadata_dict['tel_id'] in tel_filter_list):
-                    if (ev_filter_list is None) or (fits_metadata_dict['event_id'] in ev_filter_list):
-                        if (cam_filter_list is None) or (fits_metadata_dict['cam_id'] in cam_filter_list):
-                            image2d = Image2D(**image_dict, meta=fits_metadata_dict)
+                image2d = load_benchmark_images(file_path)
+                if (tel_filter_list is None) or (image2d.meta['tel_id'] in tel_filter_list):
+                    if (ev_filter_list is None) or (image2d.meta['event_id'] in ev_filter_list):
+                        if (cam_filter_list is None) or (image2d.meta['cam_id'] in cam_filter_list):
                             if (rejection_criteria is None) or not rejection_criteria(image2d):
                                 images_counter += 1
-                                yield Image2D(**image_dict, meta=fits_metadata_dict)
+                                yield image2d
             else:
                 raise Exception("Wrong item:", file_path)
 
@@ -464,22 +463,44 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
 
     if mix_channels:
         if cam_id == "ASTRICam":
+
             ASTRI_CAM_CHANNEL_THRESHOLD = 2**12 - 1       # cf. "signal_and_noise_histograms_loglog_adc_counts_not_summed_per_channel_FAST" notebook
+
             calibrated_image[1, r0_adc_samples[0].max(axis=1) <  ASTRI_CAM_CHANNEL_THRESHOLD] = 0
             calibrated_image[0, r0_adc_samples[0].max(axis=1) >= ASTRI_CAM_CHANNEL_THRESHOLD] = 0
             calibrated_image = calibrated_image.sum(axis=0)
+
+            calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  ASTRI_CAM_CHANNEL_THRESHOLD] = 0
+            calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= ASTRI_CAM_CHANNEL_THRESHOLD] = 0
+            calibrated_samples = calibrated_samples.sum(axis=0)
+
         elif cam_id == "NectarCam":
+
             NECTAR_CAM_CHANNEL_THRESHOLD = 2**12 - 1      # cf. "signal_and_noise_histograms_loglog_adc_counts_not_summed_per_channel_FAST" notebook
+
             calibrated_image[1, r0_adc_samples[0].max(axis=1) <  NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # LG channel
             calibrated_image[0, r0_adc_samples[0].max(axis=1) >= NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # HG channel
             calibrated_image = calibrated_image.sum(axis=0)
+
+            calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # LG channel
+            calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # HG channel
+            calibrated_samples = calibrated_samples.sum(axis=0)
+
         elif cam_id == "LSTCam":
+
             LST_CAM_CHANNEL_THRESHOLD = 2**12 - 1      # cf. "signal_and_noise_histograms_loglog_adc_counts_not_summed_per_channel_FAST" notebook
+
             calibrated_image[1, r0_adc_samples[0].max(axis=1) <  LST_CAM_CHANNEL_THRESHOLD] = 0
             calibrated_image[0, r0_adc_samples[0].max(axis=1) >= LST_CAM_CHANNEL_THRESHOLD] = 0
             calibrated_image = calibrated_image.sum(axis=0)
+
+            calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  LST_CAM_CHANNEL_THRESHOLD, :] = 0
+            calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= LST_CAM_CHANNEL_THRESHOLD, :] = 0
+            calibrated_samples = calibrated_samples.sum(axis=0)
+
         elif cam_id in SINGLE_CHANNEL_CAMERAS :
             calibrated_image = calibrated_image[0]
+            calibrated_samples = calibrated_samples[0]
         else:
             raise NotImplementedError("Unknown camera: {}".format(cam_id))
 
@@ -511,8 +532,8 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
 
             pe_image_2d = geometry_converter.image_1d_to_2d(pe_image, cam_id=cam_id)
             calibrated_image_2d = geometry_converter.image_1d_to_2d(calibrated_image, cam_id=cam_id)
+            calibrated_samples_2d = geometry_converter.image_1d_to_2d(calibrated_samples, cam_id=cam_id)
 
-            calibrated_samples_2d = None    # TODO
             uncalibrated_samples_2d = None  # TODO
             extracted_samples_2d = None     # TODO
             peakpos_2d = None               # TODO
@@ -525,8 +546,8 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
 
             pe_image_2d = geometry_converter.image_1d_to_2d(pe_image, cam_id=cam_id)
             calibrated_image_2d = geometry_converter.image_1d_to_2d(calibrated_image, cam_id=cam_id)
+            calibrated_samples_2d = geometry_converter.image_1d_to_2d(calibrated_samples, cam_id=cam_id)
 
-            calibrated_samples_2d = None    # TODO
             uncalibrated_samples_2d = None  # TODO
             extracted_samples_2d = None     # TODO
             peakpos_2d = None               # TODO
@@ -589,9 +610,9 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
         #pixel_pos_2d[mask_2d != 1] = np.nan
 
         return Image2D(input_image=calibrated_image_2d,
-                       input_samples=calibrated_samples_2d,       # TODO
+                       input_samples=calibrated_samples_2d,
                        reference_image=pe_image_2d,
-                       adc_samples=uncalibrated_samples_2d,       # TODO
+                       adc_samples=uncalibrated_samples_2d,
                        extracted_samples=extracted_samples_2d,
                        peakpos=peakpos_2d,
                        adc_sum_image=uncalibrated_image_2d,
@@ -842,7 +863,7 @@ def simtel_images_generator(file_path,
                         image.meta['run_id'] = int(event.dl0.run_id)
                         image.meta['num_tel_with_data'] = len(event.dl0.tels_with_data)
 
-                        #image.meta['optical_foclen'] = quantity_to_tuple(event.inst.optical_foclen[tel_id], 'm')
+                        image.meta['optical_foclen'] = quantity_to_tuple(event.inst.optical_foclen[tel_id], 'm')
                         image.meta['tel_pos_x'] = quantity_to_tuple(event.inst.tel_pos[tel_id][0], 'm')
                         image.meta['tel_pos_y'] = quantity_to_tuple(event.inst.tel_pos[tel_id][1], 'm')
                         image.meta['tel_pos_z'] = quantity_to_tuple(event.inst.tel_pos[tel_id][2], 'm')
@@ -904,61 +925,27 @@ def load_benchmark_images(input_file_path):
 
     metadata_dict = {}
 
-    metadata_dict['version'] = hdu0.header['version']
-    metadata_dict['cam_id'] = hdu0.header['cam_id']
-
-    metadata_dict['tel_id'] = hdu0.header['tel_id']
-    metadata_dict['event_id'] = hdu0.header['event_id']
     metadata_dict['file_path'] = input_file_path
-    metadata_dict['simtel_path'] = hdu0.header['simtel']
 
-    metadata_dict['num_tel_with_trigger'] = hdu0.header['tel_trig']
+    for key, value in hdu0.header.items():
+        if key not in ('SIMPLE', 'BITPIX', 'NAXIS', 'NAXIS1', 'NAXIS2', 'EXTEND'):
+            metadata_dict[key.lower()] = value
 
-    metadata_dict['mc_energy'] = hdu0.header['energy']
-    metadata_dict['mc_energy_unit'] = hdu0.header.comments['energy']
-
-    metadata_dict['mc_azimuth'] = hdu0.header['mc_az']
-    metadata_dict['mc_azimuth_unit'] = hdu0.header.comments['mc_az']
-
-    metadata_dict['mc_altitude'] = hdu0.header['mc_alt']
-    metadata_dict['mc_altitude_unit'] = hdu0.header.comments['mc_alt']
-
-    metadata_dict['mc_core_x'] = hdu0.header['mc_corex']
-    metadata_dict['mc_core_x_unit'] = hdu0.header.comments['mc_corex']
-
-    metadata_dict['mc_core_y'] = hdu0.header['mc_corey']
-    metadata_dict['mc_core_y_unit'] = hdu0.header.comments['mc_corey']
-
-    metadata_dict['mc_height_first_interaction'] = hdu0.header['mc_hfi']
-    metadata_dict['mc_height_first_interaction_unit'] = hdu0.header.comments['mc_hfi']
-
-    metadata_dict['ev_count'] = hdu0.header['count']
-    metadata_dict['run_id'] = hdu0.header['run_id']
-    metadata_dict['num_tel_with_data'] = hdu0.header['tel_data']
-
-    metadata_dict['optical_foclen'] = hdu0.header['foclen']
-    metadata_dict['optical_foclen_unit'] = hdu0.header.comments['foclen']
-
-    metadata_dict['tel_pos_x'] = hdu0.header['tel_posx']
-    metadata_dict['tel_pos_x_unit'] = hdu0.header.comments['tel_posx']
-
-    metadata_dict['tel_pos_y'] = hdu0.header['tel_posy']
-    metadata_dict['tel_pos_y_unit'] = hdu0.header.comments['tel_posy']
-
-    metadata_dict['tel_pos_z'] = hdu0.header['tel_posz']
-    metadata_dict['tel_pos_z_unit'] = hdu0.header.comments['tel_posz']
-
-    # TODO: Astropy fails to store the following data in FITS files
-    #metadata_dict['uid'] = hdu0.header.comments['uid']
-    #metadata_dict['date_time'] = hdu0.header.comments['datetime']
-    #metadata_dict['lib_version'] = hdu0.header.comments['lib_version']
-    #metadata_dict['argv'] = hdu0.header.comments['argv']
-    #metadata_dict['python_version'] = hdu0.header.comments['python']
-    #metadata_dict['system'] = hdu0.header.comments['system']
+    metadata_dict['mc_energy_unit'] = hdu0.header.comments['mc_energy']
+    metadata_dict['mc_azimuth_unit'] = hdu0.header.comments['mc_azimuth']
+    metadata_dict['mc_altitude_unit'] = hdu0.header.comments['mc_altitude']
+    metadata_dict['mc_core_x_unit'] = hdu0.header.comments['mc_core_x']
+    metadata_dict['mc_core_y_unit'] = hdu0.header.comments['mc_core_y']
+    metadata_dict['mc_height_first_interaction_unit'] = hdu0.header.comments['mc_height_first_interaction']
+    metadata_dict['optical_foclen_unit'] = hdu0.header.comments['optical_foclen']
+    metadata_dict['tel_pos_x_unit'] = hdu0.header.comments['tel_pos_x']
+    metadata_dict['tel_pos_y_unit'] = hdu0.header.comments['tel_pos_y']
+    metadata_dict['tel_pos_z_unit'] = hdu0.header.comments['tel_pos_z']
 
     # IMAGES ##################################################################
 
     if metadata_dict['version'] == 1:
+
         if (len(hdu_list) != 7) or (not hdu_list[0].is_image) or (not hdu_list[1].is_image) or (not hdu_list[2].is_image) or (not hdu_list[3].is_image) or (not hdu_list[4].is_image) or (not hdu_list[5].is_image) or (not hdu_list[6].is_image):
             hdu_list.close()
             raise WrongFitsFileStructure(input_file_path)
@@ -978,10 +965,35 @@ def load_benchmark_images(input_file_path):
         images_dict["pixels_position"] = hdu6.data    # "hdu.data" is a Numpy Array
         images_dict["pixels_mask"] = hdu7.data        # "hdu.data" is a Numpy Array
 
-        images_dict["input_samples"] = None         # TODO
-        images_dict["adc_samples"] = None           # TODO
-        images_dict["extracted_samples"] = None     # TODO
-        images_dict["peakpos"] = None               # TODO
+        images_dict["input_samples"] = None           # TODO
+        images_dict["adc_samples"] = None             # TODO
+        images_dict["extracted_samples"] = None       # TODO
+        images_dict["peakpos"] = None                 # TODO
+
+    elif metadata_dict['version'] == 2:
+
+        if (len(hdu_list) != 3) or (not hdu_list[0].is_image) or (not hdu_list[1].is_image) or (not hdu_list[2].is_image):
+            hdu_list.close()
+            raise WrongFitsFileStructure(input_file_path)
+
+        hdu0, hdu1, hdu2 = hdu_list
+
+        # IMAGES
+
+        images_dict = {}
+
+        images_dict["input_image"] = hdu0.data        # "hdu.data" is a Numpy Array
+        images_dict["reference_image"] = hdu1.data    # "hdu.data" is a Numpy Array
+        images_dict["input_samples"] = hdu2.data      # "hdu.data" is a Numpy Array or None
+
+        images_dict["adc_samples"] = None             # TODO
+        images_dict["extracted_samples"] = None       # TODO
+        images_dict["peakpos"] = None                 # TODO
+        images_dict["adc_sum_image"] = None           # TODO
+        images_dict["pedestal_image"] = None          # TODO
+        images_dict["gains_image"] = None             # TODO
+        images_dict["pixels_position"] = None         # TODO
+        images_dict["pixels_mask"] = None             # TODO
     else:
         raise Exception("Unknown version number")
 
@@ -993,17 +1005,18 @@ def load_benchmark_images(input_file_path):
 
     hdu_list.close()
 
-    return images_dict, metadata_dict   # TODO: named tuple
+    image2d = Image2D(**images_dict, meta=metadata_dict)
+
+    return image2d
 
 
 # SAVE BENCHMARK IMAGE #######################################################
 
 def save_benchmark_images(img,
                           pe_img,
-                          #pixel_pos,
-                          #pixel_mask,
                           metadata,
-                          output_file_path):
+                          output_file_path,
+                          sample_imgs=None):
     """Write a FITS file containing pe_img, output_file_path and metadata.
 
     Parameters
@@ -1018,31 +1031,35 @@ def save_benchmark_images(img,
         A dictionary containing all metadata to write in the FITS file.
     """
 
+    # Check arguments ###########################
+    
     if img.ndim != 2:
         raise Exception("The input image should be a 2D numpy array.")
 
     if pe_img.ndim != 2:
-        raise Exception("The input image should be a 2D numpy array.")
+        raise Exception("The reference image should be a 2D numpy array.")
 
-    #if pixel_pos.ndim != 3:
-    #    raise Exception("The input image should be a 3D numpy array.")
+    if sample_imgs is not None and sample_imgs.ndim != 3:
+        raise Exception("The input samples image should be a 3D numpy array.")
 
-    #if pixel_mask.ndim != 2:
-    #    raise Exception("The input image should be a 2D numpy array.")
+    # Make the dara structure ###################
 
     # http://docs.astropy.org/en/stable/io/fits/appendix/faq.html#how-do-i-create-a-multi-extension-fits-file-from-scratch
     # http://docs.astropy.org/en/stable/generated/examples/io/create-mef.html#sphx-glr-generated-examples-io-create-mef-py
     hdu0 = fits.PrimaryHDU(img)
     hdu1 = fits.ImageHDU(pe_img)
-    #hdu6 = fits.ImageHDU(pixel_pos)
-    #hdu7 = fits.ImageHDU(pixel_mask)
+    hdu2 = fits.ImageHDU(sample_imgs)
 
     hdu0.header["desc"] = "calibrated image"
     hdu1.header["desc"] = "pe image"
-    #hdu6.header["desc"] = "pixels position"
-    #hdu7.header["desc"] = "pixels mask"
+    hdu2.header["desc"] = "sample images"
+
+    # Add metadata ##############################
 
     metadata['version'] = 2
+
+    del metadata['file_path'] # = simtel_basename  # TODO: for some reason it doesn't work anymore even if len(simtel_basename) < 80...
+    del metadata['simtel_path']
 
     for key, val in metadata.items():
         if type(val) is tuple :
@@ -1051,10 +1068,14 @@ def save_benchmark_images(img,
         else:
             hdu0.header[key] = val
 
+    # Remove file if it already exists ##########
+
     if os.path.isfile(output_file_path):
         os.remove(output_file_path)
 
-    hdu_list = fits.HDUList([hdu0, hdu1])
+    # Write Fits file ###########################
+
+    hdu_list = fits.HDUList([hdu0, hdu1, hdu2])
 
     hdu_list.writeto(output_file_path)
 

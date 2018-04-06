@@ -40,7 +40,8 @@ def extract_images(input_file_or_dir_path_list,
                    tel_id=None,
                    event_id=None,
                    rejection_criteria=None,
-                   noise_distribution=None):
+                   noise_distribution=None,
+                   export_time_slices=False):
 
         integrator = 'LocalPeakIntegrator'
         integration_correction = False
@@ -81,15 +82,19 @@ def extract_images(input_file_or_dir_path_list,
 
             simtel_basename = os.path.basename(image.meta['file_path'])
 
-            del image.meta['file_path'] # = simtel_basename  # TODO: for some reason it doesn't work anymore even if len(simtel_basename) < 80...
-            del image.meta['simtel_path']
-
             # INJECT NOISE IN NAN ##################################
 
             # See https://stackoverflow.com/questions/29365194/replacing-missing-values-with-random-in-a-numpy-array
 
             if noise_distribution is not None:
                 nan_mask = fill_nan_pixels(image.input_image, noise_distribution)
+
+                if export_time_slices:
+                    for sample_index in range(len(image.input_samples)):
+                        # TODO: this is not the same noise distribution for timeslices!!!
+                        nan_mask = fill_nan_pixels(image.input_samples[sample_index], noise_distribution)
+                else:
+                    image.input_samples = None
 
             # SAVE THE IMAGE ##########################################
 
@@ -109,7 +114,8 @@ def extract_images(input_file_or_dir_path_list,
             save_benchmark_images(img=image.input_image,
                                   pe_img=image.reference_image,
                                   metadata=image.meta,
-                                  output_file_path=output_file_path)
+                                  output_file_path=output_file_path,
+                                  sample_imgs=image.input_samples)
 
 
 def main():
@@ -135,6 +141,9 @@ def main():
                         metavar="INTEGER LIST",
                         help="The events to extract (events ID separated by a comma)")
 
+    parser.add_argument("--time-slices", "-T", action="store_true",
+                        help="Include the timeslices in the Fits files")
+
     parser.add_argument("--output", "-o",
                         metavar="DIRECTORY",
                         help="The output directory")
@@ -147,6 +156,7 @@ def main():
 
     args = parser.parse_args()
 
+    export_time_slices = args.time_slices
     cam_id = args.camid
     max_images = args.max_images
 
@@ -185,7 +195,8 @@ def main():
                    tel_id=tel_id_filter_list,
                    event_id=event_id_filter_list,
                    rejection_criteria=None,
-                   noise_distribution=noise_distribution)
+                   noise_distribution=noise_distribution,
+                   export_time_slices=export_time_slices)
 
 
 if __name__ == "__main__":
