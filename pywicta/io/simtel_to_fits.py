@@ -52,11 +52,6 @@ class Criteria:
         self.min_ellipticity = min_ellipticity
         self.max_ellipticity = max_ellipticity
 
-        #self.foclen = ...
-        #self.radius = ...
-        #self.min_radius_abs = ...
-        #self.max_radius_abs = ...
-
     def hillas_parameters(self, image):
         hillas_params = get_hillas_parameters(self.geom1d, image, self.hillas_implementation)
         return hillas_params
@@ -86,7 +81,6 @@ class Criteria:
         npe_contained = self.min_npe < np.nansum(ref_image_1d) < self.max_npe
         ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(ref_image_1d, hillas_params) < self.max_ellipticity
         radius_contained = self.min_radius < self.hillas_centroid_dist(ref_image_1d, hillas_params) < self.max_radius
-        #radius_contained = atan(self.min_radius * foclen) < self.hillas_centroid_dist(ref_image_1d, hillas_params) < atan(self.max_radius * foclen)
 
         return not (npe_contained and ellipticity_contained and radius_contained)
 
