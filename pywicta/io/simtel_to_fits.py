@@ -29,6 +29,7 @@ __all__ = ['extract_images']
 import argparse
 import os
 import numpy as np
+import math
 
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 
