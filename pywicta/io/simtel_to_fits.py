@@ -130,7 +130,8 @@ def extract_images(input_file_or_dir_path_list,
                                      integrator_window_width=integrator_window_width,
                                      integrator_window_shift=integrator_window_shift,
                                      integration_correction=integration_correction,
-                                     mix_channels=True):
+                                     mix_channels=True,
+                                     time_samples=export_time_slices):
 
             simtel_basename = os.path.basename(image.meta['file_path'])
 
@@ -141,12 +142,11 @@ def extract_images(input_file_or_dir_path_list,
             if noise_distribution is not None:
                 nan_mask = fill_nan_pixels(image.input_image, noise_distribution)
 
-                if export_time_slices:
+            if noise_distribution is not None:
+                if image.input_samples is not None:
                     for sample_index in range(len(image.input_samples)):
                         # TODO: this is not the same noise distribution for timeslices!!!
                         nan_mask = fill_nan_pixels(image.input_samples[sample_index], noise_distribution)
-                else:
-                    image.input_samples = None
 
             # SAVE THE IMAGE ##########################################
 
