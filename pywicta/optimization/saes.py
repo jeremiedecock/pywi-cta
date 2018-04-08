@@ -26,7 +26,8 @@ import math
 import numpy as np
 
 import json
-from pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi import ObjectiveFunction as WaveletObjectiveFunction
+from pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi import ObjectiveFunction as WaveletMRFObjectiveFunction
+from pywicta.optimization.objectivefunc.wavelets_mrtransform_delta_psi import ObjectiveFunction as WaveletMRTObjectiveFunction
 from pywicta.optimization.objectivefunc.tailcut_delta_psi import ObjectiveFunction as TailcutObjectiveFunction
 
 # For wavelets
@@ -66,6 +67,9 @@ def main():
         if algo == "wavelet_mrfilter":
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
+        elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -78,6 +82,9 @@ def main():
         if algo == "wavelet_mrfilter":
             init_min_val = np.array([-3., -4., -3.])
             init_max_val = np.array([10., 8., 7.])
+        elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -90,6 +97,9 @@ def main():
         if algo == "wavelet_mrfilter":
             init_min_val = np.array([-3., -4., -3.])
             init_max_val = np.array([10., 8., 7.])
+        elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -100,6 +110,9 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.FLASHCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
+        elif algo == "wavelet_mrtransform":
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
@@ -114,6 +127,9 @@ def main():
         if algo == "wavelet_mrfilter":
             init_min_val = np.array([-4., -4., -4.])
             init_max_val = np.array([16., 10., 8.])
+        elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -127,9 +143,12 @@ def main():
         if algo == "wavelet_mrfilter":
             init_min_val = np.array([1., 1., 1.])
             init_max_val = np.array([14., 9., 6.])
+        elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0.,  0.])
+            init_max_val = np.array([15., 2.])
         elif algo == "tailcut":
-            init_min_val = np.array([1., 1.])    # TODO
-            init_max_val = np.array([12., 12.])  # TODO
+            init_min_val = np.array([1., 1.])
+            init_max_val = np.array([12., 12.])
 
     else:
 
@@ -140,12 +159,21 @@ def main():
 
     if algo == "wavelet_mrfilter":
 
-        func = WaveletObjectiveFunction(input_files=input_files,
-                                        cam_id=instrument,
-                                        noise_distribution=noise_distribution,
-                                        max_num_img=max_num_img,
-                                        aggregation_method=aggregation_method,  # "mean" or "median"
-                                        kill_isolated_pixels=kill_islands)
+        func = WaveletMRFObjectiveFunction(input_files=input_files,
+                                           cam_id=instrument,
+                                           noise_distribution=noise_distribution,
+                                           max_num_img=max_num_img,
+                                           aggregation_method=aggregation_method,  # "mean" or "median"
+                                           kill_isolated_pixels=kill_islands)
+
+    elif algo == "wavelet_mrtransform":
+
+        func = WaveletMRTObjectiveFunction(input_files=input_files,
+                                           cam_id=instrument,
+                                           noise_distribution=noise_distribution,
+                                           max_num_img=max_num_img,
+                                           aggregation_method=aggregation_method,  # "mean" or "median"
+                                           kill_isolated_pixels=kill_islands)
 
     elif algo == "tailcut":
 
