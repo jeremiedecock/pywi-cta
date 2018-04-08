@@ -37,8 +37,8 @@ from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 def main():
 
     #algo = "wavelet_mrfilter"
-    #algo = "wavelet_mrtransform"
-    algo = "tailcut"
+    algo = "wavelet_mrtransform"
+    #algo = "tailcut"
 
     #instrument = "ASTRICam"
     #instrument = "CHEC"
@@ -136,7 +136,7 @@ def main():
 
     elif instrument == "LSTCam":
 
-        input_files = ["/dev/shm/.jd/lstcam/gamma/"]
+        input_files = ["/dev/shm/.jd/lstcam/gamma/lst_faint/"]
         #input_files = ["~/data/grid_prod3b_north/simtel/gamma"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.LSTCAM_CDF_FILE)
 

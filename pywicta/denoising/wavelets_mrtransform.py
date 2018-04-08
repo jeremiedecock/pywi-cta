@@ -180,6 +180,10 @@ class WaveletTransform(AbstractCleaningAlgorithm):
 
         number_of_scales = len(filter_thresholds) + 1
 
+        if not (1 < number_of_scales <= 10):
+            # This range ]1,10] is a hard constraint from mr_transform
+            raise ValueError("bad number of scales: {}. Should be 1 < Nbr Scales <= 10. Check that filter_thresholds is a list of number and not a string.".format(number_of_scales))
+
         if DEBUG:
             print("Number of scales:", number_of_scales)
 

@@ -65,16 +65,14 @@ class ObjectiveFunction:
         # TODO...
 
 
-    def __call__(self, sigma_list):
+    def __call__(self, filter_thresholds_list):
         self.call_number += 1
 
         aggregated_score = np.inf
 
         try:
-            filter_thresholds = ",".join([str(sigma) for sigma in sigma_list])
-
             algo_params_var = {
-                        "filter_thresholds": filter_thresholds
+                        "filter_thresholds": filter_thresholds_list
                     }
 
             benchmark_method = "delta_psi"          # TODO
@@ -167,7 +165,7 @@ if __name__ == "__main__":
     #func = ObjectiveFunction(input_files=["./testset/gamma/astri/tel1/"])
     #func = ObjectiveFunction(input_files=["/Volumes/ramdisk/flashcam/fits/gamma/"])
 
-    sigma_list = [4, 2, 1]
+    filter_thresholds_list = [4, 2, 1]
 
-    score = func(sigma_list)
+    score = func(filter_thresholds_list)
 
