@@ -35,9 +35,9 @@ from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 
 def main():
 
-    algo = "wavelet_mrfilter"
+    #algo = "wavelet_mrfilter"
     #algo = "wavelet_mrtransform"
-    #algo = "tailcut"
+    algo = "tailcut"
 
     #instrument = "ASTRICam"
     #instrument = "CHEC"
@@ -51,6 +51,8 @@ def main():
 
     aggregation_method = "mean"
     #aggregation_method = "median"
+
+    kill_islands = False
 
     print("algo:", algo)
     print("instrument:", instrument)
@@ -117,8 +119,8 @@ def main():
 
     elif instrument == "LSTCam":
 
-        #input_files = ["/dev/shm/.jd/lstcam/gamma/"]
-        input_files = ["~/data/grid_prod3b_north/simtel/gamma"]
+        input_files = ["/dev/shm/.jd/lstcam/gamma/"]
+        #input_files = ["~/data/grid_prod3b_north/simtel/gamma"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.LSTCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
@@ -126,7 +128,7 @@ def main():
             init_max_val = np.array([14., 9., 6., 4.])
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
-            init_max_val = np.array([15., 15.])  # TODO
+            init_max_val = np.array([12., 12.])  # TODO
 
     else:
 
@@ -138,13 +140,16 @@ def main():
                                         cam_id=instrument,
                                         noise_distribution=noise_distribution,
                                         max_num_img=max_num_img,
-                                        aggregation_method=aggregation_method)  # "mean" or "median"
+                                        aggregation_method=aggregation_method,  # "mean" or "median"
+                                        kill_isolated_pixels=kill_islands)
 
     elif algo == "tailcut":
 
         func = TailcutObjectiveFunction(input_files=input_files,
+                                        cam_id=instrument,
                                         max_num_img=max_num_img,
-                                        aggregation_method=aggregation_method)  # "mean" or "median"
+                                        aggregation_method=aggregation_method,  # "mean" or "median"
+                                        kill_isolated_pixels=kill_islands)
 
     else:
 

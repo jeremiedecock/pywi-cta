@@ -26,14 +26,7 @@ import numpy as np
 
 from pywicta.denoising.wavelets_mrfilter import WaveletTransform
 from pywicta.benchmark import assess
-
-
-def norm_angle_diff(angle_in_degrees):
-    """Normalize the difference of 2 angles in degree.
-
-    This function is used to normalize the "delta psi" angle.
-    """
-    return np.abs(np.mod(angle_in_degrees + 90, 180) - 90.)
+from pywicta.benchmark.assess import norm_angle_diff
 
 
 # OPTIMIZER ##################################################################
@@ -45,7 +38,8 @@ class ObjectiveFunction:
                  cam_id,
                  noise_distribution=None,
                  max_num_img=None,
-                 aggregation_method="mean"):
+                 aggregation_method="mean",
+                 kill_isolated_pixels=False):
 
         self.call_number = 0
 
@@ -61,6 +55,8 @@ class ObjectiveFunction:
         self.noise_distribution = noise_distribution
 
         self.aggregation_method = aggregation_method  # "mean" or "median"
+
+        self.kill_isolated_pixels = kill_isolated_pixels
 
         print("aggregation method:", self.aggregation_method)
 
@@ -96,7 +92,7 @@ class ObjectiveFunction:
                         "first_detection_scale": None,
                         "input_image_scale": "linear",
                         #"k_sigma_noise_threshold": "2,2,3,3",
-                        "kill_isolated_pixels": True,
+                        "kill_isolated_pixels": self.kill_isolated_pixels,
                         "mask_file_path": None,
                         #"mrfilter_directory": "/dev/shm/.jd",
                         "noise_distribution": self.noise_distribution,
@@ -122,15 +118,15 @@ class ObjectiveFunction:
             # TODO: randomly make a subset fo self.input_files
             input_files = self.input_files
 
-            rejection_criteria = lambda image: not 50 < np.nansum(image.reference_image) < 200
+            #rejection_criteria = lambda image: not 50 < np.nansum(image.reference_image) < 200
 
             output_dict = self.cleaning_algorithm.run(algo_params,
                                                       input_file_or_dir_path_list=input_files,
                                                       benchmark_method=benchmark_method,
                                                       output_file_path=output_file_path,
                                                       max_num_img=self.max_num_img,
-                                                      cam_id=self.cam_id,
-                                                      rejection_criteria=rejection_criteria)
+                                                      cam_id=self.cam_id)
+                                                      #rejection_criteria=rejection_criteria)
 
             score_list = []
 

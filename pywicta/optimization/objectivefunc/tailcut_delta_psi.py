@@ -26,21 +26,20 @@ import numpy as np
 
 from pywicta.denoising.tailcut import Tailcut
 from pywicta.benchmark import assess
-
-
-def norm_angle_diff(angle_in_degrees):
-    """Normalize the difference of 2 angles in degree.
-
-    This function is used to normalize the "delta psi" angle.
-    """
-    return np.abs(np.mod(angle_in_degrees + 90, 180) - 90.)
+from pywicta.benchmark.assess import norm_angle_diff
 
 
 # OPTIMIZER ##################################################################
 
 class ObjectiveFunction:
 
-    def __init__(self, input_files, max_num_img=None, aggregation_method="mean"):
+    def __init__(self,
+                 input_files,
+                 cam_id,
+                 max_num_img=None,
+                 aggregation_method="mean",
+                 kill_isolated_pixels=False):
+
         self.call_number = 0
 
         # Init the wavelet class
@@ -50,7 +49,11 @@ class ObjectiveFunction:
         self.input_files = input_files
         self.max_num_img = max_num_img
 
+        self.cam_id = cam_id
+
         self.aggregation_method = aggregation_method  # "mean" or "median"
+
+        self.kill_isolated_pixels = kill_isolated_pixels
 
         print("aggregation method:", self.aggregation_method)
 
@@ -88,8 +91,8 @@ class ObjectiveFunction:
             output_file_path = "score_tailcut_optim_{}.json".format(self.call_number)
 
             algo_params = {
-                        "kill_isolated_pixels": True,
-                        "verbose": False,
+                        "kill_isolated_pixels": self.kill_isolated_pixels,
+                        "verbose": False
                     }
 
             algo_params.update(algo_params_var)
@@ -97,11 +100,15 @@ class ObjectiveFunction:
             # TODO: randomly make a subset fo self.input_files
             input_files = self.input_files
 
+            #rejection_criteria = lambda image: not 50 < np.nansum(image.reference_image) < 200
+
             output_dict = self.cleaning_algorithm.run(algo_params,
                                                       input_file_or_dir_path_list=input_files,
                                                       benchmark_method=benchmark_method,
                                                       output_file_path=output_file_path,
-                                                      max_num_img=self.max_num_img)
+                                                      max_num_img=self.max_num_img,
+                                                      cam_id=self.cam_id)
+                                                      #rejection_criteria=rejection_criteria)
 
             score_list = []
 
