@@ -24,7 +24,8 @@ __all__ = []
 
 import json
 from scipy import optimize
-from pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi import ObjectiveFunction as WaveletObjectiveFunction
+from pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi import ObjectiveFunction as WaveletMRFObjectiveFunction
+from pywicta.optimization.objectivefunc.wavelets_mrtransform_delta_psi import ObjectiveFunction as WaveletMRTObjectiveFunction
 from pywicta.optimization.objectivefunc.tailcut_delta_psi import ObjectiveFunction as TailcutObjectiveFunction
 
 # For wavelets
@@ -33,81 +34,173 @@ from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 
 def main():
 
-    algo = "wavelet_mrfilter"
+    #algo = "wavelet_mrfilter"
+    algo = "wavelet_mrtransform"
     #algo = "tailcut"
 
-    instrument = "astri"
-    #instrument = "astri_konrad"
-    #instrument = "digicam"
-    #instrument = "flashcam"
-    #instrument = "nectarcam"
-    #instrument = "lstcam"
+    #instrument = "ASTRICam"
+    #instrument = "CHEC"
+    #instrument = "DigiCam"
+    #instrument = "FlashCam"
+    #instrument = "NectarCam"
+    instrument = "LSTCam"
+
+    #max_num_img = None
+    max_num_img = 500
+
+    aggregation_method = "mean"
+    #aggregation_method = "median"
+
+    kill_islands = False
 
     print("algo:", algo)
     print("instrument:", instrument)
+    print("kill_islands:", kill_islands)
 
-    if instrument == "astri":
+    if instrument == "ASTRICam":
 
         input_files = ["/dev/shm/.jd/astri/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.ASTRI_CDF_FILE)
 
-    elif instrument == "astri_konrad":
+        if algo == "wavelet_mrfilter":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "tailcut":
+            search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
+                             slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
 
-        input_files = ["/dev/shm/.jd/astri_konrad/gamma/"]
-        noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.ASTRI_CDF_FILE)
+    elif instrument == "CHEC":
 
-    elif instrument == "digicam":
+        input_files = ["/dev/shm/.jd/gct/gamma/"]
+        noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.GCT_CDF_FILE)
+
+        if algo == "wavelet_mrfilter":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "tailcut":
+            search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
+                             slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
+
+    elif instrument == "DigiCam":
 
         input_files = ["/dev/shm/.jd/digicam/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.DIGICAM_CDF_FILE)
 
-    elif instrument == "flashcam":
+        if algo == "wavelet_mrfilter":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "tailcut":
+            search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
+                             slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
+
+    elif instrument == "FlashCam":
 
         input_files = ["/dev/shm/.jd/flashcam/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.FLASHCAM_CDF_FILE)
 
-    elif instrument == "nectarcam":
+        if algo == "wavelet_mrfilter":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "tailcut":
+            search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
+                             slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
+
+    elif instrument == "NectarCam":
 
         input_files = ["/dev/shm/.jd/nectarcam/gamma/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.NECTARCAM_CDF_FILE)
 
-    elif instrument == "lstcam":
+        if algo == "wavelet_mrfilter":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "tailcut":
+            search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
+                             slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
 
-        input_files = ["/dev/shm/.jd/lstcam/gamma/"]
+    elif instrument == "LSTCam":
+
+        input_files = ["/dev/shm/.jd/lstcam/gamma/lst_faint/"]
+        #input_files = ["~/data/grid_prod3b_north/simtel/gamma"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.LSTCAM_CDF_FILE)
+
+        if algo == "wavelet_mrfilter":
+            search_ranges = (slice(1., 14., 1.),      # Scale 0 (smallest scale)
+                             slice(1., 9.,  1.),      # Scale 1
+                             slice(1., 6.,  1.))      # Scale 3 (largest scale aside residuals)
+        elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+                             slice(0., 2.,  0.5))     # Scale 1 (largest scale aside residuals)
+        elif algo == "tailcut":
+            search_ranges = (slice(1., 10., 0.5),     # Core threshold (largest threshold)
+                             slice(1., 10., 0.5))     # Boundary threshold (smallest threshold)
 
     else:
 
         raise Exception("Unknown instrument", instrument)
 
+    print("input_files:", input_files)
+    print("noise_distribution:", noise_distribution.cdf_json_file_path)
+
     if algo == "wavelet_mrfilter":
 
-        func = WaveletObjectiveFunction(input_files=input_files,
-                                        noise_distribution=noise_distribution,
-                                        max_num_img=None,
-                                        aggregation_method="mean")  # "mean" or "median"
+        func = WaveletMRFObjectiveFunction(input_files=input_files,
+                                           cam_id=instrument,
+                                           noise_distribution=noise_distribution,
+                                           max_num_img=max_num_img,
+                                           aggregation_method=aggregation_method,  # "mean" or "median"
+                                           kill_isolated_pixels=kill_islands)
 
-        s1_slice = slice(1, 5, 1)
-        s2_slice = slice(1, 5, 1)
-        s3_slice = slice(1, 5, 1)
-        s4_slice = slice(1, 5, 1)
+    elif algo == "wavelet_mrtransform":
 
-        search_ranges = (s1_slice,
-                         s2_slice,
-                         s3_slice,
-                         s4_slice)
+        func = WaveletMRTObjectiveFunction(input_files=input_files,
+                                           cam_id=instrument,
+                                           noise_distribution=noise_distribution,
+                                           max_num_img=max_num_img,
+                                           aggregation_method=aggregation_method,  # "mean" or "median"
+                                           kill_isolated_pixels=kill_islands)
 
     elif algo == "tailcut":
 
         func = TailcutObjectiveFunction(input_files=input_files,
-                                        max_num_img=None,
-                                        aggregation_method="mean")  # "mean" or "median"
-
-        s1_slice = slice(-2., 10., 0.5)
-        s2_slice = slice(-2., 10., 0.5)
-
-        search_ranges = (s1_slice,
-                         s2_slice)
+                                        cam_id=instrument,
+                                        max_num_img=max_num_img,
+                                        aggregation_method=aggregation_method,  # "mean" or "median"
+                                        kill_isolated_pixels=kill_islands)
 
     else:
 
