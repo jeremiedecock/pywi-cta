@@ -64,8 +64,8 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.ASTRI_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([0., 0., 0., 0.])  # TODO
-            init_max_val = np.array([5., 5., 5., 5.])  # TODO
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -76,8 +76,8 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.GCT_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([-3., -4., -3., 0.])
-            init_max_val = np.array([10., 8., 7., 5.])
+            init_min_val = np.array([-3., -4., -3.])
+            init_max_val = np.array([10., 8., 7.])
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -88,8 +88,8 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.DIGICAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([-3., -4., -3., 0.])
-            init_max_val = np.array([10., 8., 7., 5.])
+            init_min_val = np.array([-3., -4., -3.])
+            init_max_val = np.array([10., 8., 7.])
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -100,8 +100,8 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.FLASHCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([0., 0., 0., 0.])  # TODO
-            init_max_val = np.array([5., 5., 5., 5.])  # TODO
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -112,8 +112,8 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.NECTARCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([-4., -4., -4., 0.])
-            init_max_val = np.array([16., 10., 8., 4.])
+            init_min_val = np.array([-4., -4., -4.])
+            init_max_val = np.array([16., 10., 8.])
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -125,8 +125,8 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.LSTCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([0.01, 0.01, 0.01, 0.01])
-            init_max_val = np.array([14., 9., 6., 4.])
+            init_min_val = np.array([1., 1., 1.])
+            init_max_val = np.array([14., 9., 6.])
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([12., 12.])  # TODO
