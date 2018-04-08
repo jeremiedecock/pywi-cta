@@ -56,6 +56,7 @@ def main():
 
     print("algo:", algo)
     print("instrument:", instrument)
+    print("kill_islands:", kill_islands)
 
     if instrument == "ASTRICam":
 
@@ -133,6 +134,9 @@ def main():
     else:
 
         raise Exception("Unknown instrument", instrument)
+
+    print("input_files:", input_files)
+    print("noise_distribution:", noise_distribution)
 
     if algo == "wavelet_mrfilter":
 
