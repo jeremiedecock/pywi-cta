@@ -98,7 +98,7 @@ class ObjectiveFunction:
                         "noise_distribution": self.noise_distribution,
                         "noise_model": 3,
                         "number_of_iterations": None,
-                        "number_of_scales": 3,
+                        "number_of_scales": None,
                         "offset_after_calibration": None,
                         "precision": None,
                         "support_file_name": None,
