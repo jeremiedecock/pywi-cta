@@ -392,7 +392,7 @@ def quantity_to_tuple(quantity, unit_str):
     return quantity.to(unit_str).value, quantity.to(unit_str).unit.to_string(format='FITS')
 
 
-def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=True, **kwargs):
+def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=True, time_samples=False, **kwargs):
     """Extract and return `tel_id`'s images and metadata from a ctapipe `event`.
 
     Parameters
@@ -450,7 +450,11 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
     uncalibrated_samples = r0_adc_samples
 
     calibrated_image = dl1_image.copy()
-    calibrated_samples = dl0_pe_samples.copy()
+
+    if time_samples:
+        calibrated_samples = dl0_pe_samples.copy()
+    else:
+        calibrated_samples = None
 
     extracted_samples = dl1_extracted_samples
     peakpos = dl1_peakpos
@@ -470,9 +474,10 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
             calibrated_image[0, r0_adc_samples[0].max(axis=1) >= ASTRI_CAM_CHANNEL_THRESHOLD] = 0
             calibrated_image = calibrated_image.sum(axis=0)
 
-            calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  ASTRI_CAM_CHANNEL_THRESHOLD] = 0
-            calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= ASTRI_CAM_CHANNEL_THRESHOLD] = 0
-            calibrated_samples = calibrated_samples.sum(axis=0)
+            if time_samples:
+                calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  ASTRI_CAM_CHANNEL_THRESHOLD] = 0
+                calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= ASTRI_CAM_CHANNEL_THRESHOLD] = 0
+                calibrated_samples = calibrated_samples.sum(axis=0)
 
         elif cam_id == "NectarCam":
 
@@ -482,9 +487,10 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
             calibrated_image[0, r0_adc_samples[0].max(axis=1) >= NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # HG channel
             calibrated_image = calibrated_image.sum(axis=0)
 
-            calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # LG channel
-            calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # HG channel
-            calibrated_samples = calibrated_samples.sum(axis=0)
+            if time_samples:
+                calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # LG channel
+                calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= NECTAR_CAM_CHANNEL_THRESHOLD] = 0  # HG channel
+                calibrated_samples = calibrated_samples.sum(axis=0)
 
         elif cam_id == "LSTCam":
 
@@ -494,13 +500,16 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
             calibrated_image[0, r0_adc_samples[0].max(axis=1) >= LST_CAM_CHANNEL_THRESHOLD] = 0
             calibrated_image = calibrated_image.sum(axis=0)
 
-            calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  LST_CAM_CHANNEL_THRESHOLD, :] = 0
-            calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= LST_CAM_CHANNEL_THRESHOLD, :] = 0
-            calibrated_samples = calibrated_samples.sum(axis=0)
+            if time_samples:
+                calibrated_samples[1, r0_adc_samples[0].max(axis=1) <  LST_CAM_CHANNEL_THRESHOLD, :] = 0
+                calibrated_samples[0, r0_adc_samples[0].max(axis=1) >= LST_CAM_CHANNEL_THRESHOLD, :] = 0
+                calibrated_samples = calibrated_samples.sum(axis=0)
 
         elif cam_id in SINGLE_CHANNEL_CAMERAS :
             calibrated_image = calibrated_image[0]
-            calibrated_samples = calibrated_samples[0]
+
+            if time_samples:
+                calibrated_samples = calibrated_samples[0]
         else:
             raise NotImplementedError("Unknown camera: {}".format(cam_id))
 
@@ -532,7 +541,11 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
 
             pe_image_2d = geometry_converter.image_1d_to_2d(pe_image, cam_id=cam_id)
             calibrated_image_2d = geometry_converter.image_1d_to_2d(calibrated_image, cam_id=cam_id)
-            calibrated_samples_2d = geometry_converter.image_1d_to_2d(calibrated_samples, cam_id=cam_id)
+
+            if time_samples:
+                calibrated_samples_2d = geometry_converter.image_1d_to_2d(calibrated_samples, cam_id=cam_id)
+            else:
+                calibrated_samples_2d = None
 
             uncalibrated_samples_2d = None  # TODO
             extracted_samples_2d = None     # TODO
@@ -546,7 +559,11 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
 
             pe_image_2d = geometry_converter.image_1d_to_2d(pe_image, cam_id=cam_id)
             calibrated_image_2d = geometry_converter.image_1d_to_2d(calibrated_image, cam_id=cam_id)
-            calibrated_samples_2d = geometry_converter.image_1d_to_2d(calibrated_samples, cam_id=cam_id)
+
+            if time_samples:
+                calibrated_samples_2d = geometry_converter.image_1d_to_2d(calibrated_samples, cam_id=cam_id)
+            else:
+                calibrated_samples_2d = None
 
             uncalibrated_samples_2d = None  # TODO
             extracted_samples_2d = None     # TODO
