@@ -48,7 +48,7 @@ def main():
     instrument = "LSTCam"
 
     #max_num_img = None
-    max_num_img = 500
+    max_num_img = 5000
 
     aggregation_method = "mean"
     #aggregation_method = "median"
