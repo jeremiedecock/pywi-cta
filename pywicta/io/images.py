@@ -1075,8 +1075,11 @@ def save_benchmark_images(img,
 
     metadata['version'] = 2
 
-    del metadata['file_path'] # = simtel_basename  # TODO: for some reason it doesn't work anymore even if len(simtel_basename) < 80...
-    del metadata['simtel_path']
+    if 'file_path' in metadata:
+        del metadata['file_path'] # = simtel_basename  # TODO: for some reason it doesn't work anymore even if len(simtel_basename) < 80...
+
+    if 'simtel_path' in metadata:
+        del metadata['simtel_path']
 
     for key, val in metadata.items():
         if type(val) is tuple :
@@ -1557,7 +1560,12 @@ def plot_list(img_list,
         mc_energy = metadata_dict['mc_energy'] if 'mc_energy_unit' in metadata_dict else metadata_dict['mc_energy'][0]
         mc_energy_unit = metadata_dict['mc_energy_unit'] if 'mc_energy_unit' in metadata_dict else metadata_dict['mc_energy'][1]
 
-        main_title = "{} (Tel. {}, Ev. {}) {:.2E}{}".format(os.path.basename(metadata_dict['simtel_path']),
+        if 'simtel_path' in metadata_dict:
+            simtel_path = metadata_dict['simtel_path']
+        else:
+            simtel_path = ""
+
+        main_title = "{} (Tel. {}, Ev. {}) {:.2E}{}".format(os.path.basename(simtel_path),
                                                             metadata_dict['tel_id'],
                                                             metadata_dict['event_id'],
                                                             mc_energy,
@@ -1594,7 +1602,12 @@ def mpl_save_list(img_list,
         mc_energy = metadata_dict['mc_energy'] if 'mc_energy_unit' in metadata_dict else metadata_dict['mc_energy'][0]
         mc_energy_unit = metadata_dict['mc_energy_unit'] if 'mc_energy_unit' in metadata_dict else metadata_dict['mc_energy'][1]
 
-        main_title = "{} (Tel. {}, Ev. {}) {:.2E}{}".format(os.path.basename(metadata_dict['simtel_path']),
+        if 'simtel_path' in metadata_dict:
+            simtel_path = metadata_dict['simtel_path']
+        else:
+            simtel_path = ""
+
+        main_title = "{} (Tel. {}, Ev. {}) {:.2E}{}".format(os.path.basename(simtel_path),
                                                             metadata_dict['tel_id'],
                                                             metadata_dict['event_id'],
                                                             mc_energy,
