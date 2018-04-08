@@ -65,10 +65,15 @@ class ObjectiveFunction:
         # TODO...
 
 
-    def __call__(self, filter_thresholds_list):
+    def __call__(self, filter_thresholds):
         self.call_number += 1
 
         aggregated_score = np.inf
+
+        if isinstance(filter_thresholds, (np.ndarray, np.generic) ):
+            filter_thresholds_list = filter_thresholds.tolist()
+        else:
+            filter_thresholds_list = filter_thresholds
 
         try:
             algo_params_var = {
