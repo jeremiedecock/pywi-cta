@@ -74,7 +74,9 @@ def get_cdf_file_path(cam_id):
 
 class EmpiricalDistribution:
     def __init__(self, cdf_json_file_path):
-        with open(cdf_json_file_path, "r") as fd:
+        self.cdf_json_file_path = cdf_json_file_path
+
+        with open(self.cdf_json_file_path, "r") as fd:
             cdf = json.load(fd)
             
         # Get the CDF

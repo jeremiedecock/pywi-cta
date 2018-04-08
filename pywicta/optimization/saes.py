@@ -136,7 +136,7 @@ def main():
         raise Exception("Unknown instrument", instrument)
 
     print("input_files:", input_files)
-    print("noise_distribution:", noise_distribution)
+    print("noise_distribution:", noise_distribution.cdf_json_file_path)
 
     if algo == "wavelet_mrfilter":
 
