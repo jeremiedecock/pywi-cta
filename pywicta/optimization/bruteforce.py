@@ -226,6 +226,12 @@ def main():
     with open("optimize_sigma.json", "w") as fd:
         json.dump(res_dict, fd, sort_keys=True, indent=4)  # pretty print format
 
+    try:
+        with open("optimize_sigma_all.json", "w") as fd:
+            json.dump(func.aggregated_score_list, fd, sort_keys=True, indent=4)  # pretty print format
+    except:
+        print("All metrics statistics not available")
+
 
 if __name__ == "__main__":
     main()
