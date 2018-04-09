@@ -67,7 +67,7 @@ class ObjectiveFunction:
     def __call__(self, threshold_list):
         self.call_number += 1
 
-        aggregated_score = []  # TODO
+        aggregated_score = []
 
         try:
             high_threshold = float(threshold_list[0])
