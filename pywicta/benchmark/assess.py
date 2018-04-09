@@ -33,6 +33,7 @@ __all__ = ['normalize_array',
            'metric_hillas_delta',
            'metric_hillas_delta2',
            'metric_kill_isolated_pixels',
+           'metric_clean_failure',
            'assess_image_cleaning']
 
 import astropy.units as u
@@ -842,6 +843,15 @@ def metric_kill_isolated_pixels(input_img, output_image, reference_image, **kwar
 
     return Score(**score_dict)
 
+
+# Cleaning failure ############################################################
+
+def metric_clean_failure(input_img, output_image, reference_image, **kwargs):
+    if np.count_nonzero(output_image) > 3:   # TODO: improve this condition
+        return 0   # success
+    else:
+        return 1   # failure
+
 ###############################################################################
 # ASSESS FUNCTIONS DRIVER                                                     #
 ###############################################################################
@@ -860,7 +870,8 @@ BENCHMARK_DICT = {
     "hillas_delta":         (metric_hillas_delta,),
     "hillas_delta2":        (metric_hillas_delta2,),
     "kill_isolated_pixels": (metric_kill_isolated_pixels,),
-    "all":                  (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_ssim, metric_psnr, metric_hillas_delta, metric_hillas_delta2, metric_kill_isolated_pixels)
+    "metric_clean_failure": (metric_clean_failure,),
+    "all":                  (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_ssim, metric_psnr, metric_hillas_delta, metric_hillas_delta2, metric_kill_isolated_pixels, metric_clean_failure)
 }
 
 METRIC_NAME_DICT = {
@@ -876,6 +887,7 @@ METRIC_NAME_DICT = {
     metric_hillas_delta:         "hillas_delta",
     metric_hillas_delta2:        "hillas_delta2",
     metric_kill_isolated_pixels: "kill_isolated_pixels"
+    metric_clean_failure:        "metric_clean_failure"
 }
 
 def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method, **kwargs):
@@ -895,7 +907,8 @@ def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method
     - "hillas_delta":         :func:`metric_hillas_delta`
     - "hillas_delta2":        :func:`metric_hillas_delta2`
     - "kill_isolated_pixels": :func:`metric_kill_isolated_pixels`
-    - "all":                  :func:`metric_mse`, :func:`metric_nrmse`, :func:`metric2`, :func:`metric3`, :func:`metric4`, :func:`metric_ssim`, :func:`metric_psnr`, :func:`metric_hillas_delta`, :func:`metric_hillas_delta2`, :func:`metric_kill_isolated_pixels`
+    - "metric_clean_failure": :func:`metric_clean_failure`
+    - "all":                  :func:`metric_mse`, :func:`metric_nrmse`, :func:`metric2`, :func:`metric3`, :func:`metric4`, :func:`metric_ssim`, :func:`metric_psnr`, :func:`metric_hillas_delta`, :func:`metric_hillas_delta2`, :func:`metric_kill_isolated_pixels`, :func:`metric_clean_failure`
 
     Parameters
     ----------
