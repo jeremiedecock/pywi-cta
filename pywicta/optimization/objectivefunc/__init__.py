@@ -21,4 +21,8 @@
 # THE SOFTWARE.
 
 __all__ = ['tailcut_delta_psi',
-           'wavelets_mrfilter_delta_psi']
+           'tailcut_all',
+           'wavelets_mrtransform_delta_psi',
+           'wavelets_mrtransform_all',
+           'wavelets_mrfilter_delta_psi',
+           'wavelets_mrfilter_all']
