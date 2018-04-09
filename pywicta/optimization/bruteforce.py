@@ -167,7 +167,16 @@ def main():
                              slice(1., 6.,  1.))      # Scale 3 (largest scale aside residuals)
         elif algo == "wavelet_mrtransform":
             search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
-                             slice(0., 2.,  0.5))     # Scale 1 (largest scale aside residuals)
+                             slice(0., 2.,  0.2))     # Scale 1 (larger scale)
+
+            #search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+            #                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
+            #                 slice(0., 0.75., 0.05))  # Scale 2
+
+            #search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+            #                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
+            #                 slice(0., 0.75., 0.05),  # Scale 2
+            #                 slice(0., 0.3., 0.05))   # Scale 3
         elif algo == "tailcut":
             search_ranges = (slice(1., 10., 0.5),     # Core threshold (largest threshold)
                              slice(1., 10., 0.5))     # Boundary threshold (smallest threshold)
