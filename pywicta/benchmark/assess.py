@@ -886,7 +886,7 @@ METRIC_NAME_DICT = {
     metric_delta_psi:            "delta_psi",
     metric_hillas_delta:         "hillas_delta",
     metric_hillas_delta2:        "hillas_delta2",
-    metric_kill_isolated_pixels: "kill_isolated_pixels"
+    metric_kill_isolated_pixels: "kill_isolated_pixels",
     metric_clean_failure:        "metric_clean_failure"
 }
 
