@@ -253,7 +253,7 @@ def metric_nrmse(input_img, output_image, reference_image, **kwargs):
     if denom == 0:
         score = float('nan')                   # TODO: nan of inf ?
     else:
-        score = float(np.sqrt(_mse) / denom)
+        score = float(np.sqrt(mse) / denom)
 
     return score
 
