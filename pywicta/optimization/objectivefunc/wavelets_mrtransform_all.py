@@ -39,7 +39,8 @@ class ObjectiveFunction:
                  noise_distribution=None,
                  max_num_img=None,
                  aggregation_method="mean",
-                 kill_isolated_pixels=False):
+                 kill_isolated_pixels=False,
+                 cleaning_failure_score=90.):
 
         self.call_number = 0
 
@@ -57,6 +58,8 @@ class ObjectiveFunction:
         self.aggregation_method = aggregation_method  # "mean" or "median"
 
         self.kill_isolated_pixels = kill_isolated_pixels
+
+        self.cleaning_failure_score = cleaning_failure_score
 
         print("aggregation method:", self.aggregation_method)
 
@@ -87,7 +90,8 @@ class ObjectiveFunction:
             label = "WT_MRT_{}".format(self.call_number)
             self.cleaning_algorithm.label = label
 
-            output_file_path = "score_wavelets_mrt_optim_{}.json".format(self.call_number)
+            #output_file_path = "score_wavelets_mrt_optim_{}.json".format(self.call_number)
+            output_file_path = None
 
             algo_params = {
                         "type_of_filtering": "hard_filtering",   # hard_filtering, ksigma_hard_filtering, common_hard_filtering
@@ -154,7 +158,7 @@ class ObjectiveFunction:
                 else:
                     # The cleaning algorithm failed to clean this image
                     # TODO: add a penalty
-                    scores.append(90.)  # the worst score
+                    scores.append(self.cleaning_failure_score)  # the worst score
 
                 score_list.append(scores)
 

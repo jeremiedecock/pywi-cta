@@ -422,7 +422,8 @@ class AbstractCleaningAlgorithm(object):
             output_dict["system"] = " ".join(os.uname())
             output_dict["io"] = io_list
 
-            with open(output_file_path, "w") as fd:
-                json.dump(output_dict, fd, sort_keys=True, indent=4)  # pretty print format
+            if output_file_path is not None:
+                with open(output_file_path, "w") as fd:
+                    json.dump(output_dict, fd, sort_keys=True, indent=4)  # pretty print format
 
             return output_dict

@@ -56,6 +56,9 @@ def main():
 
     kill_islands = False
 
+    cleaning_failure_score = 90.
+    #cleaning_failure_score = float('nan')
+
     print("algo:", algo)
     print("instrument:", instrument)
     print("kill_islands:", kill_islands)
@@ -195,7 +198,8 @@ def main():
                                            noise_distribution=noise_distribution,
                                            max_num_img=max_num_img,
                                            aggregation_method=aggregation_method,  # "mean" or "median"
-                                           kill_isolated_pixels=kill_islands)
+                                           kill_isolated_pixels=kill_islands,
+                                           cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "wavelet_mrtransform":
 
@@ -204,7 +208,8 @@ def main():
                                            noise_distribution=noise_distribution,
                                            max_num_img=max_num_img,
                                            aggregation_method=aggregation_method,  # "mean" or "median"
-                                           kill_isolated_pixels=kill_islands)
+                                           kill_isolated_pixels=kill_islands,
+                                           cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "tailcut":
 
@@ -212,7 +217,8 @@ def main():
                                         cam_id=instrument,
                                         max_num_img=max_num_img,
                                         aggregation_method=aggregation_method,  # "mean" or "median"
-                                        kill_isolated_pixels=kill_islands)
+                                        kill_isolated_pixels=kill_islands,
+                                        cleaning_failure_score=cleaning_failure_score)
 
     else:
 

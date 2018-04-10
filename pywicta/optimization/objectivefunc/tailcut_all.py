@@ -41,7 +41,8 @@ class ObjectiveFunction:
                  cam_id,
                  max_num_img=None,
                  aggregation_method="mean",
-                 kill_isolated_pixels=False):
+                 kill_isolated_pixels=False,
+                 cleaning_failure_score=90.):
 
         self.call_number = 0
 
@@ -57,6 +58,8 @@ class ObjectiveFunction:
         self.aggregation_method = aggregation_method  # "mean" or "median"
 
         self.kill_isolated_pixels = kill_isolated_pixels
+
+        self.cleaning_failure_score = cleaning_failure_score
 
         print("aggregation method:", self.aggregation_method)
 
@@ -96,7 +99,8 @@ class ObjectiveFunction:
             label = "TC_{}".format(self.call_number)
             self.cleaning_algorithm.label = label
 
-            output_file_path = "score_tailcut_optim_{}.json".format(self.call_number)
+            #output_file_path = "score_tailcut_optim_{}.json".format(self.call_number)
+            output_file_path = None
 
             algo_params = {
                         "kill_isolated_pixels": self.kill_isolated_pixels,
@@ -160,7 +164,7 @@ class ObjectiveFunction:
                 else:
                     # The cleaning algorithm failed to clean this image
                     # TODO: add a penalty
-                    scores.append(90.)  # the worst score
+                    scores.append(self.cleaning_failure_score)  # the worst score
 
                 score_list.append(scores)
 
