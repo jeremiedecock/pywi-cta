@@ -867,7 +867,7 @@ def metric_kill_isolated_pixels(input_img, output_image, reference_image, **kwar
                         ('kill_isolated_pixels_delta_abs_pe',     delta_abs_pe),
                         ('kill_isolated_pixels_delta_num_pixels', delta_num_pixels)
                      ))
-    except Exception e:
+    except Exception as e:
         score_dict = collections.OrderedDict((
                         ('kill_isolated_pixels_delta_pe',         float('nan')),
                         ('kill_isolated_pixels_delta_abs_pe',     float('nan')),
