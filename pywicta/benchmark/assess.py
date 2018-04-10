@@ -251,7 +251,7 @@ def metric_nrmse(input_img, output_image, reference_image, **kwargs):
     denom = np.sqrt(np.nanmean((reference_image * output_image), dtype=np.float64))
 
     if denom == 0:
-        score = float('nan')
+        score = float('nan')                   # TODO: nan of inf ?
     else:
         score = float(np.sqrt(_mse) / denom)
 
@@ -370,11 +370,11 @@ def metric2(input_img, output_image, reference_image, **kwargs):
 
     if sum_output_image <= 0:                 # TODO
         #raise EmptyOutputImageError()
-        return float('inf')
+        return float('nan')                   # TODO: nan of inf ?
 
     if sum_reference_image <= 0:              # TODO
         #raise EmptyReferenceImageError()
-        return float('inf')
+        return float('nan')                   # TODO: nan of inf ?
 
     mark = np.nanmean(np.abs((output_image / sum_output_image) - (reference_image / sum_reference_image)))
 
