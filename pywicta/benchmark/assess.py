@@ -251,7 +251,7 @@ def metric_nrmse(input_img, output_image, reference_image, **kwargs):
     denom = np.sqrt(np.nanmean((reference_image * output_image), dtype=np.float64))
 
     if denom == 0:
-        score = float('inf')
+        score = float('nan')
     else:
         score = float(np.sqrt(_mse) / denom)
 
@@ -854,9 +854,9 @@ def metric_kill_isolated_pixels(input_img, output_image, reference_image, **kwar
 
 def metric_clean_failure(input_img, output_image, reference_image, **kwargs):
     if np.count_nonzero(output_image) > 3:   # TODO: improve this condition
-        return 0   # success
+        return 0.   # success
     else:
-        return 1   # failure
+        return 1.   # failure
 
 ###############################################################################
 # ASSESS FUNCTIONS DRIVER                                                     #
