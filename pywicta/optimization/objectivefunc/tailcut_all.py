@@ -142,6 +142,7 @@ class ObjectiveFunction:
                     # TODO: add a penalty
                     NUM_METRICS = 29
                     scores = [float('nan') for score in range(NUM_METRICS)]      # TODO: AVOID THIS HARD CODED VALUE !!!
+                    scores[-1] = 1.                                              # TODO: dirty workaround (the last metric is supposed to be the 'cleaning_failure_metrics')
 
                 # WORKAROUND
 

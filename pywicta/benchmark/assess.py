@@ -40,6 +40,7 @@ import astropy.units as u
 
 import collections
 import traceback
+import sys
 
 import numpy as np
 import math
