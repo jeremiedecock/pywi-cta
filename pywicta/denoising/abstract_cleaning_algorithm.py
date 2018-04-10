@@ -246,7 +246,8 @@ class AbstractCleaningAlgorithm(object):
                         hillas_params_2_ref_img = get_hillas_parameters(geom1d, reference_img1d, HILLAS_IMPLEMENTATION)   # TODO GEOM
                     except Exception as e:
                         hillas_params_2_ref_img = float('nan')
-                        traceback.print_tb(e.__traceback__, file=sys.stdout)
+                        print(e)
+                        #traceback.print_tb(e.__traceback__, file=sys.stdout)
 
                     image_dict["img_ref_hillas_2_size"] =     float(hillas_params_2_ref_img.size)
                     image_dict["img_ref_hillas_2_cen_x"] =    hillas_params_2_ref_img.cen_x.value
@@ -311,7 +312,8 @@ class AbstractCleaningAlgorithm(object):
                         hillas_params_2_cleaned_img = get_hillas_parameters(geom1d, cleaned_img1d, HILLAS_IMPLEMENTATION)    # GEOM
                     except Exception as e:
                         hillas_params_2_cleaned_img = float('nan')
-                        traceback.print_tb(e.__traceback__, file=sys.stdout)
+                        print(e)
+                        #traceback.print_tb(e.__traceback__, file=sys.stdout)
 
                     image_dict["img_cleaned_hillas_2_size"] =     float(hillas_params_2_cleaned_img.size)
                     image_dict["img_cleaned_hillas_2_cen_x"] =    hillas_params_2_cleaned_img.cen_x.value

@@ -166,6 +166,8 @@ class ObjectiveFunction:
 
             score_array = np.array(score_list)
 
+            assert score_array.dtype != np.object, "ERROR: score_list contain rows of different size"
+
             # Compute the mean
             if self.aggregation_method == "mean":
                 aggregated_scores = np.nanmean(score_array, axis=0)

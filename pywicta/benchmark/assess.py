@@ -667,7 +667,8 @@ def metric_delta_psi(input_img, output_image, reference_image, geom, **kwargs):
 
         normalized_delta_psi_deg = norm_angle_diff(math.degrees(delta_psi_rad))
     except Exception as e:
-        traceback.print_tb(e.__traceback__, file=sys.stdout)
+        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        print(e)
         normalized_delta_psi_deg = float('nan')
 
     return normalized_delta_psi_deg
@@ -802,7 +803,8 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
                         #('hillas' + str(hillas_implementation) + '_delta_miss'    + suffix_str, delta_miss)
                      ))
     except Exception as e:
-        traceback.print_tb(e.__traceback__, file=sys.stdout)
+        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        print(e)
         score_dict = collections.OrderedDict((
                         ('hillas' + str(hillas_implementation) + '_delta_size'     + suffix_str, float('nan')),
                         ('hillas' + str(hillas_implementation) + '_delta_cen_x'    + suffix_str, float('nan')),
@@ -873,7 +875,8 @@ def metric_kill_isolated_pixels(input_img, output_image, reference_image, **kwar
                         ('kill_isolated_pixels_delta_abs_pe',     float('nan')),
                         ('kill_isolated_pixels_delta_num_pixels', float('nan'))
                      ))
-        traceback.print_tb(e.__traceback__, file=sys.stdout)
+        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        print(e)
 
     Score = collections.namedtuple('Score', score_dict.keys())
 
@@ -969,12 +972,12 @@ def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method
         metric_name_list = []
 
         for metric_function in BENCHMARK_DICT[benchmark_method]:
-            try:
-                score = metric_function(input_img, output_img, reference_img, **kwargs) 
-            except Exception as e:
-                score = float('nan')
-                #print(e)
-                traceback.print_tb(e.__traceback__, file=sys.stdout)
+            #try:
+            score = metric_function(input_img, output_img, reference_img, **kwargs) 
+            #except Exception as e:
+            #    score = float('nan')
+            #    #print(e)
+            #    traceback.print_tb(e.__traceback__, file=sys.stdout)
 
             if isinstance(score, collections.Sequence):
                 score_list.extend(score)
