@@ -288,7 +288,12 @@ lstcam_grid_prod3b_north)
 
     TC_HTH="6" ; # CTA Abelardo 1st pass
     TC_LTH="3" ; # CTA Abelardo 1st pass
-    TC_LABEL="Tailcut-CTA1-${TC_HTH}-${TC_LTH}" ;
+    TC_LABEL="Tailcut-CTA1-${TC_HTH}-${TC_LTH}-nokill" ;
+
+    #TC_HTH="6" ; # CTA Abelardo 1st pass
+    #TC_LTH="3" ; # CTA Abelardo 1st pass
+    #TC_LABEL="Tailcut-CTA1-${TC_HTH}-${TC_LTH}-kill" ;
+    #TC_EXTRA_OPT="--kill-isolated-pixels" ;
 
     #TC_HTH="4" ; # CTA Abelardo 2nd pass
     #TC_LTH="2" ; # CTA Abelardo 2nd pass
