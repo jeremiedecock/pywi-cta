@@ -272,6 +272,7 @@ nectarcam_grid_prod3b_north)
 lstcam_grid_prod3b_north)
     CAM_ID="LSTCam"
 
+    #GAMMA_FITS_DIR=/dev/shm/.jd/lstcam/gamma ;
     GAMMA_FITS_DIR=~/data/grid_prod3b_north/fits/lst/gamma ;
     PROTON_FITS_DIR=~/data/grid_prod3b_north/fits/lst/proton ;
     #GAMMA_FITS_DIR=~/data/grid_prod3b_north/simtel/gamma ;
@@ -297,6 +298,28 @@ lstcam_grid_prod3b_north)
     #TC_LTH="1" ;   # 2018/01/09 Brutforce Delta psi optim (res 1.0, 1000 img, mean, 30-2000 PE, missing img penalty: 90)
     #TC_LABEL="Tailcut-BF1-${TC_HTH}-${TC_LTH}" ;
 
+    ## 2018/04/09
+    #TC_HTH="6.5" ; # CTA Abelardo 1st pass
+    #TC_LTH="4.5" ; # CTA Abelardo 1st pass
+    #TC_LABEL="Tailcut-run18-${TC_HTH}-${TC_LTH}" ;
+
+    ## 2018/04/09
+    #TC_HTH="5.5" ; # CTA Abelardo 1st pass
+    #TC_LTH="1" ; # CTA Abelardo 1st pass
+    #TC_EXTRA_OPT="--kill-isolated-pixels" ;
+    #TC_LABEL="Tailcut-run19-${TC_HTH}-${TC_LTH}" ;
+
+    ## 2018/04/09
+    #TC_HTH="7" ; # CTA Abelardo 1st pass
+    #TC_LTH="4.5" ; # CTA Abelardo 1st pass
+    #TC_LABEL="Tailcut-run20-${TC_HTH}-${TC_LTH}" ;
+
+    ## 2018/04/09
+    #TC_HTH="5.5" ; # CTA Abelardo 1st pass
+    #TC_LTH="1" ; # CTA Abelardo 1st pass
+    #TC_EXTRA_OPT="--kill-isolated-pixels" ;
+    #TC_LABEL="Tailcut-run21-${TC_HTH}-${TC_LTH}" ;
+
     # MR_FILTER ###############################################################
 
     # 2017/08 (presented in LaPalma CTA meeting 2017-11-05)
@@ -310,6 +333,14 @@ lstcam_grid_prod3b_north)
     ## 2017/10/24 (SAES)
     #WT_MRF_PARAMS="-K -k -C1 -m3 -n4 -s23.343,2.490,-2.856,-0.719 --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
     #WT_MRF_LABEL="WT-K-k-C1-m3-n4-s23.343-2.490--2.856--0.719" ;
+
+    ## 2018/04/09
+    #WT_MRF_PARAMS="-K -k -C1 -m3 -s9,3,4 --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    #WT_MRF_LABEL="WT-K-k-C1-m3-s9-3-4-nk" ;
+
+    ## 2018/04/09
+    #WT_MRF_PARAMS="-K -k -C1 -m3 -s2,1,4 --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    #WT_MRF_LABEL="WT-K-k-C1-m3-s2-1-4" ;
 
     # MR_TRANSFORM ############################################################
 
@@ -376,6 +407,18 @@ lstcam_grid_prod3b_north)
     # 2017/02/14
     WT_MRT_PARAMS="-f common_hard_filtering -t 9.5,1.5 -L mask --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
     WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_9.5_1.5_-L_mask--kill-isolated-pixels" ;
+
+    # 2018/04/09
+    WT_MRT_PARAMS="-f hard_filtering -t 3,0 -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_3_0_-L_drop--kill-isolated-pixels" ;
+
+    # 2018/04/09
+    WT_MRT_PARAMS="-f hard_filtering -t 6,0 -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_3_0_-L_drop--kill-isolated-pixels" ;
+
+    # 2018/04/09
+    WT_MRT_PARAMS="-f hard_filtering -t 9,0 -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_3_0_-L_drop--kill-isolated-pixels" ;
     ;;
 *)
     echo "Unknown option" ;
@@ -383,7 +426,7 @@ lstcam_grid_prod3b_north)
     ;;
 esac
 
-TC_PARAMS="-T${TC_HTH} -t${TC_LTH} --kill-isolated-pixels" ;
+TC_PARAMS="-T${TC_HTH} -t${TC_LTH} ${TC_EXTRA_OPT}" ;
 
 echo "TC_PARAMS: ${TC_PARAMS}"
 echo "TC_LABEL:  ${TC_LABEL}"
