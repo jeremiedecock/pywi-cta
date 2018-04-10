@@ -365,10 +365,12 @@ def metric2(input_img, output_image, reference_image, **kwargs):
     sum_reference_image = float(np.nansum(reference_image))
 
     if sum_output_image <= 0:                 # TODO
-        raise EmptyOutputImageError()
+        #raise EmptyOutputImageError()
+        return float('inf')
 
     if sum_reference_image <= 0:              # TODO
-        raise EmptyReferenceImageError()
+        #raise EmptyReferenceImageError()
+        return float('inf')
 
     mark = np.nanmean(np.abs((output_image / sum_output_image) - (reference_image / sum_reference_image)))
 
