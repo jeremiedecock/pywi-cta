@@ -859,13 +859,21 @@ def metric_hillas_delta2(input_img, output_image, reference_image, geom, **kwarg
 # Kill isolated pixels ########################################################
 
 def metric_kill_isolated_pixels(input_img, output_image, reference_image, **kwargs):
-    delta_pe, delta_abs_pe, delta_num_pixels = kill_isolated_pixels_stats(output_image)
+    try:
+        delta_pe, delta_abs_pe, delta_num_pixels = kill_isolated_pixels_stats(output_image)
 
-    score_dict = collections.OrderedDict((
-                    ('kill_isolated_pixels_delta_pe',         delta_pe),
-                    ('kill_isolated_pixels_delta_abs_pe',     delta_abs_pe),
-                    ('kill_isolated_pixels_delta_num_pixels', delta_num_pixels)
-                 ))
+        score_dict = collections.OrderedDict((
+                        ('kill_isolated_pixels_delta_pe',         delta_pe),
+                        ('kill_isolated_pixels_delta_abs_pe',     delta_abs_pe),
+                        ('kill_isolated_pixels_delta_num_pixels', delta_num_pixels)
+                     ))
+    except Exception e:
+        score_dict = collections.OrderedDict((
+                        ('kill_isolated_pixels_delta_pe',         float('nan')),
+                        ('kill_isolated_pixels_delta_abs_pe',     float('nan')),
+                        ('kill_isolated_pixels_delta_num_pixels', float('nan'))
+                     ))
+        traceback.print_tb(e.__traceback__, file=sys.stdout)
 
     Score = collections.namedtuple('Score', score_dict.keys())
 
@@ -964,6 +972,8 @@ def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method
             try:
                 score = metric_function(input_img, output_img, reference_img, **kwargs) 
             except Exception as e:
+                score = float('nan')
+                #print(e)
                 traceback.print_tb(e.__traceback__, file=sys.stdout)
 
             if isinstance(score, collections.Sequence):
