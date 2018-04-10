@@ -39,6 +39,7 @@ __all__ = ['normalize_array',
 import astropy.units as u
 
 import collections
+import traceback
 
 import numpy as np
 import math
@@ -653,15 +654,20 @@ def metric_delta_psi(input_img, output_image, reference_image, geom, **kwargs):
         output_image = image_2d_to_1d(output_image, geom.cam_id)        # TODO!!!
     if reference_image.ndim == 2:
         reference_image = image_2d_to_1d(reference_image, geom.cam_id)  # TODO!!!
-    output_image_parameters = get_hillas_parameters(geom, output_image, hillas_implementation)
-    reference_image_parameters = get_hillas_parameters(geom, reference_image, hillas_implementation)
 
-    # Psi (shower direction angle)
-    output_image_parameter_psi_rad = output_image_parameters.psi.to(u.rad).value
-    reference_image_parameter_psi_rad = reference_image_parameters.psi.to(u.rad).value
-    delta_psi_rad = reference_image_parameter_psi_rad - output_image_parameter_psi_rad
+    try:
+        output_image_parameters = get_hillas_parameters(geom, output_image, hillas_implementation)
+        reference_image_parameters = get_hillas_parameters(geom, reference_image, hillas_implementation)
 
-    normalized_delta_psi_deg = norm_angle_diff(math.degrees(delta_psi_rad))
+        # Psi (shower direction angle)
+        output_image_parameter_psi_rad = output_image_parameters.psi.to(u.rad).value
+        reference_image_parameter_psi_rad = reference_image_parameters.psi.to(u.rad).value
+        delta_psi_rad = reference_image_parameter_psi_rad - output_image_parameter_psi_rad
+
+        normalized_delta_psi_deg = norm_angle_diff(math.degrees(delta_psi_rad))
+    except Exception as e:
+        traceback.print_tb(e.__traceback__, file=sys.stdout)
+        normalized_delta_psi_deg = float('nan')
 
     return normalized_delta_psi_deg
 
@@ -722,79 +728,94 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
         output_image = image_2d_to_1d(output_image, geom.cam_id)        # TODO!!!
     if reference_image.ndim == 2:
         reference_image = image_2d_to_1d(reference_image, geom.cam_id)  # TODO!!!
-    output_image_parameters = get_hillas_parameters(geom, output_image, hillas_implementation)
-    reference_image_parameters = get_hillas_parameters(geom, reference_image, hillas_implementation)
 
-    #print(reference_image_parameters)
+    try:
+        output_image_parameters = get_hillas_parameters(geom, output_image, hillas_implementation)
+        reference_image_parameters = get_hillas_parameters(geom, reference_image, hillas_implementation)
 
-    # Size
-    output_image_parameter_size = float(output_image_parameters.size)
-    reference_image_parameter_size = float(reference_image_parameters.size)
-    delta_size = reference_image_parameter_size - output_image_parameter_size
+        #print(reference_image_parameters)
 
-    # Centroid x
-    output_image_parameter_cen_x = output_image_parameters.cen_x.value
-    reference_image_parameter_cen_x = reference_image_parameters.cen_x.value
-    delta_cen_x = reference_image_parameter_cen_x - output_image_parameter_cen_x
+        # Size
+        output_image_parameter_size = float(output_image_parameters.size)
+        reference_image_parameter_size = float(reference_image_parameters.size)
+        delta_size = reference_image_parameter_size - output_image_parameter_size
 
-    # Centroid y
-    output_image_parameter_cen_y = output_image_parameters.cen_y.value
-    reference_image_parameter_cen_y = reference_image_parameters.cen_y.value
-    delta_cen_y = reference_image_parameter_cen_y - output_image_parameter_cen_y
+        # Centroid x
+        output_image_parameter_cen_x = output_image_parameters.cen_x.value
+        reference_image_parameter_cen_x = reference_image_parameters.cen_x.value
+        delta_cen_x = reference_image_parameter_cen_x - output_image_parameter_cen_x
 
-    # Length
-    output_image_parameter_length = output_image_parameters.length.value
-    reference_image_parameter_length = reference_image_parameters.length.value
-    delta_length = reference_image_parameter_length - output_image_parameter_length
+        # Centroid y
+        output_image_parameter_cen_y = output_image_parameters.cen_y.value
+        reference_image_parameter_cen_y = reference_image_parameters.cen_y.value
+        delta_cen_y = reference_image_parameter_cen_y - output_image_parameter_cen_y
 
-    # Width
-    output_image_parameter_width = output_image_parameters.width.value
-    reference_image_parameter_width = reference_image_parameters.width.value
-    delta_width = reference_image_parameter_width - output_image_parameter_width
+        # Length
+        output_image_parameter_length = output_image_parameters.length.value
+        reference_image_parameter_length = reference_image_parameters.length.value
+        delta_length = reference_image_parameter_length - output_image_parameter_length
 
-    # R
-    output_image_parameter_r = output_image_parameters.r.value
-    reference_image_parameter_r = reference_image_parameters.r.value
-    delta_r = reference_image_parameter_r - output_image_parameter_r
+        # Width
+        output_image_parameter_width = output_image_parameters.width.value
+        reference_image_parameter_width = reference_image_parameters.width.value
+        delta_width = reference_image_parameter_width - output_image_parameter_width
 
-    # Phi
-    output_image_parameter_phi = output_image_parameters.phi.to(u.rad).value
-    reference_image_parameter_phi = reference_image_parameters.phi.to(u.rad).value
-    delta_phi = reference_image_parameter_phi - output_image_parameter_phi
+        # R
+        output_image_parameter_r = output_image_parameters.r.value
+        reference_image_parameter_r = reference_image_parameters.r.value
+        delta_r = reference_image_parameter_r - output_image_parameter_r
 
-    # Psi (shower direction angle)
-    output_image_parameter_psi_rad = output_image_parameters.psi.to(u.rad).value
-    reference_image_parameter_psi_rad = reference_image_parameters.psi.to(u.rad).value
-    delta_psi_rad = reference_image_parameter_psi_rad - output_image_parameter_psi_rad
+        # Phi
+        output_image_parameter_phi = output_image_parameters.phi.to(u.rad).value
+        reference_image_parameter_phi = reference_image_parameters.phi.to(u.rad).value
+        delta_phi = reference_image_parameter_phi - output_image_parameter_phi
 
-    # Normalized psi
-    normalized_delta_psi = norm_angle_diff(math.degrees(delta_psi_rad))
+        # Psi (shower direction angle)
+        output_image_parameter_psi_rad = output_image_parameters.psi.to(u.rad).value
+        reference_image_parameter_psi_rad = reference_image_parameters.psi.to(u.rad).value
+        delta_psi_rad = reference_image_parameter_psi_rad - output_image_parameter_psi_rad
 
-    ## Miss
-    #output_image_parameter_miss = output_image_parameters.miss.value
-    #reference_image_parameter_miss = reference_image_parameters.miss.value
-    #delta_miss = reference_image_parameter_miss - output_image_parameter_miss
+        # Normalized psi
+        normalized_delta_psi = norm_angle_diff(math.degrees(delta_psi_rad))
 
-    if "kill" in kwargs and kwargs["kill"]:
-        suffix_str = '_kill'
-    else:
-        suffix_str = ''
+        ## Miss
+        #output_image_parameter_miss = output_image_parameters.miss.value
+        #reference_image_parameter_miss = reference_image_parameters.miss.value
+        #delta_miss = reference_image_parameter_miss - output_image_parameter_miss
 
-    score_dict = collections.OrderedDict((
-                    ('hillas' + str(hillas_implementation) + '_delta_size'     + suffix_str, delta_size),
-                    ('hillas' + str(hillas_implementation) + '_delta_cen_x'    + suffix_str, delta_cen_x),
-                    ('hillas' + str(hillas_implementation) + '_delta_cen_y'    + suffix_str, delta_cen_y),
-                    ('hillas' + str(hillas_implementation) + '_delta_length'   + suffix_str, delta_length),
-                    ('hillas' + str(hillas_implementation) + '_delta_width'    + suffix_str, delta_width),
-                    ('hillas' + str(hillas_implementation) + '_delta_r'        + suffix_str, delta_r),
-                    ('hillas' + str(hillas_implementation) + '_delta_phi'      + suffix_str, delta_phi),
-                    ('hillas' + str(hillas_implementation) + '_delta_psi'      + suffix_str, delta_psi_rad),
-                    ('hillas' + str(hillas_implementation) + '_delta_psi_norm' + suffix_str, normalized_delta_psi),
-                    #('hillas' + str(hillas_implementation) + '_delta_miss'    + suffix_str, delta_miss)
-                 ))
+        if "kill" in kwargs and kwargs["kill"]:
+            suffix_str = '_kill'
+        else:
+            suffix_str = ''
+
+        score_dict = collections.OrderedDict((
+                        ('hillas' + str(hillas_implementation) + '_delta_size'     + suffix_str, delta_size),
+                        ('hillas' + str(hillas_implementation) + '_delta_cen_x'    + suffix_str, delta_cen_x),
+                        ('hillas' + str(hillas_implementation) + '_delta_cen_y'    + suffix_str, delta_cen_y),
+                        ('hillas' + str(hillas_implementation) + '_delta_length'   + suffix_str, delta_length),
+                        ('hillas' + str(hillas_implementation) + '_delta_width'    + suffix_str, delta_width),
+                        ('hillas' + str(hillas_implementation) + '_delta_r'        + suffix_str, delta_r),
+                        ('hillas' + str(hillas_implementation) + '_delta_phi'      + suffix_str, delta_phi),
+                        ('hillas' + str(hillas_implementation) + '_delta_psi'      + suffix_str, delta_psi_rad),
+                        ('hillas' + str(hillas_implementation) + '_delta_psi_norm' + suffix_str, normalized_delta_psi),
+                        #('hillas' + str(hillas_implementation) + '_delta_miss'    + suffix_str, delta_miss)
+                     ))
+    except Exception as e:
+        traceback.print_tb(e.__traceback__, file=sys.stdout)
+        score_dict = collections.OrderedDict((
+                        ('hillas' + str(hillas_implementation) + '_delta_size'     + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_cen_x'    + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_cen_y'    + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_length'   + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_width'    + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_r'        + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_phi'      + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_psi'      + suffix_str, float('nan')),
+                        ('hillas' + str(hillas_implementation) + '_delta_psi_norm' + suffix_str, float('nan')),
+                        #('hillas' + str(hillas_implementation) + '_delta_miss'    + suffix_str, float('nan'))
+                     ))
 
     Score = collections.namedtuple('Score', score_dict.keys())
-
     return Score(**score_dict)
 
 
@@ -939,7 +960,10 @@ def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method
         metric_name_list = []
 
         for metric_function in BENCHMARK_DICT[benchmark_method]:
-            score = metric_function(input_img, output_img, reference_img, **kwargs) 
+            try:
+                score = metric_function(input_img, output_img, reference_img, **kwargs) 
+            except Exception as e:
+                traceback.print_tb(e.__traceback__, file=sys.stdout)
 
             if isinstance(score, collections.Sequence):
                 score_list.extend(score)
