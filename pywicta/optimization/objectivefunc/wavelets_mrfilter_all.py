@@ -98,6 +98,10 @@ class ObjectiveFunction:
             if not os.path.exists(tmp_files_directory):
                 os.makedirs(tmp_files_directory)
 
+            while not os.path.exists(tmp_files_directory):
+                print('Waiting for the creation of', tmp_files_directory)
+                time.sleep(1)
+
             algo_params = {
                         "coef_detection_method": 1,
                         "correction_offset": False,

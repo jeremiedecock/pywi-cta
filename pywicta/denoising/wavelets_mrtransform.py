@@ -343,6 +343,10 @@ def main():
     else:
         os.makedirs(tmp_files_directory)
 
+        while not os.path.exists(tmp_files_directory):
+            print('Waiting for the creation of', tmp_files_directory)
+            time.sleep(1)
+
     cleaning_function_params = {
             "type_of_filtering": type_of_filtering,
             "filter_thresholds": filter_thresholds,

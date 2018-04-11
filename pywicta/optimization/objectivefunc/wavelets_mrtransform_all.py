@@ -101,6 +101,10 @@ class ObjectiveFunction:
             if not os.path.exists(tmp_files_directory):
                 os.makedirs(tmp_files_directory)
 
+            while not os.path.exists(tmp_files_directory):
+                print('Waiting for the creation of', tmp_files_directory)
+                time.sleep(1)
+
             algo_params = {
                         "type_of_filtering": "hard_filtering",   # hard_filtering, ksigma_hard_filtering, common_hard_filtering
                         #"filter_thresholds": hard_filter.DEFAULT_FILTER_THRESHOLDS,

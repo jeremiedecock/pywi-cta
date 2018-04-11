@@ -614,6 +614,10 @@ def main():
     else:
         os.makedirs(tmp_files_directory)
 
+        while not os.path.exists(tmp_files_directory):
+            print('Waiting for the creation of', tmp_files_directory)
+            time.sleep(1)
+
     cleaning_function_params = {
                 "type_of_multiresolution_transform": type_of_multiresolution_transform,
                 "type_of_filters": type_of_filters,
