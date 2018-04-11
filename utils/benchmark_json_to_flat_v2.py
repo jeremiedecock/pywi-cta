@@ -150,9 +150,12 @@ def extract_columns(input_file_path, image_dict, benchmark_dict):
 
     # Make the tuple ############################
 
+    fits_file = os.path.basename(image_dict["input_file_path"]) if "input_file_path" in image_dict else "NaN"
+    run = fits_file.split("_")[3]
+
     line = collections.OrderedDict()
     line["Part"]    = part
-    line["Id"]      = "{}_{}".format(image_dict["event_id"], image_dict["tel_id"])
+    line["Id"]      = "{}_{}_{}".format(run, image_dict["event_id"], image_dict["tel_id"])
     line["Evt"]     = image_dict["event_id"]
     line["Tel"]     = image_dict["tel_id"]
     line["Exect"]   = image_dict["full_clean_execution_time_sec"] if "full_clean_execution_time_sec" in image_dict else "NaN"
@@ -195,7 +198,7 @@ def extract_columns(input_file_path, image_dict, benchmark_dict):
     line["nPix"]    = image_dict["img_cleaned_num_pix"] if "img_cleaned_num_pix" in image_dict else "NaN"     # TODO !!!!!
     line["Dshape"]  = score_e_shape  if "score" in image_dict else "NaN"
     line["Denergy"] = score_e_energy if "score" in image_dict else "NaN"
-    line["fits"]    = os.path.basename(image_dict["input_file_path"]) if "input_file_path" in image_dict else "NaN"
+    line["fits"]    = fits_file
     line["cam"]     = image_dict["cam_id"] if "cam_id" in image_dict else "NaN"
 
     #(image_dict["input_file_path"]
