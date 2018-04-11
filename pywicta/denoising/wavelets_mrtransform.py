@@ -101,6 +101,10 @@ It also requires Numpy and Matplotlib Python libraries.
 
 import argparse
 
+import os
+import time
+import shutil
+
 from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgorithm
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 from pywicta.io import images
@@ -331,6 +335,14 @@ def main():
     else:
         noise_distribution = None
 
+    # Make the temp file directory
+    suffix = "{}_{}".format(os.getpid(), time.time())
+    tmp_files_directory = os.path.join(tmp_dir, suffix)
+    if os.path.exists(tmp_files_directory):
+        raise Exception("Cannot use {} as a directory for temporary files, the directory already exist.".format(tmp_files_directory))
+    else:
+        os.makedirs(tmp_files_directory)
+
     cleaning_function_params = {
             "type_of_filtering": type_of_filtering,
             "filter_thresholds": filter_thresholds,
@@ -338,7 +350,7 @@ def main():
             "detect_only_positive_structures": detect_only_positive_structures,
             "kill_isolated_pixels": kill_isolated_pixels,
             "noise_distribution": noise_distribution,
-            "tmp_files_directory": tmp_dir,
+            "tmp_files_directory": tmp_files_directory,
             "verbose": verbose
         }
 
@@ -361,6 +373,12 @@ def main():
                                          event_id=event_id,
                                          cam_id=cam_id,
                                          debug=debug)
+
+    try:
+        # Remove the temp file directory
+        shutil.rmtree(tmp_files_directory)
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     main()

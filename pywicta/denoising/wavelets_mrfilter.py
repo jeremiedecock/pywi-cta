@@ -218,9 +218,12 @@ This script requires the mr_filter program
 __all__ = ['WaveletTransform']
 
 import argparse
-import numpy as np
+
 import os
 import time
+import shutil
+
+import numpy as np
 
 from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgorithm
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
@@ -603,6 +606,14 @@ def main():
     else:
         noise_distribution = None
 
+    # Make the temp file directory
+    suffix = "{}_{}".format(os.getpid(), time.time())
+    tmp_files_directory = os.path.join(tmp_dir, suffix)
+    if os.path.exists(tmp_files_directory):
+        raise Exception("Cannot use {} as a directory for temporary files, the directory already exist.".format(tmp_files_directory))
+    else:
+        os.makedirs(tmp_files_directory)
+
     cleaning_function_params = {
                 "type_of_multiresolution_transform": type_of_multiresolution_transform,
                 "type_of_filters": type_of_filters,
@@ -628,7 +639,7 @@ def main():
                 "input_image_scale": input_image_scale,
                 "noise_distribution": noise_distribution,
                 "verbose": verbose,
-                "tmp_files_directory": tmp_dir,
+                "tmp_files_directory": tmp_files_directory,
                 #"mrfilter_directory": "/Volumes/ramdisk"
             }
 
@@ -651,6 +662,12 @@ def main():
                                          event_id=event_id,
                                          cam_id=cam_id,
                                          debug=debug)
+
+    try:
+        # Remove the temp file directory
+        shutil.rmtree(tmp_files_directory)
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     main()
