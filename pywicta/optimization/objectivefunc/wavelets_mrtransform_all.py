@@ -28,6 +28,9 @@ from pywicta.denoising.wavelets_mrtransform import WaveletTransform
 from pywicta.benchmark import assess
 from pywicta.benchmark.assess import norm_angle_diff
 
+import os
+import time
+import shutil
 
 # OPTIMIZER ##################################################################
 
@@ -93,6 +96,11 @@ class ObjectiveFunction:
             #output_file_path = "score_wavelets_mrt_optim_{}.json".format(self.call_number)
             output_file_path = None
 
+            # Make the temp file directory
+            tmp_files_directory = "/dev/shm/.jd/{}_{}".format(os.getpid(), time.time())
+            if not os.path.exists(tmp_files_directory):
+                os.makedirs(tmp_files_directory)
+
             algo_params = {
                         "type_of_filtering": "hard_filtering",   # hard_filtering, ksigma_hard_filtering, common_hard_filtering
                         #"filter_thresholds": hard_filter.DEFAULT_FILTER_THRESHOLDS,
@@ -100,7 +108,7 @@ class ObjectiveFunction:
                         "detect_only_positive_structures": False,
                         "kill_isolated_pixels": self.kill_isolated_pixels,
                         "noise_distribution": self.noise_distribution,
-                        "tmp_files_directory": "/dev/shm/.jd"
+                        "tmp_files_directory": tmp_files_directory
                     }
 
             algo_params.update(algo_params_var)
@@ -174,6 +182,9 @@ class ObjectiveFunction:
 
             # TODO: save results in a JSON file (?)
             print(algo_params_var, aggregated_score, self.aggregation_method)
+
+            # Remove the temp file directory
+            shutil.rmtree(tmp_files_directory)
         except Exception as e:
             print(e)
 
