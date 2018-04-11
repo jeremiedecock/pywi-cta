@@ -119,7 +119,7 @@ class ObjectiveFunction:
                         "suppress_isolated_pixels": True,
                         "suppress_last_scale": True,
                         "suppress_positivity_constraint": False,
-                        "tmp_files_directory": tmp_files_directory
+                        "tmp_files_directory": tmp_files_directory,
                         "type_of_filtering": None,
                         "type_of_filters": None,
                         "type_of_multiresolution_transform": None,
