@@ -315,7 +315,11 @@ class AbstractCleaningAlgorithm(object):
                         print(e)
                         #traceback.print_tb(e.__traceback__, file=sys.stdout)
 
-                    image_dict["img_cleaned_hillas_2_size"] =     float(hillas_params_2_cleaned_img.size)
+                    try:
+                        image_dict["img_cleaned_hillas_2_size"] =     float(hillas_params_2_cleaned_img.size)
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_size"] =     float('nan')
                     image_dict["img_cleaned_hillas_2_cen_x"] =    hillas_params_2_cleaned_img.cen_x.value
                     image_dict["img_cleaned_hillas_2_cen_y"] =    hillas_params_2_cleaned_img.cen_y.value
                     image_dict["img_cleaned_hillas_2_length"] =   hillas_params_2_cleaned_img.length.value
