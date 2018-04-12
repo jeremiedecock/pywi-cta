@@ -410,16 +410,10 @@ lstcam_grid_prod3b_north)
     WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_9.5_1.5_-L_mask--kill-isolated-pixels" ;
 
     # 2018/04/09
-    WT_MRT_PARAMS="-f hard_filtering -t 3,0 -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_3_0_-L_drop--kill-isolated-pixels" ;
-
-    # 2018/04/09
-    WT_MRT_PARAMS="-f hard_filtering -t 6,0 -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_3_0_-L_drop--kill-isolated-pixels" ;
-
-    # 2018/04/09
-    WT_MRT_PARAMS="-f hard_filtering -t 9,0 -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_3_0_-L_drop--kill-isolated-pixels" ;
+    WT_TH1="6" ;
+    WT_TH2="0" ;
+    WT_MRT_PARAMS="-f hard_filtering -t ${WT_TH1},${WT_TH2} -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_${WT_TH1}_${WT_TH2}_-L_drop--kill-isolated-pixels" ;
     ;;
 *)
     echo "Unknown option" ;
