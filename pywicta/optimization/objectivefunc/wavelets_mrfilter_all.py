@@ -31,6 +31,8 @@ from pywicta.benchmark.assess import norm_angle_diff
 import os
 import time
 import shutil
+import traceback
+import sys
 
 # OPTIMIZER ##################################################################
 
@@ -76,7 +78,7 @@ class ObjectiveFunction:
     def __call__(self, sigma_list):
         self.call_number += 1
 
-        aggregated_score = []
+        aggregated_scores = []
 
         try:
             k_sigma_noise_threshold = ",".join([str(sigma) for sigma in sigma_list])
@@ -168,7 +170,9 @@ class ObjectiveFunction:
                 else:
                     # The cleaning algorithm failed to clean this image
                     # TODO: add a penalty
-                    scores = []
+                    NUM_METRICS = 29
+                    scores = [float('nan') for score in range(NUM_METRICS)]      # TODO: AVOID THIS HARD CODED VALUE !!!
+                    scores[-1] = 1.                                              # TODO: dirty workaround (the last metric is supposed to be the 'cleaning_failure_metrics')
 
                 # WORKAROUND
 
@@ -192,25 +196,35 @@ class ObjectiveFunction:
 
             score_array = np.array(score_list)
 
+            assert score_array.dtype != np.object, "ERROR: score_list contain rows of different size"
+
             # Compute the mean
             if self.aggregation_method == "mean":
-                aggregated_score = np.nanmean(score_array, axis=0)
+                aggregated_scores = np.nanmean(score_array, axis=0)
             elif self.aggregation_method == "median":
-                aggregated_score = np.nanmedian(score_array, axis=0)
+                aggregated_scores = np.nanmedian(score_array, axis=0)
             else:
                 raise ValueError("Unknown value for aggregation_method: {}".format(self.aggregation_method))
 
             # TODO: save results in a JSON file (?)
-            print(algo_params_var, aggregated_score, self.aggregation_method)
+            print(algo_params_var, aggregated_scores, self.aggregation_method)
 
             # Remove the temp file directory
             shutil.rmtree(tmp_files_directory)
         except Exception as e:
-            print(e)
+            print("ERROR: error with thresholds", threshold_list, "(aborted)", e)
+            # The following line print the full trackback
+            traceback.print_tb(e.__traceback__, file=sys.stdout)
+            sys.exit(1)
 
-        self.aggregated_score_list.append([float(score) for score in aggregated_score])
+        self.aggregated_score_list.append([float(score) for score in aggregated_scores])
 
-        return float(aggregated_score[-1])    # TODO: use name instead of index...
+        try:
+            aggregated_score = float(aggregated_scores[-1])    # TODO: use name instead of index...
+        except:
+            aggregated_score = float('nan')                    # TODO: use name instead of index...
+
+        return aggregated_score
 
 
 if __name__ == "__main__":
