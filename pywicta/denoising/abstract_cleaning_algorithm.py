@@ -320,19 +320,65 @@ class AbstractCleaningAlgorithm(object):
                     except AttributeError as e:
                         print(e)
                         image_dict["img_cleaned_hillas_2_size"] =     float('nan')
-                    image_dict["img_cleaned_hillas_2_cen_x"] =    hillas_params_2_cleaned_img.cen_x.value
-                    image_dict["img_cleaned_hillas_2_cen_y"] =    hillas_params_2_cleaned_img.cen_y.value
-                    image_dict["img_cleaned_hillas_2_length"] =   hillas_params_2_cleaned_img.length.value
-                    image_dict["img_cleaned_hillas_2_width"] =    hillas_params_2_cleaned_img.width.value
-                    image_dict["img_cleaned_hillas_2_r"] =        hillas_params_2_cleaned_img.r.value
-                    image_dict["img_cleaned_hillas_2_phi"] =      hillas_params_2_cleaned_img.phi.to(u.rad).value
-                    image_dict["img_cleaned_hillas_2_psi"] =      hillas_params_2_cleaned_img.psi.to(u.rad).value
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_cen_x"] =    hillas_params_2_cleaned_img.cen_x.value
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_cen_x"] =    float('nan')
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_cen_y"] =    hillas_params_2_cleaned_img.cen_y.value
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_cen_y"] =    float('nan')
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_length"] =   hillas_params_2_cleaned_img.length.value
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_length"] =   float('nan')
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_width"] =    hillas_params_2_cleaned_img.width.value
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_width"] =    float('nan')
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_r"] =        hillas_params_2_cleaned_img.r.value
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_r"] =        float('nan')
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_phi"] =      hillas_params_2_cleaned_img.phi.to(u.rad).value
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_phi"] =      float('nan')
+                        
+                    try:
+                        image_dict["img_cleaned_hillas_2_psi"] =      hillas_params_2_cleaned_img.psi.to(u.rad).value
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_psi"] =      float('nan')
+
                     try:
                         image_dict["img_cleaned_hillas_2_miss"] = float(hillas_params_2_cleaned_img.miss.value)
                     except:
-                        image_dict["img_cleaned_hillas_2_miss"] = None
-                    image_dict["img_cleaned_hillas_2_kurtosis"] = hillas_params_2_cleaned_img.kurtosis
-                    image_dict["img_cleaned_hillas_2_skewness"] = hillas_params_2_cleaned_img.skewness
+                        image_dict["img_cleaned_hillas_2_miss"] = float('nan')
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_kurtosis"] = hillas_params_2_cleaned_img.kurtosis
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_kurtosis"] = float('nan')
+
+                    try:
+                        image_dict["img_cleaned_hillas_2_skewness"] = hillas_params_2_cleaned_img.skewness
+                    except AttributeError as e:
+                        print(e)
+                        image_dict["img_cleaned_hillas_2_skewness"] = float('nan')
 
                 # PLOT IMAGES #########################################################
 
