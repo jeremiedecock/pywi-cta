@@ -34,6 +34,7 @@ __all__ = ['normalize_array',
            'metric_hillas_delta2',
            'metric_kill_isolated_pixels',
            'metric_clean_failure',
+           'metric_roc',
            'assess_image_cleaning']
 
 import astropy.units as u
@@ -805,6 +806,12 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
     except Exception as e:
         #traceback.print_tb(e.__traceback__, file=sys.stdout)
         print(e)
+
+        if "kill" in kwargs and kwargs["kill"]:
+            suffix_str = '_kill'
+        else:
+            suffix_str = ''
+
         score_dict = collections.OrderedDict((
                         ('hillas' + str(hillas_implementation) + '_delta_size'     + suffix_str, float('nan')),
                         ('hillas' + str(hillas_implementation) + '_delta_cen_x'    + suffix_str, float('nan')),
@@ -891,6 +898,37 @@ def metric_clean_failure(input_img, output_image, reference_image, **kwargs):
     else:
         return 1.   # failure
 
+
+# ROC #########################################################################
+
+def metric_roc(input_img, output_image, reference_image, **kwargs):
+    try:
+        # https://docs.scipy.org/doc/numpy-1.13.0/reference/routines.logic.html
+        roc_true_positives  = np.logical_and(reference_image, output_image).sum()
+        roc_false_positives = np.logical_and(np.logical_not(reference_image), output_image).sum()
+        roc_true_negatives  = np.logical_and(np.logical_not(reference_image), np.logical_not(output_image)).sum()
+        roc_false_negatives = np.logical_and(reference_image, np.logical_not(output_image)).sum()
+
+        score_dict = collections.OrderedDict((
+                        ('roc_true_positives',  roc_true_positives),
+                        ('roc_false_positives', roc_false_positives),
+                        ('roc_true_negatives',  roc_true_negatives),
+                        ('roc_false_negatives', roc_false_negatives)
+                     ))
+    except Exception as e:
+        score_dict = collections.OrderedDict((
+                        ('roc_true_positives',  float('nan')),
+                        ('roc_false_positives', float('nan')),
+                        ('roc_true_negatives',  float('nan')),
+                        ('roc_false_negatives', float('nan'))
+                     ))
+        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        print(e)
+
+    Score = collections.namedtuple('Score', score_dict.keys())
+
+    return Score(**score_dict)
+
 ###############################################################################
 # ASSESS FUNCTIONS DRIVER                                                     #
 ###############################################################################
@@ -910,7 +948,8 @@ BENCHMARK_DICT = {
     "hillas_delta2":        (metric_hillas_delta2,),
     "kill_isolated_pixels": (metric_kill_isolated_pixels,),
     "metric_clean_failure": (metric_clean_failure,),
-    "all":                  (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_ssim, metric_psnr, metric_hillas_delta, metric_hillas_delta2, metric_kill_isolated_pixels, metric_clean_failure)
+    "metric_roc":           (metric_roc,),
+    "all":                  (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_ssim, metric_psnr, metric_hillas_delta, metric_hillas_delta2, metric_kill_isolated_pixels, metric_clean_failure, metric_roc)
 }
 
 METRIC_NAME_DICT = {
@@ -926,7 +965,8 @@ METRIC_NAME_DICT = {
     metric_hillas_delta:         "hillas_delta",
     metric_hillas_delta2:        "hillas_delta2",
     metric_kill_isolated_pixels: "kill_isolated_pixels",
-    metric_clean_failure:        "metric_clean_failure"
+    metric_clean_failure:        "metric_clean_failure",
+    metric_roc:                  "metric_roc"
 }
 
 def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method, **kwargs):
@@ -947,7 +987,8 @@ def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method
     - "hillas_delta2":        :func:`metric_hillas_delta2`
     - "kill_isolated_pixels": :func:`metric_kill_isolated_pixels`
     - "metric_clean_failure": :func:`metric_clean_failure`
-    - "all":                  :func:`metric_mse`, :func:`metric_nrmse`, :func:`metric2`, :func:`metric3`, :func:`metric4`, :func:`metric_ssim`, :func:`metric_psnr`, :func:`metric_hillas_delta`, :func:`metric_hillas_delta2`, :func:`metric_kill_isolated_pixels`, :func:`metric_clean_failure`
+    - "metric_roc":           :func:`metric_roc`
+    - "all":                  :func:`metric_mse`, :func:`metric_nrmse`, :func:`metric2`, :func:`metric3`, :func:`metric4`, :func:`metric_ssim`, :func:`metric_psnr`, :func:`metric_hillas_delta`, :func:`metric_hillas_delta2`, :func:`metric_kill_isolated_pixels`, :func:`metric_clean_failure`, :func:`metric_roc`
 
     Parameters
     ----------
