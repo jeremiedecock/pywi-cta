@@ -59,6 +59,10 @@ def main():
     cleaning_failure_score = 90.
     #cleaning_failure_score = float('nan')
 
+    faint = True
+
+    num_scales = 3
+
     print("algo:", algo)
     print("instrument:", instrument)
     print("kill_islands:", kill_islands)
@@ -160,27 +164,42 @@ def main():
 
     elif instrument == "LSTCam":
 
-        input_files = ["/dev/shm/.jd/lstcam/gamma/lst_faint/"]
+        if faint:
+            input_files = ["/dev/shm/.jd/lstcam/gamma/lst_faint/"]
+        else:
+            input_files = ["/dev/shm/.jd/lstcam/gamma/"]
+
         #input_files = ["~/data/grid_prod3b_north/simtel/gamma"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.LSTCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
+
             search_ranges = (slice(1., 14., 1.),      # Scale 0 (smallest scale)
                              slice(1., 9.,  1.),      # Scale 1
                              slice(1., 6.,  1.))      # Scale 3 (largest scale aside residuals)
+
         elif algo == "wavelet_mrtransform":
-            search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
-                             slice(0., 2.,  0.2))     # Scale 1 (larger scale)
 
-            #search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
-            #                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
-            #                 slice(0., 0.75, 0.05))  # Scale 2
+            if num_scales == 3:
 
-            #search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
-            #                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
-            #                 slice(0., 0.75, 0.05),  # Scale 2
-            #                 slice(0., 0.3, 0.05))   # Scale 3
+                search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+                                 slice(0., 2.,  0.2))     # Scale 1 (larger scale)
+
+            elif num_scales == 4:
+
+                search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+                                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
+                                 slice(0., 0.75, 0.05))  # Scale 2
+
+            elif num_scales == 5:
+
+                search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+                                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
+                                 slice(0., 0.75, 0.05),  # Scale 2
+                                 slice(0., 0.3, 0.05))   # Scale 3
+
         elif algo == "tailcut":
+
             search_ranges = (slice(1., 10., 0.5),     # Core threshold (largest threshold)
                              slice(1., 10., 0.5))     # Boundary threshold (smallest threshold)
 
@@ -241,11 +260,23 @@ def main():
                 "scores": res[3].tolist()
                }
 
-    with open("optimize_sigma.json", "w") as fd:
+    if algo in ():
+        algo_label = "{}_{}scales".format(algo, num_scales)
+    else:
+        algo_label = algo
+
+    file_base_name = "optimize_{}_{}_{}_{}_{}_{}_{}".format(instrument,
+                                                            algo_label,
+                                                            max_num_img,
+                                                            "faint" if faint else "faint-and-bright",
+                                                            aggregation_method,
+                                                            "kill" if kill_islands else "nokill",
+                                                            str(cleaning_failure_score))
+    with open(file_base_name + "_default.json", "w") as fd:
         json.dump(res_dict, fd, sort_keys=True, indent=4)  # pretty print format
 
     try:
-        with open("optimize_sigma_all.json", "w") as fd:
+        with open(file_base_name + "_all.json", "w") as fd:
             json.dump(func.aggregated_score_list, fd, sort_keys=True, indent=4)  # pretty print format
     except:
         print("All metrics statistics not available")
