@@ -272,8 +272,8 @@ nectarcam_grid_prod3b_north)
 lstcam_grid_prod3b_north)
     CAM_ID="LSTCam"
 
-    #GAMMA_FITS_DIR=/dev/shm/.jd/lstcam/gamma ;
-    GAMMA_FITS_DIR=~/data/grid_prod3b_north/fits/lst/gamma ;
+    GAMMA_FITS_DIR=/dev/shm/.jd/lstcam/gamma ;
+    #GAMMA_FITS_DIR=~/data/grid_prod3b_north/fits/lst/gamma ;
     PROTON_FITS_DIR=~/data/grid_prod3b_north/fits/lst/proton ;
     #GAMMA_FITS_DIR=~/data/grid_prod3b_north/simtel/gamma ;
     #PROTON_FITS_DIR=~/data/grid_prod3b_north/simtel/proton ;
@@ -345,70 +345,6 @@ lstcam_grid_prod3b_north)
 
     # MR_TRANSFORM ############################################################
 
-    # 2017/02/14
-    WT_MRT_PARAMS="-f hard_filtering -t 23.7,3.25,1. -L mask -p --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_23.7_3.25_1._-L_mask_-p" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f hard_filtering -t 15.,2.,1. -L mask -p --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_15._2._1._-L_mask_-p" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f hard_filtering -t 13.,1.5 -L mask -p --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_13._1.5_-L_mask_-p" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f hard_filtering -t 13.,1.3 -L mask -p --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_13._1.3_-L_mask_-p" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f hard_filtering -t 10.,1.3 -L mask -p --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_10._1.3_-L_mask_-p" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f hard_filtering -t 7.5,1.3 -L mask -p --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_7.5_1.3_-L_mask_-p" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 15.,2.,1. -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_15._2._1._-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 13.,1.5 -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_13._1.5_-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 13.,1.3 -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_13._1.3_-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 10.,1.3 -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_10._1.3_-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 7.5,1.3 -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_7.5_1.3_-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 11.,1.8,0.7 -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_11._1.8_0.7_-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 9.,1.5,0.6 -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_9._1.5_0.6_-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 9.5,1.5 -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_9.5_1.5_-L_mask" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 9.,1.5,0.6 -L mask --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_9._1.5_0.6_-L_mask--kill-isolated-pixels" ;
-
-    # 2017/02/14
-    WT_MRT_PARAMS="-f common_hard_filtering -t 9.5,1.5 -L mask --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_common_hard_filtering_-t_9.5_1.5_-L_mask--kill-isolated-pixels" ;
-
     # 2018/04/09
     WT_TH1="6" ;
     WT_TH2="0" ;
@@ -451,22 +387,22 @@ fi
 
 sleep 5
 
-###################
-# ALL GAMMAS ######
-###################
-
-echo "* NULL (REF.)"  & ./pywicta/denoising/null_ref.py             -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Ref"                      -o score_gamma_ref.json          ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_all_null_ref.json.log ;
-echo "* NULL (INPUT)" & ./pywicta/denoising/null.py                 -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Input"                    -o score_gamma_input.json        ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_all_null_input.json.log ;
-echo "* GAMMA TC"     & ./pywicta/denoising/tailcut.py              -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${TC_LABEL}" ${TC_PARAMS} -o score_gamma_${TC_LABEL}.json  ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_${TC_LABEL}.json.log ;
-echo "* GAMMA WT MRF" & ./pywicta/denoising/wavelets_mrfilter.py    -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${WT_MRF_LABEL}" ${WT_MRF_PARAMS} -o score_gamma_${WT_MRF_LABEL}.json  ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_${WT_MRF_LABEL}.json.log ;
+####################
+## ALL GAMMAS ######
+####################
+#
+#echo "* NULL (REF.)"  & ./pywicta/denoising/null_ref.py             -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Ref"                      -o score_gamma_ref.json          ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_all_null_ref.json.log ;
+#echo "* NULL (INPUT)" & ./pywicta/denoising/null.py                 -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Input"                    -o score_gamma_input.json        ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_all_null_input.json.log ;
+#echo "* GAMMA TC"     & ./pywicta/denoising/tailcut.py              -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${TC_LABEL}" ${TC_PARAMS} -o score_gamma_${TC_LABEL}.json  ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_${TC_LABEL}.json.log ;
+#echo "* GAMMA WT MRF" & ./pywicta/denoising/wavelets_mrfilter.py    -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${WT_MRF_LABEL}" ${WT_MRF_PARAMS} -o score_gamma_${WT_MRF_LABEL}.json  ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_${WT_MRF_LABEL}.json.log ;
 echo "* GAMMA WT MRT" & ./pywicta/denoising/wavelets_mrtransform.py -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${WT_MRT_LABEL}" ${WT_MRT_PARAMS} -o score_gamma_${WT_MRT_LABEL}.json  ${GAMMA_FITS_DIR} 2>&1 | tee score_gamma_${WT_MRT_LABEL}.json.log ;
-
-####################
-# ALL PROTONS ######
-####################
-
-echo "* NULL (REF.)"   & ./pywicta/denoising/null_ref.py             -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Ref"                      -o score_proton_ref.json         ${PROTON_FITS_DIR} 2>&1 | tee score_proton_all_null_ref.json.log ;
-echo "* NULL (INPUT)"  & ./pywicta/denoising/null.py                 -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Input"                    -o score_proton_input.json       ${PROTON_FITS_DIR} 2>&1 | tee score_proton_all_null_input.json.log ;
-echo "* PROTON TC"     & ./pywicta/denoising/tailcut.py              -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${TC_LABEL}" ${TC_PARAMS} -o score_proton_${TC_LABEL}.json ${PROTON_FITS_DIR} 2>&1 | tee score_proton_${TC_LABEL}.json.log ;
-echo "* PROTON WT MRF" & ./pywicta/denoising/wavelets_mrfilter.py    -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${WT_MRF_LABEL}" ${WT_MRF_PARAMS} -o score_proton_${WT_MRF_LABEL}.json ${PROTON_FITS_DIR} 2>&1 | tee score_proton_${WT_MRF_LABEL}.json.log ;
-echo "* PROTON WT MRT" & ./pywicta/denoising/wavelets_mrtransform.py -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${WT_MRT_LABEL}" ${WT_MRT_PARAMS} -o score_proton_${WT_MRT_LABEL}.json ${PROTON_FITS_DIR} 2>&1 | tee score_proton_${WT_MRT_LABEL}.json.log ;
+#
+#####################
+## ALL PROTONS ######
+#####################
+#
+#echo "* NULL (REF.)"   & ./pywicta/denoising/null_ref.py             -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Ref"                      -o score_proton_ref.json         ${PROTON_FITS_DIR} 2>&1 | tee score_proton_all_null_ref.json.log ;
+#echo "* NULL (INPUT)"  & ./pywicta/denoising/null.py                 -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="Input"                    -o score_proton_input.json       ${PROTON_FITS_DIR} 2>&1 | tee score_proton_all_null_input.json.log ;
+#echo "* PROTON TC"     & ./pywicta/denoising/tailcut.py              -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${TC_LABEL}" ${TC_PARAMS} -o score_proton_${TC_LABEL}.json ${PROTON_FITS_DIR} 2>&1 | tee score_proton_${TC_LABEL}.json.log ;
+#echo "* PROTON WT MRF" & ./pywicta/denoising/wavelets_mrfilter.py    -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${WT_MRF_LABEL}" ${WT_MRF_PARAMS} -o score_proton_${WT_MRF_LABEL}.json ${PROTON_FITS_DIR} 2>&1 | tee score_proton_${WT_MRF_LABEL}.json.log ;
+#echo "* PROTON WT MRT" & ./pywicta/denoising/wavelets_mrtransform.py -b all --max-images ${NUM_IMG} --camid ${CAM_ID} --label="${WT_MRT_LABEL}" ${WT_MRT_PARAMS} -o score_proton_${WT_MRT_LABEL}.json ${PROTON_FITS_DIR} 2>&1 | tee score_proton_${WT_MRT_LABEL}.json.log ;
