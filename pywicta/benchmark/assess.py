@@ -910,10 +910,10 @@ def metric_roc(input_img, output_image, reference_image, **kwargs):
         roc_false_negatives = np.logical_and(reference_image, np.logical_not(output_image)).sum()
 
         score_dict = collections.OrderedDict((
-                        ('roc_true_positives',  roc_true_positives),
-                        ('roc_false_positives', roc_false_positives),
-                        ('roc_true_negatives',  roc_true_negatives),
-                        ('roc_false_negatives', roc_false_negatives)
+                        ('roc_true_positives',  float(roc_true_positives)),
+                        ('roc_false_positives', float(roc_false_positives)),
+                        ('roc_true_negatives',  float(roc_true_negatives)),
+                        ('roc_false_negatives', float(roc_false_negatives))
                      ))
     except Exception as e:
         score_dict = collections.OrderedDict((
