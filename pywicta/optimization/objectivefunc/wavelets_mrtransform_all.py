@@ -127,6 +127,8 @@ class ObjectiveFunction:
                         "tmp_files_directory": tmp_files_directory
                     }
 
+            self.algo_params = algo_params
+
             algo_params.update(algo_params_var)
 
             # TODO: randomly make a subset fo self.input_files

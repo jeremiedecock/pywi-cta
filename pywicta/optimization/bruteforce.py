@@ -257,7 +257,16 @@ def main():
                 "best_solution": res[0].tolist(),
                 "best_score": float(res[1]),
                 "solutions": res[2].tolist(),
-                "scores": res[3].tolist()
+                "scores": res[3].tolist(),
+                "others_scores": func.aggregated_score_list if hasattr(func, "aggregated_score_list") else None,
+                "instrument": instrument,
+                "algo": algo_label,
+                "algo_params": func.algo_params if hasattr(func, "algo_params") else None,
+                "max_num_img": max_num_img,
+                "npe_range": "faint" if faint else "faint-and-bright",
+                "aggregation_method": aggregation_method,
+                "remove_islands": "kill" if kill_islands else "nokill",
+                "cleaning_failure_score": str(cleaning_failure_score))
                }
 
     if algo in ("wavelet_mrtransform", "wavelet_mrfilter"):
@@ -275,11 +284,11 @@ def main():
     with open(file_base_name + "_default.json", "w") as fd:
         json.dump(res_dict, fd, sort_keys=True, indent=4)  # pretty print format
 
-    try:
-        with open(file_base_name + "_all.json", "w") as fd:
-            json.dump(func.aggregated_score_list, fd, sort_keys=True, indent=4)  # pretty print format
-    except:
-        print("All metrics statistics not available")
+    #try:
+    #    with open(file_base_name + "_all.json", "w") as fd:
+    #        json.dump(func.aggregated_score_list, fd, sort_keys=True, indent=4)  # pretty print format
+    #except:
+    #    print("All metrics statistics not available")
 
 
 if __name__ == "__main__":
