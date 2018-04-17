@@ -266,7 +266,7 @@ def main():
                 "npe_range": "faint" if faint else "faint-and-bright",
                 "aggregation_method": aggregation_method,
                 "remove_islands": "kill" if kill_islands else "nokill",
-                "cleaning_failure_score": str(cleaning_failure_score))
+                "cleaning_failure_score": str(cleaning_failure_score)
                }
 
     if algo in ("wavelet_mrtransform", "wavelet_mrfilter"):
