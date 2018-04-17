@@ -260,7 +260,7 @@ def main():
                 "scores": res[3].tolist()
                }
 
-    if algo in ():
+    if algo in ("wavelet_mrtransform", "wavelet_mrfilter"):
         algo_label = "{}_{}scales".format(algo, num_scales)
     else:
         algo_label = algo
