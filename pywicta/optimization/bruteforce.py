@@ -253,6 +253,11 @@ def main():
 
     # SAVE RESULTS ############################################################
 
+    if algo in ("wavelet_mrtransform", "wavelet_mrfilter"):
+        algo_label = "{}_{}scales".format(algo, num_scales)
+    else:
+        algo_label = algo
+
     res_dict = {
                 "best_solution": res[0].tolist(),
                 "best_score": float(res[1]),
@@ -268,11 +273,6 @@ def main():
                 "remove_islands": "kill" if kill_islands else "nokill",
                 "cleaning_failure_score": str(cleaning_failure_score)
                }
-
-    if algo in ("wavelet_mrtransform", "wavelet_mrfilter"):
-        algo_label = "{}_{}scales".format(algo, num_scales)
-    else:
-        algo_label = algo
 
     file_base_name = "optimize_{}_{}_{}_{}_{}_{}_{}".format(instrument,
                                                             algo_label,
