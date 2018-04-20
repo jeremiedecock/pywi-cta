@@ -23,8 +23,35 @@
 import numpy as np
 
 from pywicta.benchmark import assess
+from pywicta.io import geometry_converter
 
 ###############################################################################
+
+def test_all_zeros():
+    """Test all metrics with an input, output and reference image full of zeros."""
+    cam_id = "LSTCam"
+    geom1d = geometry_converter.get_geom1d(cam_id)
+
+    shape = geom1d.pix_x.shape
+    dtype = "float"
+
+    inp_img = np.zeros(shape=shape, dtype=dtype)
+    out_img = np.zeros(shape=shape, dtype=dtype)
+    ref_img = np.zeros(shape=shape, dtype=dtype)
+
+    inp_img_2d = geometry_converter.image_1d_to_2d(inp_img, cam_id)
+    out_img_2d = geometry_converter.image_1d_to_2d(out_img, cam_id)
+    ref_img_2d = geometry_converter.image_1d_to_2d(ref_img, cam_id)
+
+    score_tuple, metrics_name_tuple = assess.assess_image_cleaning(inp_img_2d,
+                                                                   out_img_2d,
+                                                                   ref_img_2d,
+                                                                   benchmark_method="all",
+                                                                   geom=geom1d)
+
+    assert len(score_tuple) == len(metrics_name_tuple)
+    assert len(score_tuple) > 1
+
 
 def test_metric_roc():
 

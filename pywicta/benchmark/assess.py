@@ -42,12 +42,13 @@ import astropy.units as u
 import collections
 import traceback
 import sys
+import warnings
 
 import numpy as np
 import math
 
 from pywicta.image.hillas_parameters import get_hillas_parameters
-from pywicta.io.geometry_converter import image_2d_to_1d
+from pywicta.io import geometry_converter
 
 from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels
 from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
@@ -55,6 +56,12 @@ from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
 from skimage.measure import compare_ssim as ssim
 from skimage.measure import compare_psnr as psnr
 from skimage.measure import compare_nrmse as nrmse
+
+###############################################################################
+# CONSTANTS                                                                   #
+###############################################################################
+
+FAILURE_SCORE = float('nan')                   # TODO: nan of inf ?
 
 ###############################################################################
 # EXCEPTIONS                                                                  #
@@ -254,7 +261,7 @@ def metric_nrmse(input_img, output_image, reference_image, **kwargs):
     denom = np.sqrt(np.nanmean((reference_image * output_image), dtype=np.float64))
 
     if denom == 0:
-        score = float('nan')                   # TODO: nan of inf ?
+        score = FAILURE_SCORE
     else:
         score = float(np.sqrt(mse) / denom)
 
@@ -367,21 +374,27 @@ def metric2(input_img, output_image, reference_image, **kwargs):
     # See https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.astype.html#numpy-ndarray-astype
     output_image = output_image.astype('float64', copy=True)
     reference_image = reference_image.astype('float64', copy=True)
-    
-    sum_output_image = float(np.nansum(output_image))
-    sum_reference_image = float(np.nansum(reference_image))
 
-    if sum_output_image <= 0:                 # TODO
+    score = FAILURE_SCORE
+
+    if np.nanmin(output_image) == np.nanmax(output_image) == 0:
+
+        warnings.warn("Empty output image")
         #raise EmptyOutputImageError()
-        return float('nan')                   # TODO: nan of inf ?
 
-    if sum_reference_image <= 0:              # TODO
+    elif np.nanmin(reference_image) == np.nanmax(reference_image) == 0:
+
+        warnings.warn("Empty reference image")
         #raise EmptyReferenceImageError()
-        return float('nan')                   # TODO: nan of inf ?
 
-    mark = np.nanmean(np.abs((output_image / sum_output_image) - (reference_image / sum_reference_image)))
+    else:
 
-    return float(mark)
+        sum_output_image = float(np.nansum(output_image))
+        sum_reference_image = float(np.nansum(reference_image))
+
+        score = float(np.nanmean(np.abs((output_image / sum_output_image) - (reference_image / sum_reference_image))))
+
+    return score
 
 
 # Relative Total Counts Difference (mpdspd) ###################################
@@ -428,12 +441,18 @@ def metric3(input_img, output_image, reference_image, **kwargs):
     sum_output_image = float(np.nansum(output_image))
     sum_reference_image = float(np.nansum(reference_image))
 
-    if sum_reference_image <= 0:              # TODO
-        raise EmptyReferenceImageError()
+    score = FAILURE_SCORE
 
-    mark = np.abs(sum_output_image - sum_reference_image) / sum_reference_image
+    if np.nanmin(reference_image) == np.nanmax(reference_image) == 0:
 
-    return float(mark)
+        warnings.warn("Empty reference image")
+        #raise EmptyReferenceImageError()
+
+    else:
+
+        score = np.abs(sum_output_image - sum_reference_image) / sum_reference_image
+
+    return score
 
 
 # Signed Relative Total Counts Difference (sspd) ##############################
@@ -480,12 +499,18 @@ def metric4(input_img, output_image, reference_image, **kwargs):
     sum_output_image = float(np.nansum(output_image))
     sum_reference_image = float(np.nansum(reference_image))
 
-    if sum_reference_image <= 0:              # TODO
-        raise EmptyReferenceImageError()
+    score = FAILURE_SCORE
 
-    mark = (sum_output_image - sum_reference_image) / sum_reference_image
+    if np.nanmin(reference_image) == np.nanmax(reference_image) == 0:
 
-    return float(mark)
+        warnings.warn("Empty reference image")
+        #raise EmptyReferenceImageError()
+
+    else:
+
+        score = (sum_output_image - sum_reference_image) / sum_reference_image
+
+    return score
 
 
 # Structural Similarity Index Measure (SSIM) ##################################
@@ -562,9 +587,13 @@ def metric_ssim(input_img, output_image, reference_image, **kwargs):
     output_image[np.isnan(output_image)] = 0
     reference_image[np.isnan(reference_image)] = 0
 
-    ssim_val, ssim_image = ssim(output_image, reference_image, full=True, gaussian_weights=True, sigma=0.5)
+    try:
+        ssim_val, ssim_image = ssim(output_image, reference_image, full=True, gaussian_weights=True, sigma=0.5)
+        score = float(ssim_val)
+    except ValueError:
+        score = FAILURE_SCORE
 
-    return float(ssim_val)
+    return score
 
 
 # Peak Signal-to-Noise Ratio (PSNR) ###########################################
@@ -653,9 +682,9 @@ def metric_delta_psi(input_img, output_image, reference_image, geom, **kwargs):
         hillas_implementation = 2
 
     if output_image.ndim == 2:
-        output_image = image_2d_to_1d(output_image, geom.cam_id)        # TODO!!!
+        output_image = geometry_converter.image_2d_to_1d(output_image, geom.cam_id)        # TODO!!!
     if reference_image.ndim == 2:
-        reference_image = image_2d_to_1d(reference_image, geom.cam_id)  # TODO!!!
+        reference_image = geometry_converter.image_2d_to_1d(reference_image, geom.cam_id)  # TODO!!!
 
     try:
         output_image_parameters = get_hillas_parameters(geom, output_image, hillas_implementation)
@@ -728,9 +757,9 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
         hillas_implementation = 2
 
     if output_image.ndim == 2:
-        output_image = image_2d_to_1d(output_image, geom.cam_id)        # TODO!!!
+        output_image = geometry_converter.image_2d_to_1d(output_image, geom.cam_id)        # TODO!!!
     if reference_image.ndim == 2:
-        reference_image = image_2d_to_1d(reference_image, geom.cam_id)  # TODO!!!
+        reference_image = geometry_converter.image_2d_to_1d(reference_image, geom.cam_id)  # TODO!!!
 
     try:
         output_image_parameters = get_hillas_parameters(geom, output_image, hillas_implementation)
@@ -1036,3 +1065,28 @@ def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method
 
     return tuple(score_list), tuple(metric_name_list)
 
+
+def get_metrics_names(benchmark_method="all"):
+    """A hack to get the tuple of metrics names for a given `brenchmark_method`."""
+
+    cam_id = "LSTCam"
+    geom1d = geometry_converter.get_geom1d(cam_id)
+
+    shape = geom1d.pix_x.shape
+    dtype = "float"
+
+    inp_img = np.zeros(shape=shape, dtype=dtype)
+    out_img = np.zeros(shape=shape, dtype=dtype)
+    ref_img = np.zeros(shape=shape, dtype=dtype)
+
+    inp_img_2d = geometry_converter.image_1d_to_2d(inp_img, cam_id)
+    out_img_2d = geometry_converter.image_1d_to_2d(out_img, cam_id)
+    ref_img_2d = geometry_converter.image_1d_to_2d(ref_img, cam_id)
+
+    score_tuple, metrics_name_tuple = assess_image_cleaning(inp_img_2d,
+                                                            out_img_2d,
+                                                            ref_img_2d,
+                                                            benchmark_method=benchmark_method,
+                                                            geom=geom1d)
+
+    return metrics_name_tuple
