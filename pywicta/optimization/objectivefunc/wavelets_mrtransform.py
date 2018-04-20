@@ -255,10 +255,10 @@ class ObjectiveFunction:
 
             if self.aggregation_method == "mean":
                 aggregated_all_scores_series = all_scores_df.mean(axis=0)
-                aggregated_all_scores_series.loc[additional_info_label] = all_scores_df.loc[0, additional_info_label]
+                aggregated_all_scores_series.loc[[additional_info_label]] = all_scores_df.loc[0, additional_info_label]
             elif self.aggregation_method == "median":
                 aggregated_all_scores_series = all_scores_df.median(axis=0)
-                aggregated_all_scores_series.loc[additional_info_label] = all_scores_df.loc[0, additional_info_label]
+                aggregated_all_scores_series.loc[[additional_info_label]] = all_scores_df.loc[0, additional_info_label]
             else:
                 raise ValueError("Unknown value for aggregation_method: {}".format(self.aggregation_method))
 
