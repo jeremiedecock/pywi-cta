@@ -226,7 +226,7 @@ def main():
                                            cam_id=instrument,
                                            max_num_img=max_num_img,
                                            aggregation_method=aggregation_method,
-                                           num_scales=None,
+                                           num_scales=num_scales,
                                            type_of_filtering="cluster_filtering",
                                            last_scale_treatment="mask",
                                            detect_only_positive_structures=False,
