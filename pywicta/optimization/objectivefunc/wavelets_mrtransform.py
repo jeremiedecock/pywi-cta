@@ -235,9 +235,11 @@ class ObjectiveFunction:
 
             # Prepare the data frame used to store results
 
-            all_scores_label = assess.get_metrics_names(benchmark_method="all")
-            all_scores_df = pd.DataFrame(columns=all_scores_label, index=range(self.max_num_img))
-            # TODO: add the following columns: self.call_number, image_number, image_id (run_id, tel_id, event_id)
+            all_scores_label = tuple(assess.get_metrics_names(benchmark_method="all"))
+            additional_info_label = ("call_number", "thresholds")
+
+            all_scores_df = pd.DataFrame(columns=additional_info_label + all_scores_label, index=range(self.max_num_img))
+            # TODO: add the following columns: image_number, image_id (run_id, tel_id, event_id), npe
 
             # Fetch score for each image ##################
 
@@ -246,7 +248,7 @@ class ObjectiveFunction:
                 all_scores_list = image_dict["score"]
                 assert len(all_scores_list) == len(all_scores_label), "Wrong number of scores: {} instead of {}".format(len(all_scores_list), len(all_scores_label))
 
-                all_scores_df.iloc[image_index] = all_scores_list
+                all_scores_df.iloc[image_index] = (self.call_number, tuple(filter_thresholds_list)) + tuple(all_scores_list)
 
             # Aggregate scores ############################
 
@@ -260,7 +262,6 @@ class ObjectiveFunction:
             print(algo_params_var, aggregated_all_scores_series, self.aggregation_method)
 
             #self.score_list.append(all_scores_df.iloc[0:image_index+1])   # TODO  add the call index
-            #self.aggregated_score_list.append(aggregated_all_scores_series)   # TODO
 
             if self.aggregated_score_df is None:
                 self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series], columns=all_scores_label)
