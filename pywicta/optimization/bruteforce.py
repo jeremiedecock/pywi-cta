@@ -27,7 +27,7 @@ from scipy import optimize
 #from pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi import ObjectiveFunction as WaveletMRFObjectiveFunction
 from pywicta.optimization.objectivefunc.wavelets_mrfilter_all import ObjectiveFunction as WaveletMRFObjectiveFunction
 #from pywicta.optimization.objectivefunc.wavelets_mrtransform_delta_psi import ObjectiveFunction as WaveletMRTObjectiveFunction
-from pywicta.optimization.objectivefunc.wavelets_mrtransform_all import ObjectiveFunction as WaveletMRTObjectiveFunction
+from pywicta.optimization.objectivefunc.wavelets_mrtransform import ObjectiveFunction as WaveletMRTObjectiveFunction
 #from pywicta.optimization.objectivefunc.tailcut_delta_psi import ObjectiveFunction as TailcutObjectiveFunction
 from pywicta.optimization.objectivefunc.tailcut_all import ObjectiveFunction as TailcutObjectiveFunction
 
@@ -189,14 +189,14 @@ def main():
 
                 search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
                                  slice(0., 2.,  0.2),     # Scale 1 (larger scale)
-                                 slice(0., 0.75, 0.05))  # Scale 2
+                                 slice(0., 0.75, 0.05))   # Scale 2
 
             elif num_scales == 5:
 
                 search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
                                  slice(0., 2.,  0.2),     # Scale 1 (larger scale)
-                                 slice(0., 0.75, 0.05),  # Scale 2
-                                 slice(0., 0.3, 0.05))   # Scale 3
+                                 slice(0., 0.75, 0.05),   # Scale 2
+                                 slice(0., 0.3, 0.05))    # Scale 3
 
         elif algo == "tailcut":
 
@@ -224,10 +224,15 @@ def main():
 
         func = WaveletMRTObjectiveFunction(input_files=input_files,
                                            cam_id=instrument,
-                                           noise_distribution=noise_distribution,
                                            max_num_img=max_num_img,
-                                           aggregation_method=aggregation_method,  # "mean" or "median"
+                                           aggregation_method=aggregation_method,
+                                           num_scales=None,
+                                           type_of_filtering="cluster_filtering",
+                                           last_scale_treatment="mask",
+                                           detect_only_positive_structures=False,
                                            kill_isolated_pixels=kill_islands,
+                                           noise_distribution=noise_distribution,
+                                           tmp_files_directory="/dev/shm/.jd/",
                                            cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "tailcut":
@@ -243,6 +248,8 @@ def main():
 
         raise ValueError("Unknown algorithm", algo)
 
+    print("Objective function:", func)
+
     res = optimize.brute(func,
                          search_ranges,
                          full_output=True,
@@ -253,42 +260,32 @@ def main():
 
     # SAVE RESULTS ############################################################
 
-    if algo in ("wavelet_mrtransform", "wavelet_mrfilter"):
-        algo_label = "{}_{}scales".format(algo, num_scales)
-    else:
-        algo_label = algo
+    algo_label = str(func)
 
     res_dict = {
                 "best_solution": res[0].tolist(),
                 "best_score": float(res[1]),
                 "solutions": res[2].tolist(),
                 "scores": res[3].tolist(),
-                "others_scores": func.aggregated_score_list if hasattr(func, "aggregated_score_list") else None,
+                #"others_scores": func.aggregated_score_list if hasattr(func, "aggregated_score_list") else None,
+                #"others_scores_label": None,   # TODO
+                "all_scores": func.aggregated_score_df.values.tolist() if hasattr(func, "aggregated_score_df") else None,
+                "all_scores_label": func.aggregated_score_df.columns.tolist() if hasattr(func, "aggregated_score_df") else None,
                 "instrument": instrument,
                 "algo": algo_label,
                 "algo_params": func.algo_params if hasattr(func, "algo_params") else None,
                 "max_num_img": max_num_img,
                 "npe_range": "faint" if faint else "faint-and-bright",
                 "aggregation_method": aggregation_method,
-                "remove_islands": "kill" if kill_islands else "nokill",
                 "cleaning_failure_score": str(cleaning_failure_score)
                }
 
-    file_base_name = "optimize_{}_{}_{}_{}_{}_{}_{}".format(instrument,
-                                                            algo_label,
-                                                            max_num_img,
-                                                            "faint" if faint else "faint-and-bright",
-                                                            aggregation_method,
-                                                            "kill" if kill_islands else "nokill",
-                                                            str(cleaning_failure_score))
+    file_base_name = "optimize_{}_{}-imgs_{}_{}".format(instrument,
+                                                        max_num_img,
+                                                        "faint" if faint else "faint-and-bright",
+                                                        algo_label)
     with open(file_base_name + "_default.json", "w") as fd:
         json.dump(res_dict, fd, sort_keys=True, indent=4)  # pretty print format
-
-    #try:
-    #    with open(file_base_name + "_all.json", "w") as fd:
-    #        json.dump(func.aggregated_score_list, fd, sort_keys=True, indent=4)  # pretty print format
-    #except:
-    #    print("All metrics statistics not available")
 
 
 if __name__ == "__main__":
