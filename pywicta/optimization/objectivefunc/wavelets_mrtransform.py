@@ -265,9 +265,9 @@ class ObjectiveFunction:
             if self.aggregated_score_df is None:
                 self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series], columns=all_scores_label)
             else:
-                self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series], columns=all_scores_label),
-                                                ignore_index=True,
-                                                verify_integrity=True)
+                self.aggregated_score_df = self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series], columns=all_scores_label),
+                                                                           ignore_index=True,
+                                                                           verify_integrity=True)
 
             # Remove the temp file directory ##############
 
