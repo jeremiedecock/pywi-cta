@@ -107,16 +107,6 @@ class ObjectiveFunction:
                 print('Waiting for the creation of', tmp_files_directory)
                 time.sleep(1)
 
-            #algo_params = {
-            #            "type_of_filtering": "hard_filtering",   # hard_filtering, ksigma_hard_filtering, common_hard_filtering
-            #            #"filter_thresholds": hard_filter.DEFAULT_FILTER_THRESHOLDS,
-            #            "last_scale_treatment": "drop",          # keep, drop, mask
-            #            "detect_only_positive_structures": False,
-            #            "kill_isolated_pixels": self.kill_isolated_pixels,
-            #            "noise_distribution": self.noise_distribution,
-            #            "tmp_files_directory": tmp_files_directory
-            #        }
-
             algo_params = {
                         "type_of_filtering": "cluster_filtering",   # cluster_filtering, hard_filtering, ksigma_hard_filtering, common_hard_filtering
                         #"filter_thresholds": hard_filter.DEFAULT_FILTER_THRESHOLDS,
