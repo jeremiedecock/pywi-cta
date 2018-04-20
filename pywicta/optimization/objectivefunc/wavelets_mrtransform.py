@@ -237,8 +237,9 @@ class ObjectiveFunction:
 
             all_scores_label = tuple(assess.get_metrics_names(benchmark_method="all"))
             additional_info_label = ("call_number", "num_thresholds") + tuple(["threshold_{}".format(nth) for nth in range(self.num_scales - 1)])
+            df_columns = additional_info_label + all_scores_label
 
-            all_scores_df = pd.DataFrame(columns=additional_info_label + all_scores_label, index=range(self.max_num_img))
+            all_scores_df = pd.DataFrame(columns=df_columns, index=range(self.max_num_img))
             # TODO: add the following columns: image_number, image_id (run_id, tel_id, event_id), npe
 
             # Fetch score for each image ##################
@@ -254,8 +255,10 @@ class ObjectiveFunction:
 
             if self.aggregation_method == "mean":
                 aggregated_all_scores_series = all_scores_df.mean(axis=0)
+                aggregated_all_scores_series.loc[additional_info_label] = all_scores_df.loc[0, additional_info_label]
             elif self.aggregation_method == "median":
                 aggregated_all_scores_series = all_scores_df.median(axis=0)
+                aggregated_all_scores_series.loc[additional_info_label] = all_scores_df.loc[0, additional_info_label]
             else:
                 raise ValueError("Unknown value for aggregation_method: {}".format(self.aggregation_method))
 
@@ -264,9 +267,9 @@ class ObjectiveFunction:
             #self.score_list.append(all_scores_df.iloc[0:image_index+1])   # TODO  add the call index
 
             if self.aggregated_score_df is None:
-                self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series], columns=all_scores_label)
+                self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series], columns=df_columns)
             else:
-                self.aggregated_score_df = self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series], columns=all_scores_label),
+                self.aggregated_score_df = self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series], columns=df_columns),
                                                                            ignore_index=True,
                                                                            verify_integrity=True)
 
