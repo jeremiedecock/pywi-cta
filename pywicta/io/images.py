@@ -1208,14 +1208,14 @@ def plot_ctapipe_image(image,
     if ax is None:
         fig = plt.figure(figsize=figsize)
 
-    if colorbar_limits is not None:
-        disp.set_limits_minmax(colorbar_limits[0], colorbar_limits[1])
-
     disp = ctapipe.visualization.CameraDisplay(geom,
                                                image=image,
                                                ax=ax,
                                                norm=norm)
     #disp.enable_pixel_picker()
+
+    if colorbar_limits is not None:
+        disp.set_limits_minmax(colorbar_limits[0], colorbar_limits[1])
 
     if plot_colorbar:
         disp.add_colorbar(ax=disp.axes, fraction=0.04, pad=0.04, orientation=colorbar_orientation)
