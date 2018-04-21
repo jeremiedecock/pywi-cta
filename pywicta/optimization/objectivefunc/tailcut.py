@@ -104,7 +104,7 @@ class ObjectiveFunction:
     def __str__(self):
         """Return a string representation of the ObjectiveFunction object."""
 
-        params_str = "wavelet_mrtransform"
+        params_str = "tailcut"
         params_str += "_{}".format("kill" if self.kill_isolated_pixels else "no-kill")
         params_str += "_failure-{}".format(self.cleaning_failure_score)
         params_str += "_agg-{}".format(self.aggregation_method)
@@ -146,8 +146,7 @@ class ObjectiveFunction:
                 # To avoid useless computation, reject solutions where low threshold is greater than high threshold
                 # (these solutions have the same result than the solution `low_threshold == high_threshold`)
                 score = float('inf')
-                #score = float('nan')
-                self.aggregated_score_list.append(score)
+
                 return score       # TODO
 
             ###############################################
@@ -190,7 +189,7 @@ class ObjectiveFunction:
             # Prepare the data frame used to store results
 
             all_scores_label = tuple(assess.get_metrics_names(benchmark_method="all"))
-            additional_info_label = ("call_number", "num_thresholds", "threshold_0", "threshold_0")
+            additional_info_label = ("call_number", "num_thresholds", "threshold_0", "threshold_1")
             df_columns = additional_info_label + all_scores_label
 
             all_scores_df = pd.DataFrame(columns=df_columns, index=range(self.max_num_img))
@@ -219,9 +218,9 @@ class ObjectiveFunction:
             #self.score_list.append(all_scores_df.iloc[0:image_index+1])   # TODO  add the call index
 
             if self.aggregated_score_df is None:
-                self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series], columns=df_columns)
+                self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series.values], columns=aggregated_all_scores_series.index)
             else:
-                self.aggregated_score_df = self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series], columns=df_columns),
+                self.aggregated_score_df = self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series.values], columns=aggregated_all_scores_series.index),
                                                                            ignore_index=True,
                                                                            verify_integrity=True)
 
