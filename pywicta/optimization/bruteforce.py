@@ -222,6 +222,7 @@ def main():
                                            noise_distribution=noise_distribution,
                                            max_num_img=max_num_img,
                                            aggregation_method=aggregation_method,  # "mean" or "median"
+                                           num_scales=num_scales,
                                            kill_isolated_pixels=kill_islands,
                                            cleaning_failure_score=cleaning_failure_score)
 
@@ -246,7 +247,6 @@ def main():
                                         cam_id=instrument,
                                         max_num_img=max_num_img,
                                         aggregation_method=aggregation_method,  # "mean" or "median"
-                                        num_scales=num_scales,
                                         kill_isolated_pixels=kill_islands,
                                         cleaning_failure_score=cleaning_failure_score)
 

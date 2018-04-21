@@ -133,8 +133,13 @@ class ObjectiveFunction:
 
         params_str = "wavelet_mrfilter"
         params_str += "_{}-scales".format(self.num_scales)
-        params_str += "_{}".format(self.type_of_filtering.replace("_", "-"))
-        params_str += "_{}".format("pos-only" if self.detect_only_positive_structures else "pos-and-neg")
+        params_str += "_{}".format("default-filtering" if self.type_of_filtering is None else self.type_of_filtering.replace("_", "-"))
+
+        if self.detect_only_positive_structures is None:
+            params_str += "_default-sign-policy"
+        else:
+            params_str += "_{}".format("pos-only" if self.detect_only_positive_structures else "pos-and-neg")
+
         params_str += "_{}".format("kill" if self.kill_isolated_pixels else "no-kill")
         # params_str += str(self.noise_distribution)  # TODO
         params_str += "_failure-{}".format(self.cleaning_failure_score)
