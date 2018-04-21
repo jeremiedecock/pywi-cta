@@ -171,7 +171,7 @@ class ObjectiveFunction:
         filter_thresholds_str = ",".join([str(sigma) for sigma in filter_thresholds])
 
         # Check the length of filter_thresholds_str is consistent with self.num_scales
-        if len(filter_thresholds_str) != (self.num_scales - 1):
+        if len(filter_thresholds) != (self.num_scales - 1):
             raise ValueError("The tested solution has a wrong number of dimensions: "
                              "{} instead of {}".format(len(filter_thresholds),
                                                        self.num_scales - 1))
