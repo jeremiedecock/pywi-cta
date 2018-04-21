@@ -24,11 +24,9 @@ __all__ = []
 
 import json
 from scipy import optimize
-#from pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi import ObjectiveFunction as WaveletMRFObjectiveFunction
+
 from pywicta.optimization.objectivefunc.wavelets_mrfilter_all import ObjectiveFunction as WaveletMRFObjectiveFunction
-#from pywicta.optimization.objectivefunc.wavelets_mrtransform_delta_psi import ObjectiveFunction as WaveletMRTObjectiveFunction
 from pywicta.optimization.objectivefunc.wavelets_mrtransform import ObjectiveFunction as WaveletMRTObjectiveFunction
-#from pywicta.optimization.objectivefunc.tailcut_delta_psi import ObjectiveFunction as TailcutObjectiveFunction
 from pywicta.optimization.objectivefunc.tailcut_all import ObjectiveFunction as TailcutObjectiveFunction
 
 # For wavelets
