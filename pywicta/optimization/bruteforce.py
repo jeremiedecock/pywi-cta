@@ -172,9 +172,16 @@ def main():
 
         if algo == "wavelet_mrfilter":
 
-            search_ranges = (slice(1., 14., 1.),      # Scale 0 (smallest scale)
-                             slice(1., 9.,  1.),      # Scale 1
-                             slice(1., 6.,  1.))      # Scale 3 (largest scale aside residuals)
+            if num_scales == 3:
+
+                search_ranges = (slice(1., 14., 1.),      # Scale 0 (smallest scale)
+                                 slice(1., 9.,  1.))      # Scale 1
+
+            elif num_scales == 4:
+
+                search_ranges = (slice(1., 14., 1.),      # Scale 0 (smallest scale)
+                                 slice(1., 9.,  1.),      # Scale 1
+                                 slice(1., 6.,  1.))      # Scale 2 (largest scale aside residuals)
 
         elif algo == "wavelet_mrtransform":
 
@@ -239,6 +246,7 @@ def main():
                                         cam_id=instrument,
                                         max_num_img=max_num_img,
                                         aggregation_method=aggregation_method,  # "mean" or "median"
+                                        num_scales=num_scales,
                                         kill_isolated_pixels=kill_islands,
                                         cleaning_failure_score=cleaning_failure_score)
 

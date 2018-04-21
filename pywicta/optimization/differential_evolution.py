@@ -24,7 +24,7 @@ __all__ = []
 
 import json
 from scipy import optimize
-from pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi import ObjectiveFunction
+from pywicta.optimization.objectivefunc.wavelets_mrfilter import ObjectiveFunction
 
 import pywicta.denoising.cdf
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
