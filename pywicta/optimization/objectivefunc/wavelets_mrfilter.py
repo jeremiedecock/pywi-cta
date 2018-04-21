@@ -178,7 +178,7 @@ class ObjectiveFunction:
 
         try:
             if self.save_json_intermediate_results:
-                output_file_path = "score_wavelets_mrt_optim_{}.json".format(self.call_number)
+                output_file_path = "score_wavelets_mrf_optim_{}.json".format(self.call_number)
 
                 label = "WT_MRF_{}".format(self.call_number)
                 self.cleaning_algorithm.label = label
