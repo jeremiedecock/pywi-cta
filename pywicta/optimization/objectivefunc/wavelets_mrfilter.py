@@ -277,9 +277,9 @@ class ObjectiveFunction:
             #self.score_list.append(all_scores_df.iloc[0:image_index+1])   # TODO  add the call index
 
             if self.aggregated_score_df is None:
-                self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series], columns=df_columns)
+                self.aggregated_score_df = pd.DataFrame([aggregated_all_scores_series.values], columns=aggregated_all_scores_series.index)
             else:
-                self.aggregated_score_df = self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series], columns=df_columns),
+                self.aggregated_score_df = self.aggregated_score_df.append(pd.DataFrame([aggregated_all_scores_series.values], columns=aggregated_all_scores_series.index),
                                                                            ignore_index=True,
                                                                            verify_integrity=True)
 
