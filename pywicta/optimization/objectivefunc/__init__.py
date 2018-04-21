@@ -20,6 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-__all__ = ['tailcut_all',
+__all__ = ['tailcut',
            'wavelets_mrtransform',
            'wavelets_mrfilter']
