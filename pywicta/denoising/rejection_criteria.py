@@ -36,7 +36,8 @@ class CTAMarsCriteria:
                  min_radius_meters=0,
                  max_radius_meters=None,
                  min_ellipticity=0.1,
-                 max_ellipticity=0.6):
+                 max_ellipticity=0.6,
+                 min_num_pixels=3):
         """CTA Mars like preselection cuts.
 
         Note
@@ -102,6 +103,8 @@ class CTAMarsCriteria:
         self.min_ellipticity = min_ellipticity
         self.max_ellipticity = max_ellipticity
 
+        self.min_num_pixels = min_num_pixels
+
     def hillas_parameters(self, image):
         hillas_params = get_hillas_parameters(self.geom1d, image, self.hillas_implementation)
         return hillas_params
@@ -131,5 +134,6 @@ class CTAMarsCriteria:
         npe_contained = self.min_npe < np.nansum(ref_image_1d) < self.max_npe
         ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(ref_image_1d, hillas_params) < self.max_ellipticity
         radius_contained = self.min_radius < self.hillas_centroid_dist(ref_image_1d, hillas_params) < self.max_radius
+        num_pixels_contained = self.min_num_pixels <= np.sum(ref_image_1d > 0)
 
-        return not (npe_contained and ellipticity_contained and radius_contained)
+        return not (npe_contained and ellipticity_contained and radius_contained and num_pixels_contained)
