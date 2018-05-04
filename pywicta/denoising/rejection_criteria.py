@@ -29,15 +29,76 @@ from pywicta.io import geometry_converter
 
 class CTAMarsCriteria:
 
-    def __init__(self, cam_id, min_npe, max_npe, min_radius, max_radius, min_ellipticity, max_ellipticity):
+    def __init__(self,
+                 cam_id,
+                 min_npe=50,
+                 max_npe=float('inf'),
+                 min_radius_meters=0,
+                 max_radius_meters=None,
+                 min_ellipticity=0.1,
+                 max_ellipticity=0.6):
+        """CTA Mars like preselection cuts.
+
+        Note
+        ----
+
+        average_camera_radius_meters = math.tan(math.radians(average_camera_radius_degree)) * foclen
+
+        The average camera radius values are, in degrees :
+
+        - LST: 2.31
+        - Nectar: 4.05
+        - Flash: 3.95
+        - SST-1M: 4.56
+        - GCT-CHEC-S: 3.93
+        - ASTRI: 4.67
+
+        Parameters
+        ----------
+        cam_id
+        min_radius_meters
+        max_radius_meters
+        min_npe
+        max_npe
+        min_ellipticity
+        max_ellipticity
+        """
+
+        if max_radius_meters is None:
+            RADIUS_CONSTRAINT_RATIO = 0.8
+
+            if cam_id == "ASTRICam":
+                average_camera_radius_degree = 4.67
+                foclen_meters = 2.15
+            elif cam_id == "CHEC":
+                average_camera_radius_degree = 3.93
+                foclen_meters = 2.283
+            elif cam_id == "DigiCam":
+                average_camera_radius_degree = 4.56
+                foclen_meters = 5.59
+            elif cam_id == "FlashCam":
+                average_camera_radius_degree = 3.95
+                foclen_meters = 16.0
+            elif cam_id == "NectarCam":
+                average_camera_radius_degree = 4.05
+                foclen_meters = 16.0
+            elif cam_id == "LSTCam":
+                average_camera_radius_degree = 2.31
+                foclen_meters = 28.0
+            else:
+                raise ValueError('Unknown camid', cam_id)
+
+            average_camera_radius_meters = math.tan(math.radians(average_camera_radius_degree)) * foclen_meters
+            max_radius_meters = RADIUS_CONSTRAINT_RATIO * average_camera_radius_meters
+
         self.cam_id = cam_id
         self.geom1d = geometry_converter.get_geom1d(self.cam_id)
         self.hillas_implementation = 2
 
         self.min_npe = min_npe
         self.max_npe = max_npe
-        self.min_radius = min_radius
-        self.max_radius = max_radius
+        self.min_radius = min_radius_meters
+        self.max_radius = max_radius_meters
         self.min_ellipticity = min_ellipticity
         self.max_ellipticity = max_ellipticity
 

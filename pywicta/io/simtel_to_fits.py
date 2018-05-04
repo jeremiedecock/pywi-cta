@@ -192,8 +192,8 @@ def main():
     rejection_criteria = CTAMarsCriteria(cam_id=cam_id,
                                          min_npe=min_npe,
                                          max_npe=max_npe,
-                                         min_radius=min_radius,
-                                         max_radius=max_radius,
+                                         min_radius_meters=min_radius,
+                                         max_radius_meters=max_radius,
                                          min_ellipticity=min_ellipticity,
                                          max_ellipticity=max_ellipticity)
 
