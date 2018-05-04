@@ -27,7 +27,7 @@ import numpy as np
 from pywicta.image.hillas_parameters import get_hillas_parameters
 from pywicta.io import geometry_converter
 
-class Criteria:
+class CTAMarsCriteria:
 
     def __init__(self, cam_id, min_npe, max_npe, min_radius, max_radius, min_ellipticity, max_ellipticity):
         self.cam_id = cam_id

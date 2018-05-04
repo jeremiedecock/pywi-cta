@@ -30,7 +30,7 @@ import argparse
 import os
 
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
-from pywicta.denoising.rejection_criteria import Criteria
+from pywicta.denoising.rejection_criteria import CTAMarsCriteria
 
 from pywicta.io.images import image_generator, save_benchmark_images, fill_nan_pixels
 
@@ -189,13 +189,13 @@ def main():
     assert min_radius <= max_radius
     assert min_ellipticity <= max_ellipticity
 
-    rejection_criteria = Criteria(cam_id=cam_id,
-                                  min_npe=min_npe,
-                                  max_npe=max_npe,
-                                  min_radius=min_radius,
-                                  max_radius=max_radius,
-                                  min_ellipticity=min_ellipticity,
-                                  max_ellipticity=max_ellipticity)
+    rejection_criteria = CTAMarsCriteria(cam_id=cam_id,
+                                         min_npe=min_npe,
+                                         max_npe=max_npe,
+                                         min_radius=min_radius,
+                                         max_radius=max_radius,
+                                         min_ellipticity=min_ellipticity,
+                                         max_ellipticity=max_ellipticity)
 
     if args.telescope is None:
         tel_id_filter_list = None
