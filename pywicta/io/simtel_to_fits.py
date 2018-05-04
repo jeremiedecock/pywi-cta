@@ -28,62 +28,11 @@ __all__ = ['extract_images']
 
 import argparse
 import os
-import numpy as np
-import math
 
 from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
+from pywicta.denoising.rejection_criteria import Criteria
 
 from pywicta.io.images import image_generator, save_benchmark_images, fill_nan_pixels
-
-from pywicta.io import geometry_converter
-from pywicta.image.hillas_parameters import get_hillas_parameters
-
-class Criteria:
-
-    def __init__(self, cam_id, min_npe, max_npe, min_radius, max_radius, min_ellipticity, max_ellipticity):
-        self.cam_id = cam_id
-        self.geom1d = geometry_converter.get_geom1d(self.cam_id)
-        self.hillas_implementation = 2
-
-        self.min_npe = min_npe
-        self.max_npe = max_npe
-        self.min_radius = min_radius
-        self.max_radius = max_radius
-        self.min_ellipticity = min_ellipticity
-        self.max_ellipticity = max_ellipticity
-
-    def hillas_parameters(self, image):
-        hillas_params = get_hillas_parameters(self.geom1d, image, self.hillas_implementation)
-        return hillas_params
-
-    def hillas_ellipticity(self, image, hillas_params):
-        length = hillas_params.length.value
-        width = hillas_params.width.value
-
-        if length == 0:
-            ellipticity = 0
-        else:
-            ellipticity = width / length
-
-        return ellipticity
-
-    def hillas_centroid_dist(self, image, hillas_params):
-        x = hillas_params.cen_x.value
-        y = hillas_params.cen_y.value
-
-        return math.sqrt(x**2 + y**2)
-
-    def __call__(self, images2d):
-        ref_image_2d = images2d.reference_image
-        ref_image_1d = geometry_converter.image_2d_to_1d(ref_image_2d, self.cam_id)
-        hillas_params = self.hillas_parameters(ref_image_1d)
-
-        npe_contained = self.min_npe < np.nansum(ref_image_1d) < self.max_npe
-        ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(ref_image_1d, hillas_params) < self.max_ellipticity
-        radius_contained = self.min_radius < self.hillas_centroid_dist(ref_image_1d, hillas_params) < self.max_radius
-
-        return not (npe_contained and ellipticity_contained and radius_contained)
-
 
 def extract_images(input_file_or_dir_path_list,
                    cam_id,
