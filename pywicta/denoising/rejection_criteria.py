@@ -127,7 +127,7 @@ class CTAMarsCriteria:
         return math.sqrt(x**2 + y**2)
 
     def __call__(self, images2d):
-        ref_image_2d = images2d.reference_image
+        ref_image_2d = images2d.reference_image  # TODO !!!!!!!!!!
         ref_image_1d = geometry_converter.image_2d_to_1d(ref_image_2d, self.cam_id)
         hillas_params = self.hillas_parameters(ref_image_1d)
 

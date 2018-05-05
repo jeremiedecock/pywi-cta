@@ -38,9 +38,9 @@ from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgori
 
 from pywicta.io import geometry_converter
 
-from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels as scipy_kill_isolated_pixels
-from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
-from pywi.processing.filtering.pixel_clusters import number_of_islands
+from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters as scipy_kill_isolated_pixels
+from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters_stats
+from pywi.processing.filtering.pixel_clusters import number_of_pixels_clusters
 
 from ctapipe.image.cleaning import tailcuts_clean
 
@@ -85,8 +85,8 @@ class Tailcut(AbstractCleaningAlgorithm):
 
         # KILL ISOLATED PIXELS #################################
 
-        img_cleaned_islands_delta_pe, img_cleaned_islands_delta_abs_pe, img_cleaned_islands_delta_num_pixels = kill_isolated_pixels_stats(cleaned_img_2d)
-        img_cleaned_num_islands = number_of_islands(cleaned_img_2d)
+        img_cleaned_islands_delta_pe, img_cleaned_islands_delta_abs_pe, img_cleaned_islands_delta_num_pixels = filter_pixels_clusters_stats(cleaned_img_2d)
+        img_cleaned_num_islands = number_of_pixels_clusters(cleaned_img_2d)
 
         if output_data_dict is not None:
             output_data_dict["img_cleaned_islands_delta_pe"] = img_cleaned_islands_delta_pe

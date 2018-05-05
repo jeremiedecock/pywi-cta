@@ -35,8 +35,8 @@ import astropy.units as u
 from pywicta.benchmark import assess
 from pywicta.image.hillas_parameters import get_hillas_parameters
 
-from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
-from pywi.processing.filtering.pixel_clusters import number_of_islands
+from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters_stats
+from pywi.processing.filtering.pixel_clusters import number_of_pixels_clusters
 
 from pywicta.image.signal_to_border_distance import signal_to_border
 from pywicta.image.signal_to_border_distance import signal_to_border_distance
@@ -223,8 +223,8 @@ class AbstractCleaningAlgorithm(object):
                     image_dict["img_ref_signal_to_border_distance"] = signal_to_border_distance(reference_img) # TODO: NaN
                     image_dict["img_ref_pemax_on_border"] = pemax_on_border(reference_img)                     # TODO: NaN
 
-                    delta_pe, delta_abs_pe, delta_num_pixels = kill_isolated_pixels_stats(reference_img)       # TODO: NaN
-                    num_islands = number_of_islands(reference_img)                                             # TODO: NaN
+                    delta_pe, delta_abs_pe, delta_num_pixels = filter_pixels_clusters_stats(reference_img)       # TODO: NaN
+                    num_islands = number_of_pixels_clusters(reference_img)                                             # TODO: NaN
 
                     image_dict["img_ref_islands_delta_pe"] = delta_pe
                     image_dict["img_ref_islands_delta_abs_pe"] = delta_abs_pe

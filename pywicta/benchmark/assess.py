@@ -50,8 +50,8 @@ import math
 from pywicta.image.hillas_parameters import get_hillas_parameters
 from pywicta.io import geometry_converter
 
-from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels
-from pywi.processing.filtering.pixel_clusters import kill_isolated_pixels_stats
+from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters
+from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters_stats
 
 from skimage.measure import compare_ssim as ssim
 from skimage.measure import compare_psnr as psnr
@@ -673,7 +673,7 @@ def metric_delta_psi(input_img, output_image, reference_image, geom, **kwargs):
 
     if "kill" in kwargs and kwargs["kill"]:
         # Remove isolated pixels on the reference image before assessment.
-        reference_image = kill_isolated_pixels(reference_image, threshold=kwargs["kill_threshold"])
+        reference_image = filter_pixels_clusters(reference_image, threshold=kwargs["kill_threshold"])
 
     if "hillas_implementation" in kwargs and kwargs["hillas_implementation"] in (1, 2, 3, 4):
         # Remove isolated pixels on the reference image before assessment.
@@ -748,7 +748,7 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
 
     if ("kill" in kwargs) and kwargs["kill"] and ("kill_threshold" in kwargs):
         # Remove isolated pixels on the reference image before assessment.
-        reference_image = kill_isolated_pixels(reference_image, threshold=kwargs["kill_threshold"])
+        reference_image = filter_pixels_clusters(reference_image, threshold=kwargs["kill_threshold"])
 
     if ("hillas_implementation" in kwargs) and (kwargs["hillas_implementation"] in (1, 2, 3, 4)):
         # Remove isolated pixels on the reference image before assessment.
@@ -866,7 +866,7 @@ def metric_hillas_delta2(input_img, output_image, reference_image, geom, **kwarg
 
     It works exactly like :func:`metric_hillas_delta` except that isolated
     pixels are removed from the ``reference_image`` before the evaluation
-    (using :func:`pywicta.image.kill_isolated_pixels`).
+    (using :func:`pywi.processing.filtering.pixel_clusters.filter_pixels_clusters`).
 
     Parameters
     ----------
@@ -898,7 +898,7 @@ def metric_hillas_delta2(input_img, output_image, reference_image, geom, **kwarg
 
 def metric_kill_isolated_pixels(input_img, output_image, reference_image, **kwargs):
     try:
-        delta_pe, delta_abs_pe, delta_num_pixels = kill_isolated_pixels_stats(output_image)
+        delta_pe, delta_abs_pe, delta_num_pixels = filter_pixels_clusters_stats(output_image)
 
         score_dict = collections.OrderedDict((
                         ('kill_isolated_pixels_delta_pe',         delta_pe),
