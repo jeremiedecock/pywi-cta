@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>benchmark.assess &mdash; SAp CTA data pipeline 0.1.dev28 documentation</title>
+  <title>benchmark.assess &mdash; SAp CTA data pipeline 0.1.dev29 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="SAp CTA data pipeline 0.1.dev28 documentation" href="index.html"/>
+    <link rel="top" title="SAp CTA data pipeline 0.1.dev29 documentation" href="index.html"/>
         <link rel="up" title="SAp CTA data pipeline API" href="api.html"/>
         <link rel="next" title="denoising.wavelets_mrfilter" href="api_filter_wavelet_mrfilter.html"/>
         <link rel="prev" title="SAp CTA data pipeline API" href="api.html"/> 
@@ -656,7 +656,7 @@ image cleaning algorithm).</li>
 with the <em>Hillas parameters</em>.</p>
 <p>It works exactly like <a class="reference internal" href="#pywicta.benchmark.assess.metric_hillas_delta" title="pywicta.benchmark.assess.metric_hillas_delta"><code class="xref py py-func docutils literal"><span class="pre">metric_hillas_delta()</span></code></a> except that isolated
 pixels are removed from the <code class="docutils literal"><span class="pre">reference_image</span></code> before the evaluation
-(using <code class="xref py py-func docutils literal"><span class="pre">pywicta.image.kill_isolated_pixels()</span></code>).</p>
+(using <code class="xref py py-func docutils literal"><span class="pre">pywi.processing.filtering.pixel_clusters.filter_pixels_clusters()</span></code>).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -699,7 +699,9 @@ with the <cite>benchmark_method</cite> metrics:</p>
 <li>“hillas_delta”:         <a class="reference internal" href="#pywicta.benchmark.assess.metric_hillas_delta" title="pywicta.benchmark.assess.metric_hillas_delta"><code class="xref py py-func docutils literal"><span class="pre">metric_hillas_delta()</span></code></a></li>
 <li>“hillas_delta2”:        <a class="reference internal" href="#pywicta.benchmark.assess.metric_hillas_delta2" title="pywicta.benchmark.assess.metric_hillas_delta2"><code class="xref py py-func docutils literal"><span class="pre">metric_hillas_delta2()</span></code></a></li>
 <li>“kill_isolated_pixels”: <code class="xref py py-func docutils literal"><span class="pre">metric_kill_isolated_pixels()</span></code></li>
-<li>“all”:                  <a class="reference internal" href="#pywicta.benchmark.assess.metric_mse" title="pywicta.benchmark.assess.metric_mse"><code class="xref py py-func docutils literal"><span class="pre">metric_mse()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_nrmse" title="pywicta.benchmark.assess.metric_nrmse"><code class="xref py py-func docutils literal"><span class="pre">metric_nrmse()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric2" title="pywicta.benchmark.assess.metric2"><code class="xref py py-func docutils literal"><span class="pre">metric2()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric3" title="pywicta.benchmark.assess.metric3"><code class="xref py py-func docutils literal"><span class="pre">metric3()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric4" title="pywicta.benchmark.assess.metric4"><code class="xref py py-func docutils literal"><span class="pre">metric4()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_ssim" title="pywicta.benchmark.assess.metric_ssim"><code class="xref py py-func docutils literal"><span class="pre">metric_ssim()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_psnr" title="pywicta.benchmark.assess.metric_psnr"><code class="xref py py-func docutils literal"><span class="pre">metric_psnr()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_hillas_delta" title="pywicta.benchmark.assess.metric_hillas_delta"><code class="xref py py-func docutils literal"><span class="pre">metric_hillas_delta()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_hillas_delta2" title="pywicta.benchmark.assess.metric_hillas_delta2"><code class="xref py py-func docutils literal"><span class="pre">metric_hillas_delta2()</span></code></a>, <code class="xref py py-func docutils literal"><span class="pre">metric_kill_isolated_pixels()</span></code></li>
+<li>“metric_clean_failure”: <code class="xref py py-func docutils literal"><span class="pre">metric_clean_failure()</span></code></li>
+<li>“metric_roc”:           <code class="xref py py-func docutils literal"><span class="pre">metric_roc()</span></code></li>
+<li>“all”:                  <a class="reference internal" href="#pywicta.benchmark.assess.metric_mse" title="pywicta.benchmark.assess.metric_mse"><code class="xref py py-func docutils literal"><span class="pre">metric_mse()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_nrmse" title="pywicta.benchmark.assess.metric_nrmse"><code class="xref py py-func docutils literal"><span class="pre">metric_nrmse()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric2" title="pywicta.benchmark.assess.metric2"><code class="xref py py-func docutils literal"><span class="pre">metric2()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric3" title="pywicta.benchmark.assess.metric3"><code class="xref py py-func docutils literal"><span class="pre">metric3()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric4" title="pywicta.benchmark.assess.metric4"><code class="xref py py-func docutils literal"><span class="pre">metric4()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_ssim" title="pywicta.benchmark.assess.metric_ssim"><code class="xref py py-func docutils literal"><span class="pre">metric_ssim()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_psnr" title="pywicta.benchmark.assess.metric_psnr"><code class="xref py py-func docutils literal"><span class="pre">metric_psnr()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_hillas_delta" title="pywicta.benchmark.assess.metric_hillas_delta"><code class="xref py py-func docutils literal"><span class="pre">metric_hillas_delta()</span></code></a>, <a class="reference internal" href="#pywicta.benchmark.assess.metric_hillas_delta2" title="pywicta.benchmark.assess.metric_hillas_delta2"><code class="xref py py-func docutils literal"><span class="pre">metric_hillas_delta2()</span></code></a>, <code class="xref py py-func docutils literal"><span class="pre">metric_kill_isolated_pixels()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">metric_clean_failure()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">metric_roc()</span></code></li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -770,7 +772,7 @@ image cleaning algorithm).</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.dev28',
+            VERSION:'0.1.dev29',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

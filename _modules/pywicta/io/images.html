@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywicta.io.images &mdash; SAp CTA data pipeline 0.1.dev28 documentation</title>
+  <title>pywicta.io.images &mdash; SAp CTA data pipeline 0.1.dev29 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="SAp CTA data pipeline 0.1.dev28 documentation" href="../../../index.html"/>
+    <link rel="top" title="SAp CTA data pipeline 0.1.dev29 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -324,12 +324,12 @@
 <span class="sd">    ... # doctest: +NORMALIZE_WHITESPACE</span>
 <span class="sd">    array([[False, False,  True],</span>
 <span class="sd">           [False,  True, False],</span>
-<span class="sd">           [ True, False,  True]])</span>
+<span class="sd">           [ True, False,  True]], dtype=bool)</span>
 <span class="sd">    &gt;&gt;&gt; img</span>
 <span class="sd">    ... # doctest: +NORMALIZE_WHITESPACE</span>
-<span class="sd">    array([[1., 2., 0.],</span>
-<span class="sd">           [4., 0., 6.],</span>
-<span class="sd">           [0., 8., 0.]])</span>
+<span class="sd">    array([[ 1., 2., 0.],</span>
+<span class="sd">           [ 4., 0., 6.],</span>
+<span class="sd">           [ 0., 8., 0.]])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># See https://stackoverflow.com/questions/29365194/replacing-missing-values-with-random-in-a-numpy-array</span>
@@ -551,7 +551,7 @@
     <span class="k">return</span> <span class="n">quantity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_str</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">quantity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_str</span><span class="p">)</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;FITS&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="simtel_event_to_images"><a class="viewcode-back" href="../../../api_io_images.html#pywicta.io.images.simtel_event_to_images">[docs]</a><span class="k">def</span> <span class="nf">simtel_event_to_images</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">tel_id</span><span class="p">,</span> <span class="n">ctapipe_format</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mix_channels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="simtel_event_to_images"><a class="viewcode-back" href="../../../api_io_images.html#pywicta.io.images.simtel_event_to_images">[docs]</a><span class="k">def</span> <span class="nf">simtel_event_to_images</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">tel_id</span><span class="p">,</span> <span class="n">ctapipe_format</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mix_channels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">time_samples</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract and return `tel_id`&#39;s images and metadata from a ctapipe `event`.</span>
 
 <span class="sd">    Parameters</span>
@@ -609,7 +609,11 @@
     <span class="n">uncalibrated_samples</span> <span class="o">=</span> <span class="n">r0_adc_samples</span>
 
     <span class="n">calibrated_image</span> <span class="o">=</span> <span class="n">dl1_image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">dl0_pe_samples</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">time_samples</span><span class="p">:</span>
+        <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">dl0_pe_samples</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">extracted_samples</span> <span class="o">=</span> <span class="n">dl1_extracted_samples</span>
     <span class="n">peakpos</span> <span class="o">=</span> <span class="n">dl1_peakpos</span>
@@ -629,9 +633,10 @@
             <span class="n">calibrated_image</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">ASTRI_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">calibrated_image</span> <span class="o">=</span> <span class="n">calibrated_image</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-            <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">ASTRI_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">ASTRI_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">time_samples</span><span class="p">:</span>
+                <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">ASTRI_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">ASTRI_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;NectarCam&quot;</span><span class="p">:</span>
 
@@ -641,9 +646,10 @@
             <span class="n">calibrated_image</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">NECTAR_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># HG channel</span>
             <span class="n">calibrated_image</span> <span class="o">=</span> <span class="n">calibrated_image</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-            <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">NECTAR_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># LG channel</span>
-            <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">NECTAR_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># HG channel</span>
-            <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">time_samples</span><span class="p">:</span>
+                <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">NECTAR_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># LG channel</span>
+                <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">NECTAR_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># HG channel</span>
+                <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">cam_id</span> <span class="o">==</span> <span class="s2">&quot;LSTCam&quot;</span><span class="p">:</span>
 
@@ -653,13 +659,16 @@
             <span class="n">calibrated_image</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">LST_CAM_CHANNEL_THRESHOLD</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">calibrated_image</span> <span class="o">=</span> <span class="n">calibrated_image</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-            <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">LST_CAM_CHANNEL_THRESHOLD</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">LST_CAM_CHANNEL_THRESHOLD</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">time_samples</span><span class="p">:</span>
+                <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">LST_CAM_CHANNEL_THRESHOLD</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">r0_adc_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">LST_CAM_CHANNEL_THRESHOLD</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">cam_id</span> <span class="ow">in</span> <span class="n">SINGLE_CHANNEL_CAMERAS</span> <span class="p">:</span>
             <span class="n">calibrated_image</span> <span class="o">=</span> <span class="n">calibrated_image</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">time_samples</span><span class="p">:</span>
+                <span class="n">calibrated_samples</span> <span class="o">=</span> <span class="n">calibrated_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Unknown camera: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cam_id</span><span class="p">))</span>
 
@@ -691,7 +700,11 @@
 
             <span class="n">pe_image_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">pe_image</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
             <span class="n">calibrated_image_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">calibrated_image</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
-            <span class="n">calibrated_samples_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">calibrated_samples</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">time_samples</span><span class="p">:</span>
+                <span class="n">calibrated_samples_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">calibrated_samples</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">calibrated_samples_2d</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="n">uncalibrated_samples_2d</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># TODO</span>
             <span class="n">extracted_samples_2d</span> <span class="o">=</span> <span class="kc">None</span>     <span class="c1"># TODO</span>
@@ -705,7 +718,11 @@
 
             <span class="n">pe_image_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">pe_image</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
             <span class="n">calibrated_image_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">calibrated_image</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
-            <span class="n">calibrated_samples_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">calibrated_samples</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">time_samples</span><span class="p">:</span>
+                <span class="n">calibrated_samples_2d</span> <span class="o">=</span> <span class="n">geometry_converter</span><span class="o">.</span><span class="n">image_1d_to_2d</span><span class="p">(</span><span class="n">calibrated_samples</span><span class="p">,</span> <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">calibrated_samples_2d</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="n">uncalibrated_samples_2d</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># TODO</span>
             <span class="n">extracted_samples_2d</span> <span class="o">=</span> <span class="kc">None</span>     <span class="c1"># TODO</span>
@@ -1217,8 +1234,11 @@
 
     <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
 
-    <span class="k">del</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;file_path&#39;</span><span class="p">]</span> <span class="c1"># = simtel_basename  # TODO: for some reason it doesn&#39;t work anymore even if len(simtel_basename) &lt; 80...</span>
-    <span class="k">del</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;simtel_path&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;file_path&#39;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;file_path&#39;</span><span class="p">]</span> <span class="c1"># = simtel_basename  # TODO: for some reason it doesn&#39;t work anymore even if len(simtel_basename) &lt; 80...</span>
+
+    <span class="k">if</span> <span class="s1">&#39;simtel_path&#39;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;simtel_path&#39;</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span> <span class="p">:</span>
@@ -1347,14 +1367,14 @@
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">colorbar_limits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">disp</span><span class="o">.</span><span class="n">set_limits_minmax</span><span class="p">(</span><span class="n">colorbar_limits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colorbar_limits</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
     <span class="n">disp</span> <span class="o">=</span> <span class="n">ctapipe</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">CameraDisplay</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span>
                                                <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
                                                <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
                                                <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
     <span class="c1">#disp.enable_pixel_picker()</span>
+
+    <span class="k">if</span> <span class="n">colorbar_limits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">disp</span><span class="o">.</span><span class="n">set_limits_minmax</span><span class="p">(</span><span class="n">colorbar_limits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colorbar_limits</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">plot_colorbar</span><span class="p">:</span>
         <span class="n">disp</span><span class="o">.</span><span class="n">add_colorbar</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">disp</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">colorbar_orientation</span><span class="p">)</span>
@@ -1699,7 +1719,12 @@
         <span class="n">mc_energy</span> <span class="o">=</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;mc_energy_unit&#39;</span> <span class="ow">in</span> <span class="n">metadata_dict</span> <span class="k">else</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">mc_energy_unit</span> <span class="o">=</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy_unit&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;mc_energy_unit&#39;</span> <span class="ow">in</span> <span class="n">metadata_dict</span> <span class="k">else</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="n">main_title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (Tel. </span><span class="si">{}</span><span class="s2">, Ev. </span><span class="si">{}</span><span class="s2">) </span><span class="si">{:.2E}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;simtel_path&#39;</span><span class="p">]),</span>
+        <span class="k">if</span> <span class="s1">&#39;simtel_path&#39;</span> <span class="ow">in</span> <span class="n">metadata_dict</span><span class="p">:</span>
+            <span class="n">simtel_path</span> <span class="o">=</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;simtel_path&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simtel_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">main_title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (Tel. </span><span class="si">{}</span><span class="s2">, Ev. </span><span class="si">{}</span><span class="s2">) </span><span class="si">{:.2E}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">simtel_path</span><span class="p">),</span>
                                                             <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;tel_id&#39;</span><span class="p">],</span>
                                                             <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">],</span>
                                                             <span class="n">mc_energy</span><span class="p">,</span>
@@ -1736,7 +1761,12 @@
         <span class="n">mc_energy</span> <span class="o">=</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;mc_energy_unit&#39;</span> <span class="ow">in</span> <span class="n">metadata_dict</span> <span class="k">else</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">mc_energy_unit</span> <span class="o">=</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy_unit&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;mc_energy_unit&#39;</span> <span class="ow">in</span> <span class="n">metadata_dict</span> <span class="k">else</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;mc_energy&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="n">main_title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (Tel. </span><span class="si">{}</span><span class="s2">, Ev. </span><span class="si">{}</span><span class="s2">) </span><span class="si">{:.2E}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;simtel_path&#39;</span><span class="p">]),</span>
+        <span class="k">if</span> <span class="s1">&#39;simtel_path&#39;</span> <span class="ow">in</span> <span class="n">metadata_dict</span><span class="p">:</span>
+            <span class="n">simtel_path</span> <span class="o">=</span> <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;simtel_path&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simtel_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">main_title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (Tel. </span><span class="si">{}</span><span class="s2">, Ev. </span><span class="si">{}</span><span class="s2">) </span><span class="si">{:.2E}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">simtel_path</span><span class="p">),</span>
                                                             <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;tel_id&#39;</span><span class="p">],</span>
                                                             <span class="n">metadata_dict</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">],</span>
                                                             <span class="n">mc_energy</span><span class="p">,</span>
@@ -1799,7 +1829,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.dev28',
+            VERSION:'0.1.dev29',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywicta.denoising.wavelets_mrtransform &mdash; SAp CTA data pipeline 0.1.dev28 documentation</title>
+  <title>pywicta.denoising.wavelets_mrtransform &mdash; SAp CTA data pipeline 0.1.dev29 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="SAp CTA data pipeline 0.1.dev28 documentation" href="../../../index.html"/>
+    <link rel="top" title="SAp CTA data pipeline 0.1.dev29 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -260,15 +260,19 @@
 
 <span class="kn">import</span> <span class="nn">argparse</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
 <span class="kn">from</span> <span class="nn">pywicta.denoising.abstract_cleaning_algorithm</span> <span class="k">import</span> <span class="n">AbstractCleaningAlgorithm</span>
 <span class="kn">from</span> <span class="nn">pywicta.denoising.inverse_transform_sampling</span> <span class="k">import</span> <span class="n">EmpiricalDistribution</span>
 <span class="kn">from</span> <span class="nn">pywicta.io</span> <span class="k">import</span> <span class="n">images</span>
 
 <span class="kn">from</span> <span class="nn">pywi.processing.filtering</span> <span class="k">import</span> <span class="n">hard_filter</span>
 <span class="kn">from</span> <span class="nn">pywi.processing.filtering.hard_filter</span> <span class="k">import</span> <span class="n">filter_planes</span>
-<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels</span> <span class="k">as</span> <span class="n">scipy_kill_isolated_pixels</span>
-<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">kill_isolated_pixels_stats</span>
-<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">number_of_islands</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">filter_pixels_clusters</span> <span class="k">as</span> <span class="n">scipy_kill_isolated_pixels</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">filter_pixels_clusters_stats</span>
+<span class="kn">from</span> <span class="nn">pywi.processing.filtering.pixel_clusters</span> <span class="k">import</span> <span class="n">number_of_pixels_clusters</span>
 <span class="kn">from</span> <span class="nn">pywi.processing.transform</span> <span class="k">import</span> <span class="n">mrtransform_wrapper</span>
 <span class="kn">from</span> <span class="nn">pywi.processing.transform.mrtransform_wrapper</span> <span class="k">import</span> <span class="n">inverse_wavelet_transform</span>
 <span class="kn">from</span> <span class="nn">pywi.processing.transform.mrtransform_wrapper</span> <span class="k">import</span> <span class="n">wavelet_transform</span>
@@ -339,6 +343,10 @@
 
         <span class="n">number_of_scales</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_thresholds</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="n">number_of_scales</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">):</span>
+            <span class="c1"># This range ]1,10] is a hard constraint from mr_transform</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;bad number of scales: </span><span class="si">{}</span><span class="s2">. Should be 1 &lt; Nbr Scales &lt;= 10. Check that filter_thresholds is a list of number and not a string.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number_of_scales</span><span class="p">))</span>
+
         <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of scales:&quot;</span><span class="p">,</span> <span class="n">number_of_scales</span><span class="p">)</span>
 
@@ -373,9 +381,9 @@
 
         <span class="c1"># KILL ISOLATED PIXELS ################################################</span>
 
-        <span class="n">kill_islands</span> <span class="o">=</span> <span class="n">kill_isolated_pixels_stats</span><span class="p">(</span><span class="n">cleaned_image</span><span class="p">)</span>
+        <span class="n">kill_islands</span> <span class="o">=</span> <span class="n">filter_pixels_clusters_stats</span><span class="p">(</span><span class="n">cleaned_image</span><span class="p">)</span>
         <span class="n">img_cleaned_islands_delta_pe</span><span class="p">,</span> <span class="n">img_cleaned_islands_delta_abs_pe</span><span class="p">,</span> <span class="n">img_cleaned_islands_delta_num_pixels</span> <span class="o">=</span> <span class="n">kill_islands</span>
-        <span class="n">img_cleaned_num_islands</span> <span class="o">=</span> <span class="n">number_of_islands</span><span class="p">(</span><span class="n">cleaned_image</span><span class="p">)</span>
+        <span class="n">img_cleaned_num_islands</span> <span class="o">=</span> <span class="n">number_of_pixels_clusters</span><span class="p">(</span><span class="n">cleaned_image</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">output_data_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">output_data_dict</span><span class="p">[</span><span class="s2">&quot;img_cleaned_islands_delta_pe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">img_cleaned_islands_delta_pe</span>
@@ -486,6 +494,18 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">noise_distribution</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1"># Make the temp file directory</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="n">tmp_files_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmp_files_directory</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cannot use </span><span class="si">{}</span><span class="s2"> as a directory for temporary files, the directory already exist.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tmp_files_directory</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_files_directory</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmp_files_directory</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Waiting for the creation of&#39;</span><span class="p">,</span> <span class="n">tmp_files_directory</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
     <span class="n">cleaning_function_params</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;type_of_filtering&quot;</span><span class="p">:</span> <span class="n">type_of_filtering</span><span class="p">,</span>
             <span class="s2">&quot;filter_thresholds&quot;</span><span class="p">:</span> <span class="n">filter_thresholds</span><span class="p">,</span>
@@ -493,7 +513,7 @@
             <span class="s2">&quot;detect_only_positive_structures&quot;</span><span class="p">:</span> <span class="n">detect_only_positive_structures</span><span class="p">,</span>
             <span class="s2">&quot;kill_isolated_pixels&quot;</span><span class="p">:</span> <span class="n">kill_isolated_pixels</span><span class="p">,</span>
             <span class="s2">&quot;noise_distribution&quot;</span><span class="p">:</span> <span class="n">noise_distribution</span><span class="p">,</span>
-            <span class="s2">&quot;tmp_files_directory&quot;</span><span class="p">:</span> <span class="n">tmp_dir</span><span class="p">,</span>
+            <span class="s2">&quot;tmp_files_directory&quot;</span><span class="p">:</span> <span class="n">tmp_files_directory</span><span class="p">,</span>
             <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="n">verbose</span>
         <span class="p">}</span>
 
@@ -516,6 +536,12 @@
                                          <span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span>
                                          <span class="n">cam_id</span><span class="o">=</span><span class="n">cam_id</span><span class="p">,</span>
                                          <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Remove the temp file directory</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">tmp_files_directory</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
@@ -556,7 +582,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.dev28',
+            VERSION:'0.1.dev29',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
