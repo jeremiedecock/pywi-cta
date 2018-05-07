@@ -37,10 +37,10 @@ class TestImages(unittest.TestCase):
     Contains unit tests for the "io.images" module.
     """
 
-    # Test the "save" and "load" functions ####################################
+    # Test the "save_fits" and "load_fits" functions ####################################
 
     def test_load_and_save(self):
-        """Check the `images.load` and `images.save` functions."""
+        """Check the `images.load_fits` and `images.save_fits` functions."""
 
         img = np.random.randint(128, size=(4, 6))
 
@@ -50,10 +50,10 @@ class TestImages(unittest.TestCase):
             img_path = os.path.join(temp_dir_path, "test.fits")
 
             # Save the image
-            images.save(img, img_path)
+            images.save_fits(img, img_path)
 
             # Load the saved image
-            loaded_img = images.load(img_path, 0)
+            loaded_img = images.load_fits(img_path, 0)
 
             # Check img vs loaded_img
             np.testing.assert_array_equal(img, loaded_img)
@@ -62,7 +62,7 @@ class TestImages(unittest.TestCase):
 
 
     def test_load_and_save_with_nan(self):
-        """Check the `images.load` and `images.save` functions."""
+        """Check the `images.load_fits` and `images.save_fits` functions."""
 
         img = np.random.uniform(size=(4, 6))
         img[1,1] = np.nan
@@ -73,10 +73,10 @@ class TestImages(unittest.TestCase):
             img_path = os.path.join(temp_dir_path, "test.fits")
 
             # Save the image
-            images.save(img, img_path)
+            images.save_fits(img, img_path)
 
             # Load the saved image
-            loaded_img = images.load(img_path, 0)
+            loaded_img = images.load_fits(img_path, 0)
 
             # Check img vs loaded_img
             np.testing.assert_array_equal(img, loaded_img)
@@ -87,10 +87,10 @@ class TestImages(unittest.TestCase):
         # The temporary directory and all its contents are removed now
 
 
-    # Test the "save" function exceptions #####################################
+    # Test the "save_fits" function exceptions #####################################
 
     def test_save_wrong_dimension_error(self):
-        """Check the call to `images.load` fails with an WrongDimensionError
+        """Check the call to `images.load_fits` fails with an WrongDimensionError
         when saved images have more than 3 dimensions or less than 2
         dimensions."""
 
@@ -106,31 +106,31 @@ class TestImages(unittest.TestCase):
 
             # Save the 1D image (should raise an exception)
             with self.assertRaises(images.WrongDimensionError):
-                images.save(img_1d, img_path)
+                images.save_fits(img_1d, img_path)
 
             # Save the 2D image (should not raise any exception)
             try:
-                images.save(img_2d, img_path)
+                images.save_fits(img_2d, img_path)
             except images.WrongDimensionError:
-                self.fail("images.save() raised WrongDimensionError unexpectedly!")
+                self.fail("images.save_fits() raised WrongDimensionError unexpectedly!")
 
             # Save the 3D image (should not raise any exception)
             try:
-                images.save(img_3d, img_path)
+                images.save_fits(img_3d, img_path)
             except images.WrongDimensionError:
-                self.fail("images.save() raised WrongDimensionError unexpectedly!")
+                self.fail("images.save_fits() raised WrongDimensionError unexpectedly!")
 
             # Save the 4D image (should raise an exception)
             with self.assertRaises(images.WrongDimensionError):
-                images.save(img_4d, img_path)
+                images.save_fits(img_4d, img_path)
 
         # The temporary directory and all its contents are removed now
 
 
-    # Test the "load" function exceptions #####################################
+    # Test the "load_fits" function exceptions #####################################
 
     def test_load_wrong_hdu_error(self):
-        """Check the call to `images.load` fails with an WrongDimensionError
+        """Check the call to `images.load_fits` fails with an WrongDimensionError
         when saved images have more than 3 dimensions or less than 2
         dimensions."""
 
@@ -142,17 +142,17 @@ class TestImages(unittest.TestCase):
             img_path = os.path.join(temp_dir_path, "test.fits")
 
             # Save the image
-            images.save(img, img_path)
+            images.save_fits(img, img_path)
 
             # Load the saved image (should raise an exception)
             with self.assertRaises(images.WrongHDUError):
-                loaded_img = images.load(img_path, hdu_index=1000)
+                loaded_img = images.load_fits(img_path, hdu_index=1000)
 
             # Load the saved image (should not raise any exception)
             try:
-                loaded_img = images.load(img_path, hdu_index=0)
+                loaded_img = images.load_fits(img_path, hdu_index=0)
             except images.WrongHDUError:
-                self.fail("images.load() raised WrongHDUError unexpectedly!")
+                self.fail("images.load_fits() raised WrongHDUError unexpectedly!")
 
         # The temporary directory and all its contents are removed now
 

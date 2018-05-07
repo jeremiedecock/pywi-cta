@@ -1,4 +1,4 @@
-from pywicta.optimization.objectivefunc.wavelets_mrtransform_all import ObjectiveFunction
+from pywicta.optimization.objectivefunc.wavelets_mrtransform import ObjectiveFunction
 
 def test_str():
     """Test the ObjectiveFunction to string conversion."""

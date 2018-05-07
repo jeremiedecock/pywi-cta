@@ -148,266 +148,266 @@ class TestAssess(unittest.TestCase):
     ###########################################################################
     ###########################################################################
 
-    def test_metric2_input(self):
-        """Check the input of the "metric2" function."""
-
-        #######################################################################
-        # Test 1: sum on output image is 0                                    #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[0, 0, 0, 0],
-                                 [0, 0, 0, 0],
-                                 [0, 0, 0, 0]])
-
-        # Reference image #############
-
-        reference_image = np.array([[1, 2, 2, 1],
-                                    [1, 3, 3, 1],
-                                    [1, 2, 2, 1]])
-
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyOutputImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 2: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[1, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[0, 0, 0, 0],
-                                    [0, 0, 0, 0],
-                                    [0, 0, 0, 0]])
-
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 3: sum on output image is 0                                    #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[0., 0., 0., 0.],
-                                 [0., 0., 0., 0.],
-                                 [0., 0., 0., 0.]])
-
-        # Reference image #############
-
-        reference_image = np.array([[1, 2, 2, 1],
-                                    [1, 3, 3, 1],
-                                    [1, 2, 2, 1]])
-
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyOutputImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 4: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[1, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[0., 0., 0., 0.],
-                                    [0., 0., 0., 0.],
-                                    [0., 0., 0., 0.]])
-
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
-
-
-    def test_metric2_input_with_nan(self):
-        """Check the input of the "metric2" function."""
-
-        #######################################################################
-        # Test 1: sum on output image is 0                                    #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[np.nan, 2, 2, 1],
-                                [1,      3, 3, 1],
-                                [1,      2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[np.nan, 0, 0, 0],
-                                 [0,      0, 0, 0],
-                                 [0,      0, 0, 0]])
-
-        # Reference image #############
-
-        reference_image = np.array([[np.nan, 2, 2, 1],
-                                    [1,      3, 3, 1],
-                                    [1,      2, 2, 1]])
-
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyOutputImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 2: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[np.nan, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[np.nan, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[np.nan, 0, 0, 0],
-                                    [0, 0, 0, 0],
-                                    [0, 0, 0, 0]])
-
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 3: sum on output image is 0                                    #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[np.nan, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[np.nan, 0., 0., 0.],
-                                 [0., 0., 0., 0.],
-                                 [0., 0., 0., 0.]])
-
-        # Reference image #############
-
-        reference_image = np.array([[np.nan, 2, 2, 1],
-                                    [1, 3, 3, 1],
-                                    [1, 2, 2, 1]])
- 
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyOutputImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 4: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[np.nan, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[np.nan, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[np.nan, 0., 0., 0.],
-                                    [0., 0., 0., 0.],
-                                    [0., 0., 0., 0.]])
-
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric2(input_image, output_image, reference_image)
+    # def test_metric2_input(self):
+    #     """Check the input of the "metric2" function."""
+    #
+    #     #######################################################################
+    #     # Test 1: sum on output image is 0                                    #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[0, 0, 0, 0],
+    #                              [0, 0, 0, 0],
+    #                              [0, 0, 0, 0]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[1, 2, 2, 1],
+    #                                 [1, 3, 3, 1],
+    #                                 [1, 2, 2, 1]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyOutputImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 2: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[1, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[0, 0, 0, 0],
+    #                                 [0, 0, 0, 0],
+    #                                 [0, 0, 0, 0]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 3: sum on output image is 0                                    #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[0., 0., 0., 0.],
+    #                              [0., 0., 0., 0.],
+    #                              [0., 0., 0., 0.]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[1, 2, 2, 1],
+    #                                 [1, 3, 3, 1],
+    #                                 [1, 2, 2, 1]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyOutputImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 4: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[1, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[0., 0., 0., 0.],
+    #                                 [0., 0., 0., 0.],
+    #                                 [0., 0., 0., 0.]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
+
+
+    # def test_metric2_input_with_nan(self):
+    #     """Check the input of the "metric2" function."""
+    #
+    #     #######################################################################
+    #     # Test 1: sum on output image is 0                                    #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[np.nan, 2, 2, 1],
+    #                             [1,      3, 3, 1],
+    #                             [1,      2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[np.nan, 0, 0, 0],
+    #                              [0,      0, 0, 0],
+    #                              [0,      0, 0, 0]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[np.nan, 2, 2, 1],
+    #                                 [1,      3, 3, 1],
+    #                                 [1,      2, 2, 1]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyOutputImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 2: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[np.nan, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[np.nan, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[np.nan, 0, 0, 0],
+    #                                 [0, 0, 0, 0],
+    #                                 [0, 0, 0, 0]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 3: sum on output image is 0                                    #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[np.nan, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[np.nan, 0., 0., 0.],
+    #                              [0., 0., 0., 0.],
+    #                              [0., 0., 0., 0.]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[np.nan, 2, 2, 1],
+    #                                 [1, 3, 3, 1],
+    #                                 [1, 2, 2, 1]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyOutputImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 4: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[np.nan, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[np.nan, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[np.nan, 0., 0., 0.],
+    #                                 [0., 0., 0., 0.],
+    #                                 [0., 0., 0., 0.]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric2(input_image, output_image, reference_image)
 
 
     def test_metric2_output(self):
@@ -643,71 +643,71 @@ class TestAssess(unittest.TestCase):
     ###########################################################################
     ###########################################################################
 
-    def test_metric3_input(self):
-        """Check the input of the "metric3" function."""
-
-        #######################################################################
-        # Test 1: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[1, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[0, 0, 0, 0],
-                                    [0, 0, 0, 0],
-                                    [0, 0, 0, 0]])
-    
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric3(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 2: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[1, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[0., 0., 0., 0.],
-                                    [0., 0., 0., 0.],
-                                    [0., 0., 0., 0.]])
-    
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric3(input_image, output_image, reference_image)
+    # def test_metric3_input(self):
+    #     """Check the input of the "metric3" function."""
+    #
+    #     #######################################################################
+    #     # Test 1: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[1, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[0, 0, 0, 0],
+    #                                 [0, 0, 0, 0],
+    #                                 [0, 0, 0, 0]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric3(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 2: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[1, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[0., 0., 0., 0.],
+    #                                 [0., 0., 0., 0.],
+    #                                 [0., 0., 0., 0.]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric3(input_image, output_image, reference_image)
 
 
     def test_metric3_output(self):
@@ -944,71 +944,71 @@ class TestAssess(unittest.TestCase):
     ###########################################################################
     ###########################################################################
 
-    def test_metric4_input(self):
-        """Check the input of the "metric4" function."""
-
-        #######################################################################
-        # Test 1: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[1, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[0, 0, 0, 0],
-                                    [0, 0, 0, 0],
-                                    [0, 0, 0, 0]])
-    
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric4(input_image, output_image, reference_image)
-
-
-        #######################################################################
-        # Test 2: sum on reference image is 0                                 #
-        #######################################################################
-
-        # Input image #################
-
-        input_image = np.array([[1, 2, 2, 1],
-                                [1, 3, 3, 1],
-                                [1, 2, 2, 1]])
-
-        # Output image ################
-
-        output_image = np.array([[1, 2, 2, 1],
-                                 [1, 3, 3, 1],
-                                 [1, 2, 2, 1]])
-
-        # Reference image #############
-
-        reference_image = np.array([[0., 0., 0., 0.],
-                                    [0., 0., 0., 0.],
-                                    [0., 0., 0., 0.]])
-    
-        # Expected mark ###############
-
-        expected_mark = None
-
-        # Test ########################
-
-        with self.assertRaises(assess.EmptyReferenceImageError):
-            mark = assess.metric4(input_image, output_image, reference_image)
+    # def test_metric4_input(self):
+    #     """Check the input of the "metric4" function."""
+    #
+    #     #######################################################################
+    #     # Test 1: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[1, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[0, 0, 0, 0],
+    #                                 [0, 0, 0, 0],
+    #                                 [0, 0, 0, 0]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric4(input_image, output_image, reference_image)
+    #
+    #
+    #     #######################################################################
+    #     # Test 2: sum on reference image is 0                                 #
+    #     #######################################################################
+    #
+    #     # Input image #################
+    #
+    #     input_image = np.array([[1, 2, 2, 1],
+    #                             [1, 3, 3, 1],
+    #                             [1, 2, 2, 1]])
+    #
+    #     # Output image ################
+    #
+    #     output_image = np.array([[1, 2, 2, 1],
+    #                              [1, 3, 3, 1],
+    #                              [1, 2, 2, 1]])
+    #
+    #     # Reference image #############
+    #
+    #     reference_image = np.array([[0., 0., 0., 0.],
+    #                                 [0., 0., 0., 0.],
+    #                                 [0., 0., 0., 0.]])
+    #
+    #     # Expected mark ###############
+    #
+    #     expected_mark = None
+    #
+    #     # Test ########################
+    #
+    #     with self.assertRaises(assess.EmptyReferenceImageError):
+    #         mark = assess.metric4(input_image, output_image, reference_image)
 
 
     def test_metric4_output(self):
