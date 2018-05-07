@@ -161,16 +161,17 @@ def fill_nan_pixels(image, noise_distribution=None):
     --------
     >>> import numpy as np
     >>> img = np.array([[1, 2, np.nan],[4, np.nan, 6],[np.nan, 8, np.nan]])
-    >>> fill_nan_pixels(img)
+    >>> img_filled = fill_nan_pixels(img)
+    >>> print(img_filled)
     ... # doctest: +NORMALIZE_WHITESPACE
-    array([[False, False,  True],
-           [False,  True, False],
-           [ True, False,  True]], dtype=bool)
-    >>> img
+    [[False False  True]
+     [False  True False]
+     [ True False  True]]
+    >>> print(img)
     ... # doctest: +NORMALIZE_WHITESPACE
-    array([[ 1., 2., 0.],
-           [ 4., 0., 6.],
-           [ 0., 8., 0.]])
+    [[ 1.  2.  0.]
+     [ 4.  0.  6.]
+     [ 0.  8.  0.]]
     """
 
     # See https://stackoverflow.com/questions/29365194/replacing-missing-values-with-random-in-a-numpy-array
