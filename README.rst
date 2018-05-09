@@ -7,13 +7,16 @@ PyWI CTA - A CTA wrapper for PyWI
 
 Copyright (c) 2016-2018 Jeremie DECOCK (www.jdhp.org)
 
-* Online documentation: https://jeremiedecock.github.io/pywi-cta/
+* Web site: http://cta.pywi.org/
+* Online documentation: http://cta.pywi.org/docs/
 * Source code: https://github.com/jeremiedecock/pywi-cta
 * Issue tracker: https://github.com/jeremiedecock/pywi-cta/issues
 * PyWI-CTA on PyPI: https://pypi.org/project/pywicta/
 * PyWI-CTA on Anaconda Cloud: https://anaconda.org/jdhp/pywicta
 
 .. Former documentation: http://sap-cta-data-pipeline.readthedocs.io/en/latest/
+
+.. Former documentation: https://jeremiedecock.github.io/pywi-cta/
 
 Description
 ===========
@@ -146,6 +149,6 @@ To search for bugs or report them, please use the PyWI Bug Tracker at:
     https://github.com/jeremiedecock/pywi-cta/issues
 
 
-.. _PyWI: https://github.com/jeremiedecock/pywi
+.. _PyWI: http://www.pywi.org/
 .. _ctapipe: https://github.com/cta-observatory/ctapipe
 .. _command prompt: https://en.wikipedia.org/wiki/Cmd.exe
