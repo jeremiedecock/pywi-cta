@@ -23,7 +23,7 @@ Description
 
 PyWI-CTA is a ctapipe_ wrapper for PyWI_.
 
-Note:
+.. warning::
 
     This project is in beta stage.
 
