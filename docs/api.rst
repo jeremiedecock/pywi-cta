@@ -43,6 +43,8 @@ I/O package:
 
    pywicta.io.geometry_converter <api_io_geometry_converter>
    pywicta.io.images <api_io_images>
+   pywicta.io.simtel <api_io_simtel>
+   pywicta.io.simtel_to_fits <api_io_simtel_to_fits>
 
 Optimization package:
 
@@ -52,6 +54,7 @@ Optimization package:
    pywicta.optimization.bruteforce <api_optimization_bruteforce>
    pywicta.optimization.differential_evolution <api_optimization_differential_evolution>
    pywicta.optimization.saes <api_optimization_saes>
-   pywicta.optimization.objectivefunc.tailcut_delta_psi <api_optimization_objectivefunc_tailcut_delta_psi>
-   pywicta.optimization.objectivefunc.wavelets_mrfilter_delta_psi <api_optimization_objectivefunc_wavelets_mrfilter_delta_psi>
+   pywicta.optimization.objectivefunc.tailcut <api_optimization_objectivefunc_tailcut>
+   pywicta.optimization.objectivefunc.wavelets_mrfilter <api_optimization_objectivefunc_wavelets_mrfilter>
+   pywicta.optimization.objectivefunc.wavelets_mrtransform <api_optimization_objectivefunc_wavelets_mrtransform>
 
