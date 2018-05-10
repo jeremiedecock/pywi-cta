@@ -307,7 +307,7 @@ def image_generator(path_list,
                     tel_filter_list=None,
                     ev_filter_list=None,
                     cam_filter_list=None,
-                    rejection_criteria=None,
+                    mc_rejection_criteria=None,
                     **kwargs):
     """Return an iterable sequence all calibrated images in `path_list`.
 
@@ -324,12 +324,12 @@ def image_generator(path_list,
         Only iterate images from events defined in this list.
     cam_filter_list : list of string
         Only iterate images from cameras defined in this list.
-    rejection_criteria : function
-        A function that contains image rejection criteria. This function takes
-        images and return True for images that should be ignored by the generator
-        and False otherwise. It can be used to ignore images that are not in a
-        given range of energy or images with a shower too close to the borders
-        for instance.
+    mc_rejection_criteria : function
+        A function that contains MC image rejection criteria. This function
+        takes Monte Carlo (a.k.a. "reference") images and return True for
+        images that should be ignored by the generator and False otherwise.
+        It can be used to ignore images that are not in a given range of
+        energy or images with a shower too close to the borders for instance.
 
     Yields
     ------
@@ -350,7 +350,7 @@ def image_generator(path_list,
                                                      tel_filter_list=tel_filter_list,
                                                      ev_filter_list=ev_filter_list,
                                                      cam_filter_list=cam_filter_list,
-                                                     rejection_criteria=rejection_criteria,
+                                                     mc_rejection_criteria=mc_rejection_criteria,
                                                      **kwargs):
                     if (max_num_images is not None) and (images_counter >= max_num_images):
                         pyhessio.close_file()
@@ -364,7 +364,7 @@ def image_generator(path_list,
                 if (tel_filter_list is None) or (image2d.meta['tel_id'] in tel_filter_list):
                     if (ev_filter_list is None) or (image2d.meta['event_id'] in ev_filter_list):
                         if (cam_filter_list is None) or (image2d.meta['cam_id'] in cam_filter_list):
-                            if (rejection_criteria is None) or not rejection_criteria(image2d):
+                            if (mc_rejection_criteria is None) or not mc_rejection_criteria(image2d.reference_image):
                                 images_counter += 1
                                 yield image2d
             else:
@@ -655,7 +655,7 @@ def simtel_images_generator(file_path,
                             integrator_lwt=None,
                             integration_correction=False,
                             debug=False,
-                            rejection_criteria=None,
+                            mc_rejection_criteria=None,
                             **kwargs):
     """Return an iterable sequence all calibrated images in `file_path`.
 
@@ -711,12 +711,12 @@ def simtel_images_generator(file_path,
         ``ctapipe.calib.camera.dl1.CameraDL1Calibrator.calibrate()``.
     debug : bool
         Print additional values if ``True``.
-    rejection_criteria : function
-        A function that contains image rejection criteria. This function takes
-        images and return True for images that should be ignored by the generator
-        and False otherwise. It can be used to ignore images that are not in a
-        given range of energy or images with a shower too close to the borders
-        for instance.
+    mc_rejection_criteria : function
+        A function that contains MC image rejection criteria. This function
+        takes Monte Carlo (a.k.a. "reference") images and return True for
+        images that should be ignored by the generator and False otherwise.
+        It can be used to ignore images that are not in a given range of
+        energy or images with a shower too close to the borders for instance.
 
     Notes
     -----
@@ -907,7 +907,7 @@ def simtel_images_generator(file_path,
                         #images_dict["pixels_position"] = pixel_pos_2d
                         #images_dict["pixels_mask"] = mask_2d
 
-                        if (rejection_criteria is None) or not rejection_criteria(image):
+                        if (mc_rejection_criteria is None) or not mc_rejection_criteria(image.reference_image):
                             yield image
 
     # End of file

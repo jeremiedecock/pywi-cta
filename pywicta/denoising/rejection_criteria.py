@@ -56,13 +56,20 @@ class CTAMarsCriteria:
 
         Parameters
         ----------
-        cam_id
-        min_radius_meters
-        max_radius_meters
-        min_npe
-        max_npe
-        min_ellipticity
-        max_ellipticity
+        cam_id : str
+            The camera managed by this filter: "ASTRICam", "CHEC", "DigiCam", "FlashCam", "NectarCam" or "LSTCam".
+        min_radius_meters: float
+            The minimal distance (in meter) from the shower centroid to the camera center required to accept an image.
+        max_radius_meters: float
+            The maximal distance (in meter) from the shower centroid to the camera center required to accept an image.
+        min_npe: float
+            The minimal number of photo electrons required to accept an image.
+        max_npe: float
+            The maximal number of photo electrons required to accept an image.
+        min_ellipticity: float
+            The minimal ellipticity of the shower (i.e. Hillas width / Hillas length) required to accept an image.
+        max_ellipticity: float
+            The maximal ellipticity of the shower (i.e. Hillas width / Hillas length) required to accept an image.
         """
 
         if max_radius_meters is None:
@@ -106,10 +113,24 @@ class CTAMarsCriteria:
         self.min_num_pixels = min_num_pixels
 
     def hillas_parameters(self, image):
+        """Return Hillas parameters of the given ``image``.
+
+        Parameters
+        ----------
+        image: array_like
+            The image to parametrize.
+            It should be a 1D Numpy array (i.e. a *ctapipe* compatible image).
+
+        Returns
+        -------
+        tuple
+            Hillas parameters of ``image``.
+
+        """
         hillas_params = get_hillas_parameters(self.geom1d, image, self.hillas_implementation)
         return hillas_params
 
-    def hillas_ellipticity(self, image, hillas_params):
+    def hillas_ellipticity(self, hillas_params):
         length = hillas_params.length.value
         width = hillas_params.width.value
 
@@ -120,20 +141,19 @@ class CTAMarsCriteria:
 
         return ellipticity
 
-    def hillas_centroid_dist(self, image, hillas_params):
+    def hillas_centroid_dist(self, hillas_params):
         x = hillas_params.cen_x.value
         y = hillas_params.cen_y.value
 
         return math.sqrt(x**2 + y**2)
 
-    def __call__(self, images2d):
-        ref_image_2d = images2d.reference_image  # TODO !!!!!!!!!!
-        ref_image_1d = geometry_converter.image_2d_to_1d(ref_image_2d, self.cam_id)
-        hillas_params = self.hillas_parameters(ref_image_1d)
+    def __call__(self, image_2d):
+        image_1d = geometry_converter.image_2d_to_1d(image_2d, self.cam_id)
+        hillas_params = self.hillas_parameters(image_1d)
 
-        npe_contained = self.min_npe < np.nansum(ref_image_1d) < self.max_npe
-        ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(ref_image_1d, hillas_params) < self.max_ellipticity
-        radius_contained = self.min_radius < self.hillas_centroid_dist(ref_image_1d, hillas_params) < self.max_radius
-        num_pixels_contained = self.min_num_pixels <= np.sum(ref_image_1d > 0)
+        npe_contained = self.min_npe < np.nansum(image_1d) < self.max_npe
+        ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(image_1d, hillas_params) < self.max_ellipticity
+        radius_contained = self.min_radius < self.hillas_centroid_dist(image_1d, hillas_params) < self.max_radius
+        num_pixels_contained = self.min_num_pixels <= np.sum(image_1d > 0)
 
         return not (npe_contained and ellipticity_contained and radius_contained and num_pixels_contained)

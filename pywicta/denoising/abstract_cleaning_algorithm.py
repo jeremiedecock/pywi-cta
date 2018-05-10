@@ -174,7 +174,7 @@ class AbstractCleaningAlgorithm(object):
                                      tel_filter_list=tel_id,
                                      ev_filter_list=event_id,
                                      cam_filter_list=[cam_id],
-                                     rejection_criteria=rejection_criteria,
+                                     mc_rejection_criteria=rejection_criteria,
                                      ctapipe_format=False,
                                      integrator='LocalPeakIntegrator',
                                      integrator_window_width=integrator_window_width,
