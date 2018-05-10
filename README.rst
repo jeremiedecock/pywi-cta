@@ -27,6 +27,25 @@ PyWI-CTA is a ctapipe_ wrapper for PyWI_.
 
     This project is in beta stage.
 
+Features
+========
+
+The PyWI library contains:
+
+* wavelet transform and wavelet filtering functions for image multiresolution
+  analysis and filtering;
+* additional filter to remove some image components (non-significant pixels
+  clusters);
+* a set of generic filtering performance estimators (MSE, NRMSE, SSIM, PSNR,
+  image moment's difference), some relying on the scikit-image Python library
+  (supplementary estimators can be easily added to meet particular needs);
+* a graphical user interface to visualize the filtering process in the wavelet
+  transformed space;
+* an Evolution Strategies (ES) algorithm known in the mathematical optimization
+  community for its good convergence rate on generic derivative-free continuous
+  global optimization problems (Beyer, H. G. (2013) "The theory of evolution
+  strategies", Springer Science & Business Media);
+* additional tools to manage and monitor the parameter optimization.
 
 Dependencies
 ============
