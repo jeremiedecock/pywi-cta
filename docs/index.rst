@@ -21,7 +21,8 @@ Contents:
    API <api>
    developer
 
-* Online documentation: https://jeremiedecock.github.io/pywi-cta/
+* Web site: http://cta.pywi.org/
+* Online documentation: http://cta.pywi.org/docs/
 * Source code: https://github.com/jeremiedecock/pywi-cta
 * Issue tracker: https://github.com/jeremiedecock/pywi-cta/issues
 * PyWI-CTA on PyPI: https://pypi.python.org/pypi/pywicta
