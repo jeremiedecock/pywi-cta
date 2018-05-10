@@ -20,6 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""A set of functions to assess image cleaning algorithms.
+
+.. warning::
+
+    This module may be re-written soon (with API changes)...
+"""
+
 __all__ = ['normalize_array',
            'metric_mse',
            'metric_nrmse',
@@ -62,6 +69,7 @@ from skimage.measure import compare_nrmse as nrmse
 ###############################################################################
 
 FAILURE_SCORE = float('nan')                   # TODO: nan of inf ?
+DEBUG = False
 
 ###############################################################################
 # EXCEPTIONS                                                                  #
@@ -697,7 +705,8 @@ def metric_delta_psi(input_img, output_image, reference_image, geom, **kwargs):
 
         normalized_delta_psi_deg = norm_angle_diff(math.degrees(delta_psi_rad))
     except Exception as e:
-        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        if DEBUG:
+            traceback.print_tb(e.__traceback__, file=sys.stdout)
         print(e)
         normalized_delta_psi_deg = float('nan')
 
@@ -833,7 +842,8 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
                         #('hillas' + str(hillas_implementation) + '_delta_miss'    + suffix_str, delta_miss)
                      ))
     except Exception as e:
-        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        if DEBUG:
+            traceback.print_tb(e.__traceback__, file=sys.stdout)
         print(e)
 
         if "kill" in kwargs and kwargs["kill"]:
@@ -911,7 +921,8 @@ def metric_kill_isolated_pixels(input_img, output_image, reference_image, **kwar
                         ('kill_isolated_pixels_delta_abs_pe',     float('nan')),
                         ('kill_isolated_pixels_delta_num_pixels', float('nan'))
                      ))
-        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        if DEBUG:
+            traceback.print_tb(e.__traceback__, file=sys.stdout)
         print(e)
 
     Score = collections.namedtuple('Score', score_dict.keys())
@@ -951,7 +962,8 @@ def metric_roc(input_img, output_image, reference_image, **kwargs):
                         ('roc_true_negatives',  float('nan')),
                         ('roc_false_negatives', float('nan'))
                      ))
-        #traceback.print_tb(e.__traceback__, file=sys.stdout)
+        if DEBUG:
+            traceback.print_tb(e.__traceback__, file=sys.stdout)
         print(e)
 
     Score = collections.namedtuple('Score', score_dict.keys())
