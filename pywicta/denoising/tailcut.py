@@ -21,16 +21,14 @@
 # THE SOFTWARE.
 
 """
-Denoise FITS and PNG images with the tailcut algorithm.
+Denoise images with the tail-cut algorithm.
 
-Example usages:
-  ./denoising_with_tailcut.py -h
-  ./denoising_with_tailcut.py -T 0.5 -t 0.1 ./test.fits
-  ./denoising_with_tailcut.py -T 0.5 -t 0.1 ./test.fits
-  ipython3 -- ./denoising_with_tailcut.py -t 0.0001 -s ./test.fits
-
-This snippet requires Numpy, Matplotlib and PIL/Pillow Python libraries.
+Note
+----
+    See :mod:`ctapipe.image.cleaning.tailcuts_clean`.
 """
+
+__all__ = ["Tailcut"]
 
 import argparse
 
@@ -38,13 +36,14 @@ from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgori
 
 from pywicta.io import geometry_converter
 
-from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters as scipy_kill_isolated_pixels
+from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters as scipy_pixels_clusters_filtering
 from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters_stats
 from pywi.processing.filtering.pixel_clusters import number_of_pixels_clusters
 
 from ctapipe.image.cleaning import tailcuts_clean
 
 class Tailcut(AbstractCleaningAlgorithm):
+    """A tail-cut image cleaning wrapper."""
 
     def __init__(self):
         super(Tailcut, self).__init__()
@@ -54,17 +53,60 @@ class Tailcut(AbstractCleaningAlgorithm):
                     input_img,
                     high_threshold=10.,
                     low_threshold=8.,
-                    kill_isolated_pixels=False,
+                    pixels_clusters_filtering="off",
                     verbose=False,
                     cam_id=None,
                     output_data_dict=None,
                     **kwargs):
-        """Apply ctapipe's tail-cut image cleaning on ``.
+        """Apply ctapipe's tail-cut image cleaning on ``input_img``.
 
+        Note
+        ----
+            The main difference with :mod:`ctapipe.image.cleaning.tailcuts_clean` is that here the cleaning function
+            takes 2D Numpy arrays.
+
+        Parameters
+        ----------
+        input_img : array_like
+            The image to clean. Should be a **2D** Numpy array.
+        high_threshold : float
+            The *core threshold* (a.k.a. *picture threshold*).
+        low_threshold : float
+            The *boundary threshold*.
+        pixels_clusters_filtering : str
+            Defines the method used to remove isolated pixels after the tail-cut image cleaning.
+            Accepted values are: "off", "scipy" or "mars".
+
+            - "off": don't apply any filtering after the tail-cut image cleaning.
+            - "scipy": keep only the largest cluster of pixels after the tail-cut image cleaning.
+              See :mod:`pywi.processing.filtering.pixel_clusters` for more information.
+            - "mars": apply the same filtering than in CTA-Mars analysis, keep only *significant core pixels* that have
+              at least two others *significant core pixels* among its neighbors (a *significant core pixels* is a pixel
+              above the *core threshold*).
+
+        verbose : bool
+            Print additional messages if ``True``.
+        cam_id : str
+            The camera ID from which ``input_img`` came from: "ASTRICam", "CHEC", "DigiCam", "FlashCam", "NectarCam" or
+            "LSTCam".
+        output_data_dict : dict
+            An optional dictionary used to transmit internal information to the caller.
+
+        Returns
+        -------
+        array_like
+            The ``input_img`` after tail-cut image cleaning. This is a **2D** Numpy array (i.e. it should be converted
+            with :func:`pywicta.io.geometry_converter.image_2d_to_1d` before any usage in ctapipe).
         """
 
         if cam_id is None:
             raise Exception("cam_id have to be defined")    # TODO
+
+        if not (pixels_clusters_filtering.lower() in ("off", "scipy", "mars")):
+            raise ValueError('pixels_clusters_filtering = {}. Accepted values are: "off", "scipy" or "mars".'.format(pixels_clusters_filtering))
+
+        # If low_threshold > high_threshold then low_threshold = high_threshold
+        low_threshold = min(high_threshold, low_threshold)
 
         # 2D ARRAY (FITS IMAGE) TO CTAPIPE IMAGE ###############
 
@@ -73,10 +115,21 @@ class Tailcut(AbstractCleaningAlgorithm):
 
         # APPLY TAILCUT CLEANING ##############################
 
-        mask = tailcuts_clean(geom_1d,
-                              img_1d,
-                              picture_thresh=high_threshold,
-                              boundary_thresh=low_threshold)
+        if pixels_clusters_filtering.lower() == "mars":
+            if verbose:
+                print("Mars pixels clusters filtering")
+            mask = tailcuts_clean(geom_1d,
+                                  img_1d,
+                                  picture_thresh=high_threshold,
+                                  boundary_thresh=low_threshold,
+                                  keep_isolated_pixels=False,
+                                  min_number_picture_neighbors=2)
+        else:
+            mask = tailcuts_clean(geom_1d,
+                                  img_1d,
+                                  picture_thresh=high_threshold,
+                                  boundary_thresh=low_threshold,
+                                  keep_isolated_pixels=True)
         img_1d[mask == False] = 0
 
         # CTAPIPE IMAGE TO 2D ARRAY (FITS IMAGE) ###############
@@ -94,10 +147,10 @@ class Tailcut(AbstractCleaningAlgorithm):
             output_data_dict["img_cleaned_islands_delta_num_pixels"] = img_cleaned_islands_delta_num_pixels
             output_data_dict["img_cleaned_num_islands"] = img_cleaned_num_islands
 
-        if kill_isolated_pixels:
+        if pixels_clusters_filtering.lower() == "scipy":
             if verbose:
-                print("Kill isolated pixels")
-            cleaned_img_2d = scipy_kill_isolated_pixels(cleaned_img_2d)
+                print("Scipy pixels clusters filtering")
+            cleaned_img_2d = scipy_pixels_clusters_filtering(cleaned_img_2d)
 
         return cleaned_img_2d
 
@@ -114,8 +167,15 @@ def main():
     parser.add_argument("--low-threshold", "-t", type=float, default=0, metavar="FLOAT", 
                         help="The 'low' threshold value")
 
-    parser.add_argument("--kill-isolated-pixels", action="store_true",
-                        help="Suppress isolated pixels in the support (scipy implementation)")
+    clusters_help_str = ('Defines the method used to remove isolated pixels after the tail-cut image cleaning. '
+                         'Accepted values are: "off" (don\'t apply any filtering after the tail-cut image cleaning), '
+                         '"scipy" (keep only the largest cluster of pixels after the tail-cut image cleaning), '
+                         '"mars" (apply the same filtering than in CTA-Mars analysis, keep only significant core '
+                         'pixels that have at least two others significant core pixels among its neighbors, a '
+                         'significant core pixels beeing a pixel above the core threshold).')
+
+    parser.add_argument("--clusters", metavar="STRING", default='off',
+                        help=clusters_help_str)
 
     # COMMON OPTIONS
 
@@ -164,7 +224,7 @@ def main():
 
     high_threshold = args.high_threshold
     low_threshold = args.low_threshold
-    kill_isolated_pixels = args.kill_isolated_pixels
+    pixels_clusters_filtering = args.clusters
 
     verbose = args.verbose
     debug = args.debug
@@ -187,7 +247,7 @@ def main():
     cleaning_function_params = {
                 "high_threshold": high_threshold,
                 "low_threshold": low_threshold,
-                "kill_isolated_pixels": kill_isolated_pixels,
+                "pixels_clusters_filtering": pixels_clusters_filtering,
                 "verbose": verbose
             }
 

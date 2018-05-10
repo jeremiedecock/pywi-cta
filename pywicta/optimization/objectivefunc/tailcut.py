@@ -45,7 +45,7 @@ class ObjectiveFunction:
                  optimization_metric="hillas2_delta_psi_norm",
                  max_num_img=None,
                  aggregation_method="mean",
-                 kill_isolated_pixels=False,
+                 pixels_clusters_filtering="off",
                  cleaning_failure_score=90.,  # TODO
                  save_json_intermediate_results=False,
                  rejection_criteria=None):
@@ -67,8 +67,16 @@ class ObjectiveFunction:
             The method to use to aggregate scores from assessed images: "mean" or "median".
         filter_thresholds : list of float
             Thresholds used for the plane filtering.
-        kill_isolated_pixels : bool
-            Suppress isolated pixels in the support.
+        pixels_clusters_filtering : str
+            Defines the method used to remove isolated pixels after the tail-cut image cleaning.
+            Accepted values are: "off", "scipy" or "mars".
+
+            - "off": don't apply any filtering after the tail-cut image cleaning.
+            - "scipy": keep only the largest cluster of pixels after the tail-cut image cleaning.
+              See :mod:`pywi.processing.filtering.pixel_clusters` for more information.
+            - "mars": apply the same filtering than in CTA-Mars analysis, keep only *significant core pixels* that have
+              at least two others *significant core pixels* among its neighbors (a *significant core pixels* is a pixel
+              above the *core threshold*).
         cleaning_failure_score : float
             The score to attribute to images that the cleaning algorithm had failed to process.
         save_json_intermediate_results : bool
@@ -94,7 +102,7 @@ class ObjectiveFunction:
 
         # Wavelet parameters ####################
 
-        self.kill_isolated_pixels = kill_isolated_pixels
+        self.pixels_clusters_filtering = pixels_clusters_filtering
         self.cleaning_failure_score = cleaning_failure_score
 
         # PRE PROCESSING FILTERING ############################################
@@ -105,7 +113,7 @@ class ObjectiveFunction:
         """Return a string representation of the ObjectiveFunction object."""
 
         params_str = "tailcut"
-        params_str += "_{}".format("kill" if self.kill_isolated_pixels else "no-kill")
+        params_str += "_clusters-{}".format(self.pixels_clusters_filtering)
         params_str += "_failure-{}".format(self.cleaning_failure_score)
         params_str += "_agg-{}".format(self.aggregation_method)
         params_str += "_metric-{}".format(self.optimization_metric.lower())
@@ -162,7 +170,7 @@ class ObjectiveFunction:
             # Set "fixed" parameters ######################
 
             algo_params = {
-                "kill_isolated_pixels": self.kill_isolated_pixels,
+                "pixels_clusters_filtering": self.pixels_clusters_filtering,
             }
 
             self.algo_params = algo_params
