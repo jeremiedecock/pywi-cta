@@ -148,6 +148,21 @@ class CTAMarsCriteria:
         return math.sqrt(x**2 + y**2)
 
     def __call__(self, image_2d):
+        """Apply the pre-selection cuts on ``image_2d``.
+
+        Parameters
+        ----------
+        image_2d : array_like
+            The image to evaluate.
+
+        Returns
+        -------
+        bool
+            Returns ``True`` if the image **does not** fulfill the pre-selection cuts (i.e. returns ``True`` if the
+            image should be rejected).
+            Return ``False`` if the image satisfy the pre-selection cuts (i.e. returns ``False`` if the image should be
+            kept).
+        """
         image_1d = geometry_converter.image_2d_to_1d(image_2d, self.cam_id)
         hillas_params = self.hillas_parameters(image_1d)
 
