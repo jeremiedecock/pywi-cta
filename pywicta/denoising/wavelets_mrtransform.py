@@ -22,7 +22,7 @@
 
 __all__ = ['WaveletTransform']
 
-"""Denoise FITS and PNG images with Wavelet Transform.
+"""Wavelet Transform image cleaning.
 
 This script use mr_transform -- a program written CEA/CosmoStat
 (www.cosmostat.org) -- to make Wavelet Transform.
