@@ -20,51 +20,67 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""
-Denoise FITS and PNG images with the "Null" algorithm (actually does nothing).
+"""Void image cleaning (actually does nothing).
 
-Example usages:
-  ./pywicta/denoising/null.py -h
-  ./pywicta/denoising/null.py ./test.fits
-  ipython3 -- ./pywicta/denoising/null.py ./test.fits
+This module is only intended to return data about *reference* (noise free) images
+in the :mod:`utils.benchmark_json_to_flat_v2` script.
 """
 
 import argparse
 import copy
-import json
 import numpy as np
 
-import pywicta.denoising
 from pywicta.denoising.abstract_cleaning_algorithm import AbstractCleaningAlgorithm
+
+from pywi.processing.filtering.pixel_clusters import filter_pixels_clusters_stats
+from pywi.processing.filtering.pixel_clusters import number_of_pixels_clusters
 
 
 class Null(AbstractCleaningAlgorithm):
+    """Bogus image cleaning procedure (actually does nothing).
+
+    This module is only intended to return data about *reference* (noise free) images
+    in the :mod:`utils.benchmark_json_to_flat_v2` script.
+    """
 
     def __init__(self):
         super(Null, self).__init__()
         self.label = "Null"  # Name to show in plots
 
     def clean_image(self, img, output_data_dict=None, **kwargs):
+
+        # Add (in the output dictionary) information about islands (pixels clusters) for the reference image
+        if output_data_dict is not None:
+            cleaned_image = np.copy(img)
+
+            kill_islands = filter_pixels_clusters_stats(cleaned_image)
+            img_cleaned_islands_delta_pe, img_cleaned_islands_delta_abs_pe, img_cleaned_islands_delta_num_pixels = kill_islands
+            img_cleaned_num_islands = number_of_pixels_clusters(cleaned_image)
+
+            output_data_dict["img_cleaned_islands_delta_pe"] = img_cleaned_islands_delta_pe
+            output_data_dict["img_cleaned_islands_delta_abs_pe"] = img_cleaned_islands_delta_abs_pe
+            output_data_dict["img_cleaned_islands_delta_num_pixels"] = img_cleaned_islands_delta_num_pixels
+            output_data_dict["img_cleaned_num_islands"] = img_cleaned_num_islands
+
         return copy.deepcopy(img)
 
 
 def main():
-
     # PARSE OPTIONS ###########################################################
 
     parser = argparse.ArgumentParser(description='"Denoise" FITS images with the "null" algorithm (which does nothing but which is usefull for CSV conversion).')
 
 
-    parser.add_argument("--max-images", type=int, metavar="INTEGER", 
+    parser.add_argument("--max-images", type=int, metavar="INTEGER",
                         help="The maximum number of images to process")
 
-    parser.add_argument("--telid", type=int, metavar="INTEGER", 
+    parser.add_argument("--telid", type=int, metavar="INTEGER",
                         help="Only process images from the specified telescope")
 
-    parser.add_argument("--camid", metavar="STRING", 
+    parser.add_argument("--camid", metavar="STRING",
                         help="Only process images from the specified camera")
 
-    parser.add_argument("--benchmark", "-b", metavar="STRING", 
+    parser.add_argument("--benchmark", "-b", metavar="STRING",
                         help="The benchmark method to use to assess the algorithm for the"
                              "given images")
 

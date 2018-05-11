@@ -20,13 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""
-Denoise FITS and PNG images with the "Null" algorithm (actually does nothing).
+"""Void image cleaning (actually does nothing).
 
-Example usages:
-  ./pywicta/denoising/null.py -h
-  ./pywicta/denoising/null.py ./test.fits
-  ipython3 -- ./pywicta/denoising/null.py ./test.fits
+This module is only used to return data about *input* (noised) images in the
+:mod:`utils.benchmark_json_to_flat_v2` script.
 """
 
 import argparse
