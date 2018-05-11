@@ -10,14 +10,16 @@ The library provides classes which are usable by third party tools.
 
     This project is still in *beta* stage, so the API is not finalized yet.
 
-Benchmark package:
+Benchmark package
+-----------------
 
 .. toctree::
    :maxdepth: 1
 
    pywicta.benchmark.assess <api_benchmark_assess>
 
-Denoising package:
+Denoising package
+-----------------
 
 .. toctree::
    :maxdepth: 1
@@ -26,9 +28,11 @@ Denoising package:
    pywicta.denoising.wavelets_mrtransform <api_filter_wavelet_mrtransform>
    pywicta.denoising.tailcut <api_filter_tailcut>
    pywicta.denoising.abstract_cleaning_algorithm <api_filter_abstract_cleaning_algorithm>
+   pywicta.denoising.rejection_criteria <api_filter_rejection_criteria>
    pywicta.denoising.inverse_transform_sampling <api_filter_inverse_transform_sampling>
 
-Image package:
+Image package
+-------------
 
 .. toctree::
    :maxdepth: 1
@@ -36,7 +40,8 @@ Image package:
    pywicta.image.hillas_parameters <api_image_hillas_parameters>
    pywicta.image.signal_to_border_distance <api_image_signal_to_border_distance>
 
-I/O package:
+I/O package
+-----------
 
 .. toctree::
    :maxdepth: 1
@@ -46,7 +51,8 @@ I/O package:
    pywicta.io.simtel <api_io_simtel>
    pywicta.io.simtel_to_fits <api_io_simtel_to_fits>
 
-Optimization package:
+Optimization package
+--------------------
 
 .. toctree::
    :maxdepth: 1

@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""This module implements useful pre-selection cuts."""
+
 import math
 
 import numpy as np
@@ -28,6 +30,39 @@ from pywicta.image.hillas_parameters import get_hillas_parameters
 from pywicta.io import geometry_converter
 
 class CTAMarsCriteria:
+    """CTA Mars like preselection cuts.
+
+    Note
+    ----
+
+    average_camera_radius_meters = math.tan(math.radians(average_camera_radius_degree)) * foclen
+
+    The average camera radius values are, in degrees :
+
+    - LST: 2.31
+    - Nectar: 4.05
+    - Flash: 3.95
+    - SST-1M: 4.56
+    - GCT-CHEC-S: 3.93
+    - ASTRI: 4.67
+
+    Parameters
+    ----------
+    cam_id : str
+        The camera managed by this filter: "ASTRICam", "CHEC", "DigiCam", "FlashCam", "NectarCam" or "LSTCam".
+    min_radius_meters: float
+        The minimal distance (in meter) from the shower centroid to the camera center required to accept an image.
+    max_radius_meters: float
+        The maximal distance (in meter) from the shower centroid to the camera center required to accept an image.
+    min_npe: float
+        The minimal number of photo electrons required to accept an image.
+    max_npe: float
+        The maximal number of photo electrons required to accept an image.
+    min_ellipticity: float
+        The minimal ellipticity of the shower (i.e. Hillas width / Hillas length) required to accept an image.
+    max_ellipticity: float
+        The maximal ellipticity of the shower (i.e. Hillas width / Hillas length) required to accept an image.
+    """
 
     def __init__(self,
                  cam_id,
@@ -38,39 +73,6 @@ class CTAMarsCriteria:
                  min_ellipticity=0.1,
                  max_ellipticity=0.6,
                  min_num_pixels=3):
-        """CTA Mars like preselection cuts.
-
-        Note
-        ----
-
-        average_camera_radius_meters = math.tan(math.radians(average_camera_radius_degree)) * foclen
-
-        The average camera radius values are, in degrees :
-
-        - LST: 2.31
-        - Nectar: 4.05
-        - Flash: 3.95
-        - SST-1M: 4.56
-        - GCT-CHEC-S: 3.93
-        - ASTRI: 4.67
-
-        Parameters
-        ----------
-        cam_id : str
-            The camera managed by this filter: "ASTRICam", "CHEC", "DigiCam", "FlashCam", "NectarCam" or "LSTCam".
-        min_radius_meters: float
-            The minimal distance (in meter) from the shower centroid to the camera center required to accept an image.
-        max_radius_meters: float
-            The maximal distance (in meter) from the shower centroid to the camera center required to accept an image.
-        min_npe: float
-            The minimal number of photo electrons required to accept an image.
-        max_npe: float
-            The maximal number of photo electrons required to accept an image.
-        min_ellipticity: float
-            The minimal ellipticity of the shower (i.e. Hillas width / Hillas length) required to accept an image.
-        max_ellipticity: float
-            The maximal ellipticity of the shower (i.e. Hillas width / Hillas length) required to accept an image.
-        """
 
         if max_radius_meters is None:
             RADIUS_CONSTRAINT_RATIO = 0.8
