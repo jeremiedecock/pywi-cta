@@ -1068,7 +1068,7 @@ def metric_clean_failure(input_img, output_image, reference_image, **kwargs):
 
 # Pre-selection cuts ##########################################################
 
-def metric_pre_selection_cuts(input_img, output_image, reference_image, geom, **kwargs):
+def metric_pre_selection_cuts_failure(input_img, output_image, reference_image, geom, **kwargs):
 
     rejection_criteria = CTAMarsCriteria(cam_id=geom.cam_id)
 
@@ -1134,9 +1134,10 @@ BENCHMARK_DICT = {
     "hillas":                    (metric_hillas,),
     "kill_isolated_pixels":      (metric_kill_isolated_pixels,),
     "metric_clean_failure":      (metric_clean_failure,),
-    "metric_pre_selection_cuts": (metric_pre_selection_cuts,),
+    "metric_pre_selection_cuts_failure": (metric_pre_selection_cuts_failure,),
     "metric_roc":                (metric_roc,),
-    "all":                       (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_ssim, metric_psnr, metric_hillas_delta, metric_hillas_delta2, metric_hillas, metric_kill_isolated_pixels, metric_clean_failure, metric_pre_selection_cuts, metric_roc)
+#    "all":                       (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_ssim, metric_psnr, metric_hillas_delta, metric_hillas_delta2, metric_hillas, metric_kill_isolated_pixels, metric_clean_failure, metric_pre_selection_cuts_failure, metric_roc)
+    "all":                       (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_clean_failure, metric_pre_selection_cuts_failure, metric_roc)
 }
 
 METRIC_NAME_DICT = {
@@ -1154,7 +1155,7 @@ METRIC_NAME_DICT = {
     metric_hillas:               "hillas",
     metric_kill_isolated_pixels: "kill_isolated_pixels",
     metric_clean_failure:        "metric_clean_failure",
-    metric_pre_selection_cuts:   "metric_pre_selection_cuts",
+    metric_pre_selection_cuts_failure: "metric_pre_selection_cuts_failure",
     metric_roc:                  "metric_roc"
 }
 
@@ -1177,9 +1178,9 @@ def assess_image_cleaning(input_img, output_img, reference_img, benchmark_method
     - "hillas":                    :func:`metric_hillas`
     - "kill_isolated_pixels":      :func:`metric_kill_isolated_pixels`
     - "metric_clean_failure":      :func:`metric_clean_failure`
-    - "metric_pre_selection_cuts": :func:`metric_pre_selection_cuts`
+    - "metric_pre_selection_cuts_failure": :func:`metric_pre_selection_cuts_failure`
     - "metric_roc":                :func:`metric_roc`
-    - "all":                       :func:`metric_mse`, :func:`metric_nrmse`, :func:`metric2`, :func:`metric3`, :func:`metric4`, :func:`metric_ssim`, :func:`metric_psnr`, :func:`metric_hillas_delta`, :func:`metric_hillas_delta2`, :func:`metric_hillas`, :func:`metric_kill_isolated_pixels`, :func:`metric_clean_failure`, :func:`metric_pre_selection_cuts`, :func:`metric_roc`
+    - "all":                       :func:`metric_mse`, :func:`metric_nrmse`, :func:`metric2`, :func:`metric3`, :func:`metric4`, :func:`metric_ssim`, :func:`metric_psnr`, :func:`metric_hillas_delta`, :func:`metric_hillas_delta2`, :func:`metric_hillas`, :func:`metric_kill_isolated_pixels`, :func:`metric_clean_failure`, :func:`metric_pre_selection_cuts_failure`, :func:`metric_roc`
 
     Parameters
     ----------
