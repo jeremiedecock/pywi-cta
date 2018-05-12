@@ -149,7 +149,7 @@ class CTAMarsCriteria:
 
         return math.sqrt(x**2 + y**2)
 
-    def __call__(self, image_2d, verbose=True):
+    def __call__(self, image_2d, verbose=False):
         """Apply the pre-selection cuts on ``image_2d``.
 
         Parameters
@@ -169,8 +169,8 @@ class CTAMarsCriteria:
         hillas_params = self.hillas_parameters(image_1d)
 
         npe_contained = self.min_npe < np.nansum(image_1d) < self.max_npe
-        ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(image_1d, hillas_params) < self.max_ellipticity
-        radius_contained = self.min_radius < self.hillas_centroid_dist(image_1d, hillas_params) < self.max_radius
+        ellipticity_contained = self.min_ellipticity < self.hillas_ellipticity(hillas_params) < self.max_ellipticity
+        radius_contained = self.min_radius < self.hillas_centroid_dist(hillas_params) < self.max_radius
         num_pixels_contained = self.min_num_pixels <= np.sum(image_1d > 0)
 
         if verbose:
