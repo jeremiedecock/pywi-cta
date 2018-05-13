@@ -145,6 +145,7 @@ class WaveletTransform(AbstractCleaningAlgorithm):
                     noise_distribution=None,
                     tmp_files_directory=".",
                     output_data_dict=None,
+                    clusters_threshold=0,
                     **kwargs):
         """Clean the `input_image` image.
 
@@ -233,7 +234,7 @@ class WaveletTransform(AbstractCleaningAlgorithm):
             output_data_dict["img_cleaned_num_islands"] = img_cleaned_num_islands
 
         if kill_isolated_pixels:
-            cleaned_image = scipy_kill_isolated_pixels(cleaned_image)
+            cleaned_image = scipy_kill_isolated_pixels(cleaned_image, threshold=clusters_threshold)
             if DEBUG:
                 images.plot(cleaned_image, "Cleaned image after island kill")
 
@@ -258,7 +259,10 @@ def main():
 
     CAM_IDS = ("ASTRICam", "CHEC", "DigiCam", "FlashCam", "NectarCam", "LSTCam")
 
-    parser.add_argument("--max-images", type=int, metavar="INTEGER", 
+    parser.add_argument("--cluster-threshold", type=float, metavar="FLOAT",
+                        help="The threshold for the pixels clusters filtering")
+
+    parser.add_argument("--max-images", type=int, metavar="INTEGER",
                         help="The maximum number of images to process")
 
     parser.add_argument("--telid", type=int, metavar="INTEGER", 
@@ -294,6 +298,7 @@ def main():
 
     verbose = args.verbose
     debug = args.debug
+    cluster_threshold = args.cluster_threshold           # TODO: move this argument in PyWI
     max_images = args.max_images
     tel_id = args.telid
     event_id = args.eventid
@@ -355,7 +360,8 @@ def main():
             "kill_isolated_pixels": kill_isolated_pixels,
             "noise_distribution": noise_distribution,
             "tmp_files_directory": tmp_files_directory,
-            "verbose": verbose
+            "verbose": verbose,
+            "cluster_threshold": cluster_threshold
         }
 
     cleaning_algorithm = WaveletTransform()

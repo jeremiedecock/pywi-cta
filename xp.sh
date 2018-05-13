@@ -354,8 +354,9 @@ lstcam_grid_prod3b_north)
     # 2018/04/09
     WT_TH1="3" ;
     WT_TH2="0" ;
-    WT_MRT_PARAMS="-f hard_filtering -t ${WT_TH1},${WT_TH2} -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_${WT_TH1}_${WT_TH2}_-L_drop--kill-isolated-pixels" ;
+    CLUSTER_TH="0.2" ;
+    WT_MRT_PARAMS="-f hard_filtering -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_${WT_TH1}_${WT_TH2}_cluster-th-${CLUSTER_TH}_-L_drop--kill-isolated-pixels" ;
 
     ## 2018/04/12
     #WT_TH1="3" ;
