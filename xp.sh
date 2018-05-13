@@ -361,8 +361,9 @@ lstcam_grid_prod3b_north)
     ## 2018/04/12
     #WT_TH1="3" ;
     #WT_TH2="0.2" ;
-    #WT_MRT_PARAMS="-f cluster_filtering -t ${WT_TH1},${WT_TH2} -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    #WT_MRT_LABEL="WT_MRT_-f_cluster_filtering_-t_${WT_TH1}_${WT_TH2}_-L_mask" ;
+    #CLUSTER_TH="0" ;
+    #WT_MRT_PARAMS="-f cluster_filtering -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    #WT_MRT_LABEL="WT_MRT_-f_cluster_filtering_-t_${WT_TH1}_${WT_TH2}_cluster-th-${CLUSTER_TH}_-L_mask" ;
     ;;
 *)
     echo "Unknown option" ;
