@@ -30,15 +30,16 @@ PyWI-CTA is a ctapipe_ wrapper for PyWI_.
 Features
 ========
 
-The PyWI library contains:
+The PyWI and PyWI-CTA libraries contain:
 
 * wavelet transform and wavelet filtering functions for image multiresolution
   analysis and filtering;
 * additional filter to remove some image components (non-significant pixels
   clusters);
-* a set of generic filtering performance estimators (MSE, NRMSE, SSIM, PSNR,
-  image moment's difference), some relying on the scikit-image Python library
-  (supplementary estimators can be easily added to meet particular needs);
+* a set of generic filtering performance estimators (MSE, angular precision,
+  energy loss, contamination rate, ...), some relying on the scikit-image
+  Python library (supplementary estimators can be easily added to meet
+  particular needs);
 * a graphical user interface to visualize the filtering process in the wavelet
   transformed space;
 * an Evolution Strategies (ES) algorithm known in the mathematical optimization
