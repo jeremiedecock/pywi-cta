@@ -351,19 +351,45 @@ lstcam_grid_prod3b_north)
 
     # MR_TRANSFORM ############################################################
 
-    # 2018/04/09
-    WT_TH1="3" ;
-    WT_TH2="0" ;
-    CLUSTER_TH="0.2" ;
-    WT_MRT_PARAMS="-f hard_filtering -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L drop --kill-isolated-pixels --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    WT_MRT_LABEL="WT_MRT_-f_hard_filtering_-t_${WT_TH1}_${WT_TH2}_cluster-th-${CLUSTER_TH}_-L_drop--kill-isolated-pixels" ;
+    ## 2018/04/09 (cluster th = 0.2)
+    #WT_TH1="3" ;
+    #WT_TH2="0" ;
+    #CLUSTER_TH="0.2" ;
+    #FILTERING_METH="hard_filtering" ;
+    #LAST_SCALE_METH="drop" ;
+    #PIXELS_CLUSTERS="--kill-isolated-pixels" ;
+    #WT_MRT_PARAMS="-f ${FILTERING_METH} -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L ${LAST_SCALE_METH} ${PIXELS_CLUSTERS} --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    #WT_MRT_LABEL="WT_MRT_-f_${FILTERING_METH}_-t_${WT_TH1}_${WT_TH2}_--cluster-threshold_${CLUSTER_TH}_-L_${LAST_SCALE_METH}_${PIXELS_CLUSTERS}" ;
 
-    ## 2018/04/12
+    ## 2018/04/12 (Ref. Orasy)
     #WT_TH1="3" ;
     #WT_TH2="0.2" ;
     #CLUSTER_TH="0" ;
-    #WT_MRT_PARAMS="-f cluster_filtering -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L mask --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
-    #WT_MRT_LABEL="WT_MRT_-f_cluster_filtering_-t_${WT_TH1}_${WT_TH2}_cluster-th-${CLUSTER_TH}_-L_mask" ;
+    #FILTERING_METH="hard_filtering" ;
+    #LAST_SCALE_METH="drop" ;
+    #PIXELS_CLUSTERS="--kill-isolated-pixels" ;
+    #WT_MRT_PARAMS="-f ${FILTERING_METH} -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L ${LAST_SCALE_METH} ${PIXELS_CLUSTERS} --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    #WT_MRT_LABEL="WT_MRT_-f_${FILTERING_METH}_-t_${WT_TH1}_${WT_TH2}_--cluster-threshold_${CLUSTER_TH}_-L_${LAST_SCALE_METH}_${PIXELS_CLUSTERS}" ;
+
+    ## 2018/06/07
+    #WT_TH1="3" ;
+    #WT_TH2="0.2" ;
+    #CLUSTER_TH="0" ;
+    #FILTERING_METH="cluster_filtering" ;
+    #LAST_SCALE_METH="posmask" ;
+    #PIXELS_CLUSTERS="" ;
+    #WT_MRT_PARAMS="-f ${FILTERING_METH} -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L ${LAST_SCALE_METH} ${PIXELS_CLUSTERS} --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    #WT_MRT_LABEL="WT_MRT_-f_${FILTERING_METH}_-t_${WT_TH1}_${WT_TH2}_--cluster-threshold_${CLUSTER_TH}_-L_${LAST_SCALE_METH}_${PIXELS_CLUSTERS}" ;
+
+    # 2018/06/07
+    WT_TH1="3" ;
+    WT_TH2="0.2" ;
+    CLUSTER_TH="0" ;
+    FILTERING_METH="hard_filtering" ;
+    LAST_SCALE_METH="posmask" ;
+    PIXELS_CLUSTERS="--kill-isolated-pixels" ;
+    WT_MRT_PARAMS="-f ${FILTERING_METH} -t ${WT_TH1},${WT_TH2} --cluster-threshold=${CLUSTER_TH} -L ${LAST_SCALE_METH} ${PIXELS_CLUSTERS} --noise-cdf-file=${WT_NAN_NOISE_CDF_FILE} --tmp-dir=${MR_TMP_DIR}" ;
+    WT_MRT_LABEL="WT_MRT_-f_${FILTERING_METH}_-t_${WT_TH1}_${WT_TH2}_--cluster-threshold_${CLUSTER_TH}_-L_${LAST_SCALE_METH}_${PIXELS_CLUSTERS}" ;
     ;;
 *)
     echo "Unknown option" ;
