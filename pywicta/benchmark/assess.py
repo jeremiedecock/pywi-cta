@@ -715,6 +715,42 @@ def metric_delta_psi(input_img, output_image, reference_image, geom, **kwargs):
     return normalized_delta_psi_deg
 
 
+# Hillas delta psi ############################################################
+
+def metric_delta_psi2(input_img, output_image, reference_image, geom, **kwargs):
+    r"""Compute the score of ``output_image`` regarding ``reference_image``
+    with the *Psi Hillas parameters*.
+
+    It works exactly like :func:`metric_delta_psi` except that isolated
+    pixels are removed from the ``reference_image`` before the evaluation
+    (using :func:`pywi.processing.filtering.pixel_clusters.filter_pixels_clusters`).
+
+    Parameters
+    ----------
+    input_img: 2D ndarray
+        The RAW original image.
+    output_image: 2D ndarray
+        The cleaned image returned by the image cleanning algorithm to assess.
+    reference_image: 2D ndarray
+        The actual clean image (the best result that can be expected for the
+        image cleaning algorithm).
+    kwargs: dict
+        Additional options.
+
+    Returns
+    -------
+    namedtuple
+        The score of the image cleaning algorithm for the given image.
+    """
+
+    kwargs["kill"] = True
+    kwargs["kill_threshold"] = 0.
+
+    scores = metric_delta_psi(input_img, output_image, reference_image, geom, **kwargs)
+
+    return scores
+
+
 # Hillas delta ################################################################
 
 def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs):
@@ -1129,6 +1165,7 @@ BENCHMARK_DICT = {
     "ssim":                      (metric_ssim,),
     "psnr":                      (metric_psnr,),
     "delta_psi":                 (metric_delta_psi,),
+    "delta_psi2":                (metric_delta_psi2,),
     "hillas_delta":              (metric_hillas_delta,),
     "hillas_delta2":             (metric_hillas_delta2,),
     "hillas":                    (metric_hillas,),
@@ -1137,7 +1174,7 @@ BENCHMARK_DICT = {
     "metric_pre_selection_cuts_failure": (metric_pre_selection_cuts_failure,),
     "metric_roc":                (metric_roc,),
 #    "all":                       (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_ssim, metric_psnr, metric_hillas_delta, metric_hillas_delta2, metric_hillas, metric_kill_isolated_pixels, metric_clean_failure, metric_pre_selection_cuts_failure, metric_roc)
-    "all":                       (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_clean_failure, metric_pre_selection_cuts_failure, metric_roc)
+    "all":                       (metric_mse, metric_nrmse, metric2, metric3, metric4, metric_delta_psi, metric_delta_psi2, metric_clean_failure, metric_pre_selection_cuts_failure, metric_roc)
 }
 
 METRIC_NAME_DICT = {
@@ -1150,6 +1187,7 @@ METRIC_NAME_DICT = {
     metric_ssim:                 "ssim",
     metric_psnr:                 "psnr",
     metric_delta_psi:            "delta_psi",
+    metric_delta_psi2:           "delta_psi2",
     metric_hillas_delta:         "hillas_delta",
     metric_hillas_delta2:        "hillas_delta2",
     metric_hillas:               "hillas",
