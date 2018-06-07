@@ -918,7 +918,7 @@ def metric_hillas_delta2(input_img, output_image, reference_image, geom, **kwarg
     """
 
     kwargs["kill"] = True
-    kwargs["kill_threshold"] = 0.2   # TODO: don't give an hardcoded value
+    kwargs["kill_threshold"] = 0.
 
     scores = metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs)
 
