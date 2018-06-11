@@ -340,6 +340,13 @@ def image_generator(path_list,
 
     images_counter = 0
 
+    if tel_filter_list == []:
+        tel_filter_list = None
+    if ev_filter_list == []:
+        ev_filter_list = None
+    if cam_filter_list == []:
+        cam_filter_list = None
+
     for file_path in image_files_in_paths(path_list):
         if (max_num_images is not None) and (images_counter >= max_num_images):
             break
@@ -639,6 +646,50 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
                        pixels_position=pixel_pos_2d,
                        pixels_mask=mask_2d,
                        meta=metadata)
+
+
+def get_mars_like_default_integrator_config(cam_id):
+    integrator = 'LocalPeakIntegrator'
+    integration_correction = False
+
+    if cam_id == "ASTRICam":
+        integrator_window_width = 1
+        integrator_window_shift = 1
+    elif cam_id == "CHEC":
+        integrator_window_width = 10
+        integrator_window_shift = 5
+    elif cam_id == "DigiCam":
+        integrator_window_width = 5
+        integrator_window_shift = 2
+    elif cam_id == "FlashCam":
+        integrator_window_width = 6
+        integrator_window_shift = 3
+    elif cam_id == "NectarCam":
+        integrator_window_width = 5
+        integrator_window_shift = 2
+    elif cam_id == "LSTCam":
+        integrator_window_width = 5
+        integrator_window_shift = 2
+    else:
+        raise ValueError('Unknown cam_id "{}"'.format(cam_id))
+
+    integrator_t0 = None
+    integrator_sig_amp_cut_hg = None
+    integrator_sig_amp_cut_lg = None
+    integrator_lwt = None
+
+    integrator_config_dict = {
+        "integrator": integrator,
+        "integration_correction": integration_correction,
+        "integrator_window_width": integrator_window_width,
+        "integrator_window_shift": integrator_window_shift,
+        "integrator_t0": integrator_t0,
+        "integrator_sig_amp_cut_hg": integrator_sig_amp_cut_hg,
+        "integrator_sig_amp_cut_lg": integrator_sig_amp_cut_lg,
+        "integrator_lwt": integrator_lwt
+    }
+
+    return integrator_config_dict
 
 
 def simtel_images_generator(file_path,
