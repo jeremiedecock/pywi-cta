@@ -426,8 +426,10 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
 
     # GUESS THE IMAGE GEOMETRY ################################
 
-    x, y = event.inst.pixel_pos[tel_id]
-    foclen = event.inst.optical_foclen[tel_id]
+    x = event.inst.subarray.tel[tel_id].camera.pix_x
+    y = event.inst.subarray.tel[tel_id].camera.pix_y
+
+    foclen = event.inst.subarray.tel[tel_id].optics.equivalent_focal_length
     geom1d = CameraGeometry.guess(x, y, foclen)
 
     # GET IMAGES ##############################################
@@ -436,12 +438,12 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
     mc_pedestal = event.mc.tel[tel_id].pedestal                     # [N channels]
     mc_gain = event.mc.tel[tel_id].dc_to_pe                         # [N channels]
 
-    r0_adc_sums = event.r0.tel[tel_id].adc_sums                     # [N channels]
-    r0_adc_samples = event.r0.tel[tel_id].adc_samples               # [N channels]
+    r0_adc_sums = event.r0.tel[tel_id].image                     # [N channels]
+    r0_adc_samples = event.r0.tel[tel_id].waveform               # [N channels]
 
-    r1_pe_samples = event.r1.tel[tel_id].pe_samples                 # [N channels]
+    r1_pe_samples = event.r1.tel[tel_id].waveform                 # [N channels]
 
-    dl0_pe_samples = event.dl0.tel[tel_id].pe_samples               # [N channels]
+    dl0_pe_samples = event.dl0.tel[tel_id].waveform               # [N channels]
 
     dl1_cleaned_samples = event.dl1.tel[tel_id].cleaned             # [N channels]
     dl1_extracted_samples = event.dl1.tel[tel_id].extracted_samples # [N channels]
@@ -467,7 +469,7 @@ def simtel_event_to_images(event, tel_id, ctapipe_format=False, mix_channels=Tru
     extracted_samples = dl1_extracted_samples
     peakpos = dl1_peakpos
 
-    pixel_pos = event.inst.pixel_pos[tel_id]
+    pixel_pos = (x, y)
 
     cam_id = geom1d.cam_id
 
