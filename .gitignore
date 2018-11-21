@@ -59,6 +59,9 @@ coverage.xml
 *,cover
 .hypothesis/
 
+# PyTest
+.pytest_cache/
+
 # Translations
 *.mo
 *.pot
@@ -95,11 +98,11 @@ celerybeat-schedule
 venv/
 ENV/
 
-# Spyder project settings
-.spyderproject
-
 # PyCharm project settings
 .idea/
+
+# Spyder project settings
+.spyderproject
 
 # Rope project settings
 .ropeproject
