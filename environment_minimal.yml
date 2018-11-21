@@ -1,0 +1,11 @@
+name: pywi-cta
+channels:
+  - cta-observatory
+  - conda-forge
+dependencies:
+  - ctapipe=0.6.1
+  - ctapipe-extra=0.2.*
+  - pyhessio=2.0.1
+  - pip:
+      - pywi
+      - pywicta
