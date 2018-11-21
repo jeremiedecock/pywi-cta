@@ -49,3 +49,4 @@ dependencies:
   - pip:
       - pytest_runner
       - pywi
+      - sphinx-gallery
