@@ -1,51 +1,50 @@
 name: pywi-cta-dev
 channels:
-  - jdhp
   - cta-observatory
   - conda-forge
 dependencies:
-  - python=3.6
-  - ctapipe=0.5.3
+  - astropy
+  - bokeh
+  - docutils
+  - ctapipe=0.6.1
   - ctapipe-extra=0.2.*
+  - cython
+  - gammapy
+  - graphviz
+  - iminuit
   - ipython
   - ipywidgets
-  - cython
   - jupyter
+  - matplotlib
   - notebook
-  - docutils
+  - numba
+  - numpy
+  - numpydoc
+  - pandas
   - pep8
+  - pillow
+  - psutil
+  - pyhessio=2.0.1
+  - pytables
   - pytest
   - pytest-cov
+  - python=3.6
   - readline
+  - scipy
+  - scikit-image
+  - scikit-learn
   - setuptools
   - sphinx
   - sphinx_rtd_theme
   - sphinx-automodapi
   - sphinxcontrib
   - sphinxcontrib-websupport
+  - tqdm
   - traitlets
   - wheel
   - xz
   - yaml
   - zlib
-  - numpy
-  - numpydoc
-  - scipy
-  - scikit-image
-  - pillow
-  - astropy
-  - pandas
-  - matplotlib
-  - bokeh
-  - gammapy
-  - graphviz
-  - iminuit
-  - numba
-  - pyhessio
-  - psutil
-  - scikit-learn
-  - pytables  
-  - tqdm
   - pip:
       - pytest_runner
       - pywi
