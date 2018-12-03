@@ -212,9 +212,9 @@ def extract_images(simtel_file_path,
                     metadata['tel_data'] = len(event.dl0.tels_with_data)
 
                     metadata['foclen'] = quantity_to_tuple(event.inst.subarray.tel[tel_id].optics.equivalent_focal_length, 'm')
-                    metadata['tel_posx'] = quantity_to_tuple(event.inst.tel_pos[tel_id][0], 'm')
-                    metadata['tel_posy'] = quantity_to_tuple(event.inst.tel_pos[tel_id][1], 'm')
-                    metadata['tel_posz'] = quantity_to_tuple(event.inst.tel_pos[tel_id][2], 'm')
+                    metadata['tel_posx'] = quantity_to_tuple(event.inst.subarray.tel_coords[tel_id].x, 'm')
+                    metadata['tel_posy'] = quantity_to_tuple(event.inst.subarray.tel_coords[tel_id].y, 'm')
+                    metadata['tel_posz'] = quantity_to_tuple(event.inst.subarray.tel_coords[tel_id].z, 'm')
 
                     # TODO: Astropy fails to store the following data in FITS files
                     #metadata['uid'] = os.getuid()
