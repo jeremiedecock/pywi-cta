@@ -794,7 +794,9 @@ def simtel_images_generator(file_path,
     # - allowed_tels: select only a subset of telescope, if None, all are read.
 
     file_path = os.path.expanduser(file_path)
-    source = hessio_event_source(file_path, allowed_tels=tel_filter_list)
+
+    tel_filter_set = set() if tel_filter_list is None else set(tel_filter_list)
+    source = hessio_event_source(file_path, allowed_tels=tel_filter_set)
 
     # CONFIGURE THE CALIBRATOR ################################################
 
@@ -931,13 +933,16 @@ def simtel_images_generator(file_path,
 
                         image.meta['ev_count'] = int(event.count)
 
-                        image.meta['run_id'] = int(event.dl0.run_id)
+                        image.meta['run_id'] = int(event.dl0.obs_id)
                         image.meta['num_tel_with_data'] = len(event.dl0.tels_with_data)
 
-                        image.meta['optical_foclen'] = quantity_to_tuple(event.inst.optical_foclen[tel_id], 'm')
-                        image.meta['tel_pos_x'] = quantity_to_tuple(event.inst.tel_pos[tel_id][0], 'm')
-                        image.meta['tel_pos_y'] = quantity_to_tuple(event.inst.tel_pos[tel_id][1], 'm')
-                        image.meta['tel_pos_z'] = quantity_to_tuple(event.inst.tel_pos[tel_id][2], 'm')
+                        # See https://github.com/cta-observatory/ctapipe/issues/627
+                        optical_foclen = event.inst.subarray.tel[tel_id].optics.equivalent_focal_length  # optics is an OpticsDescription
+                        image.meta['optical_foclen'] = quantity_to_tuple(optical_foclen, 'm')
+
+                        image.meta['tel_pos_x'] = quantity_to_tuple(event.inst.subarray.tel_coords[tel_id].x, 'm')
+                        image.meta['tel_pos_y'] = quantity_to_tuple(event.inst.subarray.tel_coords[tel_id].y, 'm')
+                        image.meta['tel_pos_z'] = quantity_to_tuple(event.inst.subarray.tel_coords[tel_id].z, 'm')
 
                         image.meta['integrator'] = integrator
                         image.meta['integrator_window_width'] = integrator_window_width

@@ -144,8 +144,8 @@ class CTAMarsCriteria:
         return ellipticity
 
     def hillas_centroid_dist(self, hillas_params):
-        x = hillas_params.cen_x.value
-        y = hillas_params.cen_y.value
+        x = hillas_params.x.value
+        y = hillas_params.y.value
 
         return math.sqrt(x**2 + y**2)
 
