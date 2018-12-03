@@ -87,7 +87,7 @@ def plot_ellipse_shower_on_image_meter(axis, image_array, pixels_position):
                                  yy.flatten(), # * u.meter,
                                  image_array.flatten())
 
-    centroid = (hillas.cen_x.value, hillas.cen_y.value)
+    centroid = (hillas.x.value, hillas.y.value)
     length = hillas.length.value
     width = hillas.width.value
     angle = hillas.psi.to(u.rad).value
