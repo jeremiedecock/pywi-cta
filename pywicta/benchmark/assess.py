@@ -765,7 +765,6 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
     * :math:`\Delta_{\text{r}}      = \text{reference_image}_{\text{r}}      - \text{output_image}_{\text{r_out}}`
     * :math:`\Delta_{\text{phi}}    = \text{reference_image}_{\text{phi}}    - \text{output_image}_{\text{phi_out}}`
     * :math:`\Delta_{\text{psi}}    = \text{reference_image}_{\text{psi}}    - \text{output_image}_{\text{psi_out}}`
-    * :math:`\Delta_{\text{miss}}   = \text{reference_image}_{\text{miss}}   - \text{output_image}_{\text{miss_out}}`
 
     See http://adsabs.harvard.edu/abs/1989ApJ...342..379W for more details
     about Hillas parameters.
@@ -815,18 +814,18 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
         #print(reference_image_parameters)
 
         # Size
-        output_image_parameter_size = float(output_image_parameters.size)
-        reference_image_parameter_size = float(reference_image_parameters.size)
+        output_image_parameter_size = float(output_image_parameters.intensity)
+        reference_image_parameter_size = float(reference_image_parameters.intensity)
         delta_size = reference_image_parameter_size - output_image_parameter_size
 
         # Centroid x
-        output_image_parameter_cen_x = output_image_parameters.cen_x.value
-        reference_image_parameter_cen_x = reference_image_parameters.cen_x.value
+        output_image_parameter_cen_x = output_image_parameters.x.value
+        reference_image_parameter_cen_x = reference_image_parameters.x.value
         delta_cen_x = reference_image_parameter_cen_x - output_image_parameter_cen_x
 
         # Centroid y
-        output_image_parameter_cen_y = output_image_parameters.cen_y.value
-        reference_image_parameter_cen_y = reference_image_parameters.cen_y.value
+        output_image_parameter_cen_y = output_image_parameters.y.value
+        reference_image_parameter_cen_y = reference_image_parameters.y.value
         delta_cen_y = reference_image_parameter_cen_y - output_image_parameter_cen_y
 
         output_image_radius = math.sqrt(pow(output_image_parameter_cen_x, 2) + pow(output_image_parameter_cen_y, 2))
@@ -871,11 +870,6 @@ def metric_hillas_delta(input_img, output_image, reference_image, geom, **kwargs
 
         # Normalized psi
         normalized_delta_psi = norm_angle_diff(math.degrees(delta_psi_rad))
-
-        ## Miss
-        #output_image_parameter_miss = output_image_parameters.miss.value
-        #reference_image_parameter_miss = reference_image_parameters.miss.value
-        #delta_miss = reference_image_parameter_miss - output_image_parameter_miss
 
         if "kill" in kwargs and kwargs["kill"]:
             suffix_str = '_kill'
@@ -968,7 +962,6 @@ def metric_hillas(input_img, output_image, reference_image, geom, **kwargs):
 
     * :math:`\Delta_{\text{r}}      = \text{reference_image}_{\text{r}}      - \text{output_image}_{\text{r_out}}`
     * :math:`\Delta_{\text{phi}}    = \text{reference_image}_{\text{phi}}    - \text{output_image}_{\text{phi_out}}`
-    * :math:`\Delta_{\text{miss}}   = \text{reference_image}_{\text{miss}}   - \text{output_image}_{\text{miss_out}}`
 
     See http://adsabs.harvard.edu/abs/1989ApJ...342..379W for more details
     about Hillas parameters.
@@ -1012,7 +1005,7 @@ def metric_hillas(input_img, output_image, reference_image, geom, **kwargs):
         #print(reference_image_parameters)
 
         # Size
-        output_image_parameter_size = float(output_image_parameters.size)
+        output_image_parameter_size = float(output_image_parameters.intensity)
 
         # R
         output_image_parameter_r = output_image_parameters.r.value
@@ -1020,11 +1013,8 @@ def metric_hillas(input_img, output_image, reference_image, geom, **kwargs):
         # Phi
         output_image_parameter_phi = output_image_parameters.phi.to(u.rad).value
 
-        ## Miss
-        #output_image_parameter_miss = output_image_parameters.miss.value
-
-        output_image_parameter_cen_x = output_image_parameters.cen_x.value
-        output_image_parameter_cen_y = output_image_parameters.cen_y.value
+        output_image_parameter_cen_x = output_image_parameters.x.value
+        output_image_parameter_cen_y = output_image_parameters.y.value
         output_image_radius = math.sqrt(pow(output_image_parameter_cen_x, 2) + pow(output_image_parameter_cen_y, 2))
 
         output_image_parameter_length = output_image_parameters.length.value

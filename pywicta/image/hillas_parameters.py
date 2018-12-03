@@ -38,23 +38,22 @@ def get_hillas_parameters(geom: CameraGeometry, image, implementation=4):
     r"""Return Hillas parameters [hillas]_ of the given ``image``.
 
     Short description of Hillas parameters:
-    * cen_x:    x position of the ellipse's center (in meter)
-    * cen_y:    y position of the ellipse's center (in meter)
-    * length:   measure of the RMS extent along the major axis (in meter) (length >= width)
-    * width:    measure of the RMS extent along the minor axis (in meter) (length >= width)
-    * size:     the number of photoelectrons in the image (in PE)         (size = np.sum(image))
-    * psi:      angle of the shower (in radian)
-    * miss:     distance between the center of the field of view (the center of the image) and the major axis (in meter)
-    * phi:      ??? (in radian)
-    * r:        ??? (in meter)
-    * kurtosis: Kurtosis is a measure of whether the data are heavy-tailed or light-tailed
-                relative to a normal distribution.
-                That is, data sets with high kurtosis tend to have heavy tails, or outliers.
-                Data sets with low kurtosis tend to have light tails, or lack of outliers.
-                See http://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm
-    * skewness: Skewness is a measure of symmetry, or more precisely, the lack of symmetry.
-                A distribution, or data set, is symmetric if it looks the same to the left
-                and right of the center point. See http://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm
+    * x:         x position of the ellipse's center (in meter)
+    * y:         y position of the ellipse's center (in meter)
+    * length:    measure of the RMS extent along the major axis (in meter) (length >= width)
+    * width:     measure of the RMS extent along the minor axis (in meter) (length >= width)
+    * intensity: the number of photoelectrons in the image (in PE)         (size = np.sum(image))
+    * psi:       angle of the shower (in radian)
+    * phi:       polar coordinate of centroid (in radian)
+    * r:         radial coordinate of centroid (in meter)
+    * kurtosis:  Kurtosis is a measure of whether the data are heavy-tailed or light-tailed
+                 relative to a normal distribution.
+                 That is, data sets with high kurtosis tend to have heavy tails, or outliers.
+                 Data sets with low kurtosis tend to have light tails, or lack of outliers.
+                 See http://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm
+    * skewness:  Skewness is a measure of symmetry, or more precisely, the lack of symmetry.
+                 A distribution, or data set, is symmetric if it looks the same to the left
+                 and right of the center point. See http://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm
 
     See https://github.com/cta-observatory/ctapipe/blob/master/ctapipe/image/hillas.py#L83
     for more information.

@@ -249,9 +249,9 @@ class AbstractCleaningAlgorithm(object):
                         print(e)
                         #traceback.print_tb(e.__traceback__, file=sys.stdout)
 
-                    image_dict["img_ref_hillas_2_size"] =     float(hillas_params_2_ref_img.size)
-                    image_dict["img_ref_hillas_2_cen_x"] =    hillas_params_2_ref_img.cen_x.value
-                    image_dict["img_ref_hillas_2_cen_y"] =    hillas_params_2_ref_img.cen_y.value
+                    image_dict["img_ref_hillas_2_size"] =     float(hillas_params_2_ref_img.intensity)
+                    image_dict["img_ref_hillas_2_cen_x"] =    hillas_params_2_ref_img.x.value
+                    image_dict["img_ref_hillas_2_cen_y"] =    hillas_params_2_ref_img.y.value
                     image_dict["img_ref_hillas_2_length"] =   hillas_params_2_ref_img.length.value
                     image_dict["img_ref_hillas_2_width"] =    hillas_params_2_ref_img.width.value
                     image_dict["img_ref_hillas_2_r"] =        hillas_params_2_ref_img.r.value
@@ -316,19 +316,19 @@ class AbstractCleaningAlgorithm(object):
                         #traceback.print_tb(e.__traceback__, file=sys.stdout)
 
                     try:
-                        image_dict["img_cleaned_hillas_2_size"] =     float(hillas_params_2_cleaned_img.size)
+                        image_dict["img_cleaned_hillas_2_size"] =     float(hillas_params_2_cleaned_img.intensity)
                     except AttributeError as e:
                         print(e)
                         image_dict["img_cleaned_hillas_2_size"] =     float('nan')
 
                     try:
-                        image_dict["img_cleaned_hillas_2_cen_x"] =    hillas_params_2_cleaned_img.cen_x.value
+                        image_dict["img_cleaned_hillas_2_cen_x"] =    hillas_params_2_cleaned_img.x.value
                     except AttributeError as e:
                         print(e)
                         image_dict["img_cleaned_hillas_2_cen_x"] =    float('nan')
 
                     try:
-                        image_dict["img_cleaned_hillas_2_cen_y"] =    hillas_params_2_cleaned_img.cen_y.value
+                        image_dict["img_cleaned_hillas_2_cen_y"] =    hillas_params_2_cleaned_img.y.value
                     except AttributeError as e:
                         print(e)
                         image_dict["img_cleaned_hillas_2_cen_y"] =    float('nan')

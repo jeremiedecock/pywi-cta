@@ -253,7 +253,7 @@ def plot_image_meter(axis, image_array, pixels_position, title, plot_log_scale=F
 def plot_ellipse_shower_on_image_meter(axis, image_array, pixels_position):
     hillas = get_hillas_parameters(image_array, 2, pixels_position)
 
-    centroid = (hillas.cen_x.value, hillas.cen_y.value)
+    centroid = (hillas.x.value, hillas.y.value)
     length = hillas.length.value
     width = hillas.width.value
     angle = hillas.psi.to(u.rad).value
@@ -737,7 +737,7 @@ def perpendicular_hit_distribution(image_array,
     else:
         hillas = force_hillas_parameters
 
-    centroid = (hillas.cen_x.value, hillas.cen_y.value)
+    centroid = (hillas.x.value, hillas.y.value)
     length = hillas.length.value
     width = hillas.width.value
     angle = hillas.psi.to(u.rad).value

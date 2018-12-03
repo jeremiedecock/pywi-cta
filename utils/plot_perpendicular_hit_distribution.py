@@ -124,7 +124,7 @@ def plot_ellipse_shower_on_image_meter(axis, image_array, pixels_position):
                                  yy.flatten(), # * u.meter,
                                  image_array.flatten())
 
-    centroid = (hillas.cen_x, hillas.cen_y)
+    centroid = (hillas.x, hillas.y)
     length = hillas.length
     width = hillas.width
     angle = hillas.psi.to(u.rad).value # - np.pi/2.   # TODO
@@ -230,7 +230,7 @@ def plot_ellipse_shower_on_image(axis, image_array):
                                  yy.flatten(), # * u.meter,
                                  image_array.flatten())
 
-    centroid = (hillas.cen_x.value, hillas.cen_y.value)
+    centroid = (hillas.x.value, hillas.y.value)
     length = hillas.length.value
     width = hillas.width.value
     angle = hillas.psi.to(u.rad).value # - np.pi/2.    # TODO
@@ -277,8 +277,8 @@ def plot_ellipse_shower_on_image(axis, image_array):
 #    print(pixels_position.shape)
 #
 #    # p1 = center of the ellipse
-#    #p1_x = hillas.cen_x
-#    #p1_y = hillas.cen_y
+#    #p1_x = hillas.x
+#    #p1_y = hillas.y
 
 
 def plot_perpendicular_hit_distribution(histogram_axis, image_axis, image_array, pixels_position, title):
@@ -311,7 +311,7 @@ def plot_perpendicular_hit_distribution(histogram_axis, image_axis, image_array,
                                  yy.flatten() * u.meter,
                                  image_array.flatten())       # [0]
 
-    centroid = (hillas.cen_x, hillas.cen_y)
+    centroid = (hillas.x, hillas.y)
     length = hillas.length
     width = hillas.width
     angle = np.radians(hillas.psi) # - np.pi/2.   # TODO
@@ -324,8 +324,8 @@ def plot_perpendicular_hit_distribution(histogram_axis, image_axis, image_array,
     ###
 
     # p1 = center of the ellipse
-    p1_x = hillas.cen_x
-    p1_y = hillas.cen_y
+    p1_x = hillas.x
+    p1_y = hillas.y
 
     #image_axis.scatter(p1_x, p1_y)  # DEBUG plot
 

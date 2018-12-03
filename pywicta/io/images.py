@@ -1323,7 +1323,7 @@ def plot_hillas_parameters_on_axes(ax,
         if hillas_params is None:
             hillas_params = get_hillas_parameters(geom, image, implementation=hillas_implementation)
 
-        centroid = (hillas_params.cen_x.value, hillas_params.cen_y.value)
+        centroid = (hillas_params.x.value, hillas_params.y.value)
         length = hillas_params.length.value
         width = hillas_params.width.value
         angle = hillas_params.psi.to(u.rad).value
@@ -1396,18 +1396,17 @@ def print_hillas_parameters(image,
                                               image,
                                               implementation=implementation)
 
-        print("cen_x:...", hillas_params.cen_x)
-        print("cen_y:...", hillas_params.cen_y)
+        print("x:...",     hillas_params.x)
+        print("y:...",     hillas_params.y)
 
         print("length:..", hillas_params.length)
         print("width:...", hillas_params.width)
 
-        print("size:....", hillas_params.size, "PE")
+        print("intensity:....", hillas_params.intensity, "PE")
         print("NPE: ....", np.nansum(image), "PE")
 
         print("psi:.....", hillas_params.psi)
 
-        print("miss:....", hillas_params.miss)
         print("phi:.....", hillas_params.phi)
         print("r:.......", hillas_params.r)
 
@@ -1433,17 +1432,17 @@ def hillas_parameters_to_df(image,
         hillas_params = get_hillas_parameters(geom,
                                               image,
                                               implementation=implementation)
-        df.loc[0, "cen_x_m"] = hillas_params.cen_x.to(u.meter).value
-        df.loc[0, "cen_y_m"] = hillas_params.cen_y.to(u.meter).value
+        df.loc[0, "cen_x_m"] = hillas_params.x.to(u.meter).value
+        df.loc[0, "cen_y_m"] = hillas_params.y.to(u.meter).value
 
         df.loc[0, "length_m"] = hillas_params.length.to(u.meter).value
         df.loc[0, "width_m"]  = hillas_params.width.to(u.meter).value
 
-        df.loc[0, "size_pe"] = hillas_params.size
+        df.loc[0, "size_pe"] = hillas_params.intensity
 
         df.loc[0, "psi_rad"] = hillas_params.psi.to(u.rad).value
 
-        df.loc[0, "miss_m"] = hillas_params.miss.to(u.meter).value
+        df.loc[0, "miss_m"] = np.nan
         df.loc[0, "phi_rad"] = hillas_params.phi.to(u.rad).value
         df.loc[0, "r_m"] = hillas_params.r.to(u.meter).value
 
