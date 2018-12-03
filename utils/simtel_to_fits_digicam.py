@@ -97,8 +97,8 @@ def extract_images(simtel_file_path,
 
                     #print("checking geometry")
 
-                    x, y = event.inst.pixel_pos[tel_id]
-                    foclen = event.inst.optical_foclen[tel_id]
+                    x, y = event.inst.subarray.tel[tel_id].camera.pix_x, event.inst.subarray.tel[tel_id].camera.pix_y
+                    foclen = event.inst.subarray.tel[tel_id].optics.equivalent_focal_length
                     geom = CameraGeometry.guess(x, y, foclen)
 
                     if (geom.pix_type != "hexagonal") or (geom.cam_id != "DigiCam"):
@@ -112,7 +112,7 @@ def extract_images(simtel_file_path,
                     uncalibrated_image = event.r0.tel[tel_id].adc_sums    # ctapipe 0.4.0
                     pedestal = event.mc.tel[tel_id].pedestal
                     gain = event.mc.tel[tel_id].dc_to_pe
-                    pixel_pos = event.inst.pixel_pos[tel_id]
+                    pixel_pos = (event.inst.subarray.tel[tel_id].camera.pix_x, event.inst.subarray.tel[tel_id].camera.pix_y)
 
                     calibrated_image = event.dl1.tel[tel_id].image
 
@@ -206,10 +206,10 @@ def extract_images(simtel_file_path,
 
                     metadata['count'] = int(event.count)
                     
-                    metadata['run_id'] = int(event.dl0.run_id)
+                    metadata['run_id'] = int(event.dl0.obs_id)
                     metadata['tel_data'] = len(event.dl0.tels_with_data)
 
-                    metadata['foclen'] = quantity_to_tuple(event.inst.optical_foclen[tel_id], 'm')
+                    metadata['foclen'] = quantity_to_tuple(event.inst.subarray.tel[tel_id].optics.equivalent_focal_length, 'm')
                     metadata['tel_posx'] = quantity_to_tuple(event.inst.tel_pos[tel_id][0], 'm')
                     metadata['tel_posy'] = quantity_to_tuple(event.inst.tel_pos[tel_id][1], 'm')
                     metadata['tel_posz'] = quantity_to_tuple(event.inst.tel_pos[tel_id][2], 'm')
