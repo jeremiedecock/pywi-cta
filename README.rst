@@ -181,8 +181,8 @@ Analysis results
 
 Notebooks containing the analysis results can be found there: https://gitlab.com/jdhp/pywi-cta-analysis
 
-* `LST analysis (essential plots)<https://mybinder.org/v2/gl/jdhp%2Fpywi-cta-analysis/master?filepath=cta_analysis_lst_essential.ipynb>`_
-* `LST analysis (very detailed)<https://mybinder.org/v2/gl/jdhp%2Fpywi-cta-analysis/master?filepath=cta_analysis_lst.ipynb>`_
+* `LST analysis (essential plots) <https://mybinder.org/v2/gl/jdhp%2Fpywi-cta-analysis/master?filepath=cta_analysis_lst_essential.ipynb>`_
+* `LST analysis (very detailed) <https://mybinder.org/v2/gl/jdhp%2Fpywi-cta-analysis/master?filepath=cta_analysis_lst.ipynb>`_
 
 Bug reports
 ===========
