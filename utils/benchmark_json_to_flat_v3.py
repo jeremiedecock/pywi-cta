@@ -124,9 +124,9 @@ def extract_columns(input_file_path, image_dict, benchmark_dict):
     # Guess the type of particle used ###########
 
     path_list = image_dict["input_file_path"].lower().strip().split("/")
-    if ("gamma" in path_list) and ("proton" not in path_list):
+    if (path_list[-1].startswith("gamma")):
         part = 0
-    elif ("proton" in path_list) and ("gamma" not in path_list):
+    elif (path_list[-1].startswith("proton")):
         part = 1
     else:
         part = "unknown"
