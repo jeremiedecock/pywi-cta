@@ -107,6 +107,7 @@ ENTRY_POINTS = {
   'console_scripts': [
       'pywicta-mrtransform = pywicta.denoising.wavelets_mrtransform:main',
       'pywicta-mrfilter = pywicta.denoising.wavelets_mrfilter:main',
+      'pywicta-starlet = pywicta.denoising.starlet:main',
       'simtel2fits = pywicta.io.simtel_to_fits.py:main',
   ],
 }
