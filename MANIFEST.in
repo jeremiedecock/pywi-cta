@@ -8,6 +8,7 @@ include *.rst
 include *.md
 
 recursive-include pywicta *.json
+recursive-include pywi/data *.fits
 
 recursive-include docs *
 recursive-include examples *.py
