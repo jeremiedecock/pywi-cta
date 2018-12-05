@@ -160,6 +160,7 @@ Tutorial Notebooks
 PyWI provide some Jupyter notebooks that can be used as examples or tutorials.
 
 * PyWI Notebooks on GitHub: https://github.com/jeremiedecock/pywi-cta-notebooks
+
   * Tutoriel #0: `Check PyWI-CTA install <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_0_check_install.ipynb>`_
   * Tutoriel #1a: `Load and plot a FITS image using PyWI-CTA <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_1a_load_and_plot_fits_image.ipynb>`_
   * Tutoriel #1b: `Load and plot a Simtel event using PyHESSIO <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_1b_load_simtel_event.ipynb>`_
@@ -171,6 +172,7 @@ PyWI provide some Jupyter notebooks that can be used as examples or tutorials.
   * Tutoriel #3a: `Tailcut interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3a_interactive_tailcut_cleaning_with_bokeh.ipynb>`_
   * Tutoriel #3b: `Starlet cleaning interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3b_interactive_starlet_cleaning_with_bokeh.ipynb>`_
   * Tutoriel #3c: `Wavelet Sparce2D MrTransform interactive notebook <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_3c_interactive_mrtransform_cleaning_with_bokeh.ipynb>`_
+
 * PyWI Notebooks on Anaconda Cloud: https://anaconda.org/jdhp/notebooks
 
 Bug reports
