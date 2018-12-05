@@ -116,8 +116,8 @@ Developers should follow the development install instructions found in the
     will sometimes try to "help" you by upgrading PyWI-CTA dependencies like
     Numpy, which may not always be desired.
 
-Cosmostat iSAP Sparce2D installation
-====================================
+Cosmostat iSAP Sparce2D installation (optional)
+===============================================
 
 1. Download http://www.cosmostat.org/wp-content/uploads/2014/12/ISAP_V3.1.tgz (see http://www.cosmostat.org/software/isap/)
 2. Unzip this archive, go to the "sparse2d" directory and compile the sparse2d
@@ -143,22 +143,34 @@ Example
    type the following commands (where `SIMTEL_FILE` is the path to your simtel
    file)::
   
+    pywicta-starlet -f common_hard_filtering -t 13.,1.5 -L mask --camid LSTCam --max-images 1 --plot SIMTEL_FILE
     pywicta-mrtransform -f common_hard_filtering -t 13.,1.5 -L mask --camid LSTCam --max-images 1 --plot SIMTEL_FILE
     pywicta-mrfilter -K -k -C1 -m3 -n4 -s2,4.5,3.5,3 --kill-isolated-pixels --camid LSTCam --max-images 1 --plot SIMTEL_FILE
 
-3. Type ``pywicta-mrtransform -h`` or ``pywicta-mrfilter -h`` to display the list of
+3. Type ``pywicta-starlet -h``, ``pywicta-mrtransform -h`` or ``pywicta-mrfilter -h`` to display the list of
    available options and their documentation.
 
 .. A "benchmark mode" can also be used to clean images and assess cleaning
 .. algorithms (it's still a bit experimental): use the additional option ``-b all``
 .. in each command (and put several fits files in input e.g. ``\*.fits``)
 
-IPython/Jupyter Notebooks
-=========================
+Tutorial Notebooks
+==================
 
 PyWI provide some Jupyter notebooks that can be used as examples or tutorials.
 
 * PyWI Notebooks on GitHub: https://github.com/jeremiedecock/pywi-cta-notebooks
+  * Tutoriel #0: `Check PyWI-CTA install <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_0_check_install.ipynb>`_
+  * Tutoriel #1a: `Load and plot a FITS image using PyWI-CTA <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_1a_load_and_plot_fits_image.ipynb>`_
+  * Tutoriel #1b: `Load and plot a Simtel event using PyHESSIO <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_1b_load_simtel_event.ipynb>`_
+  * Tutoriel #1c: `Load and plot a Simtel image using PyWI-CTA <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_1c_load_and_plot_simtel_image.ipynb>`_
+  * Tutoriel #1d: `Plot Hillas parameters using PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_1d_plot_hillas_parameters.ipynb>`_
+  * Tutoriel #2a: `Tailcut cleaning with PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2a_tailcut_cleaning.ipynb>`_
+  * Tutoriel #2b: `Plot Starlet planes with PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2b_plot_starlet_planes.ipynb>`_
+  * Tutoriel #2c: `Starlet cleaning with PyWI-CTA <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2c_starlet_cleaning.ipynb>`_
+  * Tutoriel #3a: `Tailcut interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3a_interactive_tailcut_cleaning_with_bokeh.ipynb>`_
+  * Tutoriel #3b: `Starlet cleaning interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3b_interactive_starlet_cleaning_with_bokeh.ipynb>`_
+  * Tutoriel #3c: `Wavelet Sparce2D MrTransform interactive notebook <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_3c_interactive_mrtransform_cleaning_with_bokeh.ipynb>`_
 * PyWI Notebooks on Anaconda Cloud: https://anaconda.org/jdhp/notebooks
 
 Bug reports
