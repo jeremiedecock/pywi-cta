@@ -42,7 +42,7 @@ class ObjectiveFunction:
     def __init__(self,
                  input_files,
                  cam_id,
-                 optimization_metric="hillas2_delta_psi_norm",
+                 optimization_metric="delta_psi",
                  max_num_img=None,
                  aggregation_method="mean",
                  num_scales=None,
@@ -267,8 +267,8 @@ class ObjectiveFunction:
 if __name__ == "__main__":
     # Test...
 
-    func = ObjectiveFunction(input_files=["~/data/grid_prod3b_north/fits/lst/gamma/lst_faint/"],
-                             cam_id="LSTCam",
+    func = ObjectiveFunction(input_files=["~/data/nectarcam_faint/"],
+                             cam_id="NectarCam",
                              max_num_img=10)
 
     filter_thresholds_list = [4, 2, 1]

@@ -45,11 +45,12 @@ def main():
     #instrument = "CHEC"
     #instrument = "DigiCam"
     #instrument = "FlashCam"
-    #instrument = "NectarCam"
-    instrument = "LSTCam"
+    instrument = "NectarCam"
+    #instrument = "LSTCam"
 
     #max_num_img = None
-    max_num_img = 1000
+    #max_num_img = 1000
+    max_num_img = 10
 
     aggregation_method = "mean"
     #aggregation_method = "median"
@@ -165,24 +166,19 @@ def main():
 
     elif instrument == "NectarCam":
 
-        input_files = ["/dev/shm/.jd/nectarcam/gamma/"]
+        #input_files = ["/dev/shm/.jd/nectarcam/gamma/"]
+        input_files = ["~/data/nectarcam_faint/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.NECTARCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
             search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
-                             slice(1, 5, 1),           # Scale 1
-                             slice(1, 5, 1),           # Scale 2
-                             slice(1, 5, 1))           # Scale 3 (largest scale)
+                             slice(1, 5, 1))           # Scale 1 (largest scale)
         elif algo == "wavelet_mrtransform":
             search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
-                             slice(1, 5, 1),           # Scale 1
-                             slice(1, 5, 1),           # Scale 2
-                             slice(1, 5, 1))           # Scale 3 (largest scale)
+                             slice(1, 5, 1))           # Scale 1 (largest scale)
         elif algo == "starlet":
             search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
-                             slice(1, 5, 1),           # Scale 1
-                             slice(1, 5, 1),           # Scale 2
-                             slice(1, 5, 1))           # Scale 3 (largest scale)
+                             slice(1, 5, 1))           # Scale 1 (largest scale)
         elif algo == "tailcut":
             search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
                              slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
@@ -266,8 +262,8 @@ def main():
 
         func = WaveletMRFObjectiveFunction(input_files=input_files,
                                            cam_id=instrument,
-                                           noise_distribution=noise_distribution,
                                            max_num_img=max_num_img,
+                                           noise_distribution=noise_distribution,
                                            aggregation_method=aggregation_method,  # "mean" or "median"
                                            num_scales=num_scales,
                                            kill_isolated_pixels=kill_islands,
@@ -278,13 +274,13 @@ def main():
         func = WaveletMRTObjectiveFunction(input_files=input_files,
                                            cam_id=instrument,
                                            max_num_img=max_num_img,
+                                           noise_distribution=noise_distribution,
                                            aggregation_method=aggregation_method,
                                            num_scales=num_scales,
                                            type_of_filtering="cluster_filtering",
                                            last_scale_treatment="mask",
                                            detect_only_positive_structures=False,
                                            kill_isolated_pixels=kill_islands,
-                                           noise_distribution=noise_distribution,
                                            tmp_files_directory="/dev/shm/.jd/",
                                            cleaning_failure_score=cleaning_failure_score)
 
@@ -293,13 +289,13 @@ def main():
         func = StarletObjectiveFunction(input_files=input_files,
                                         cam_id=instrument,
                                         max_num_img=max_num_img,
+                                        noise_distribution=noise_distribution,
                                         aggregation_method=aggregation_method,
                                         num_scales=num_scales,
                                         type_of_filtering="cluster_filtering",
                                         last_scale_treatment="mask",
                                         detect_only_positive_structures=False,
                                         kill_isolated_pixels=kill_islands,
-                                        noise_distribution=noise_distribution,
                                         cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "tailcut":
@@ -307,8 +303,8 @@ def main():
         func = TailcutObjectiveFunction(input_files=input_files,
                                         cam_id=instrument,
                                         max_num_img=max_num_img,
-                                        aggregation_method=aggregation_method,  # "mean" or "median"
                                         kill_isolated_pixels=kill_islands,
+                                        aggregation_method=aggregation_method,  # "mean" or "median"
                                         cleaning_failure_score=cleaning_failure_score)
 
     else:

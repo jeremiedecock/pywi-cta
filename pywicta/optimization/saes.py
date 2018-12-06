@@ -46,16 +46,22 @@ def main():
     #instrument = "CHEC"
     #instrument = "DigiCam"
     #instrument = "FlashCam"
-    #instrument = "NectarCam"
-    instrument = "LSTCam"
+    instrument = "NectarCam"
+    #instrument = "LSTCam"
 
     #max_num_img = None
-    max_num_img = 1000
+    #max_num_img = 1000
+    max_num_img = 10
 
     aggregation_method = "mean"
     #aggregation_method = "median"
 
     kill_islands = False
+
+    cleaning_failure_score = 90.
+    #cleaning_failure_score = float('nan')
+
+    num_scales = 3
 
     print("algo:", algo)
     print("instrument:", instrument)
@@ -135,21 +141,22 @@ def main():
 
     elif instrument == "NectarCam":
 
-        input_files = ["/dev/shm/.jd/nectarcam/gamma/"]
+        #input_files = ["/dev/shm/.jd/nectarcam/gamma/"]
+        input_files = ["~/data/nectarcam_faint/"]
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.NECTARCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([-4., -4., -4.])
-            init_max_val = np.array([16., 10., 8.])
+            init_min_val = np.array([1., 1.])
+            init_max_val = np.array([14., 9.])
         elif algo == "wavelet_mrtransform":
-            init_min_val = np.array([0., 0., 0.])  # TODO
-            init_max_val = np.array([5., 5., 5.])  # TODO
+            init_min_val = np.array([0.,  0.])
+            init_max_val = np.array([15., 2.])
         elif algo == "starlet":
-            init_min_val = np.array([0., 0., 0.])  # TODO
-            init_max_val = np.array([5., 5., 5.])  # TODO
+            init_min_val = np.array([0.,  0.])
+            init_max_val = np.array([15., 2.])
         elif algo == "tailcut":
-            init_min_val = np.array([1., 1.])    # TODO
-            init_max_val = np.array([15., 15.])  # TODO
+            init_min_val = np.array([1., 1.])
+            init_max_val = np.array([12., 12.])
 
     elif instrument == "LSTCam":
 
@@ -158,8 +165,8 @@ def main():
         noise_distribution = EmpiricalDistribution(pywicta.denoising.cdf.LSTCAM_CDF_FILE)
 
         if algo == "wavelet_mrfilter":
-            init_min_val = np.array([1., 1., 1.])
-            init_max_val = np.array([14., 9., 6.])
+            init_min_val = np.array([1., 1.])
+            init_max_val = np.array([14., 9.])
         elif algo == "wavelet_mrtransform":
             init_min_val = np.array([0.,  0.])
             init_max_val = np.array([15., 2.])
@@ -181,36 +188,50 @@ def main():
 
         func = WaveletMRFObjectiveFunction(input_files=input_files,
                                            cam_id=instrument,
-                                           noise_distribution=noise_distribution,
                                            max_num_img=max_num_img,
+                                           noise_distribution=noise_distribution,
                                            aggregation_method=aggregation_method,  # "mean" or "median"
-                                           kill_isolated_pixels=kill_islands)
+                                           num_scales=num_scales,
+                                           kill_isolated_pixels=kill_islands,
+                                           cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "wavelet_mrtransform":
 
         func = WaveletMRTObjectiveFunction(input_files=input_files,
                                            cam_id=instrument,
-                                           noise_distribution=noise_distribution,
                                            max_num_img=max_num_img,
+                                           noise_distribution=noise_distribution,
                                            aggregation_method=aggregation_method,  # "mean" or "median"
-                                           kill_isolated_pixels=kill_islands)
+                                           num_scales=num_scales,
+                                           type_of_filtering="cluster_filtering",
+                                           last_scale_treatment="mask",
+                                           detect_only_positive_structures=False,
+                                           kill_isolated_pixels=kill_islands,
+                                           tmp_files_directory="/dev/shm/.jd/",
+                                           cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "starlet":
 
         func = StarletObjectiveFunction(input_files=input_files,
                                         cam_id=instrument,
-                                        noise_distribution=noise_distribution,
                                         max_num_img=max_num_img,
+                                        noise_distribution=noise_distribution,
                                         aggregation_method=aggregation_method,  # "mean" or "median"
-                                        kill_isolated_pixels=kill_islands)
+                                        num_scales=num_scales,
+                                        type_of_filtering="cluster_filtering",
+                                        last_scale_treatment="mask",
+                                        detect_only_positive_structures=False,
+                                        kill_isolated_pixels=kill_islands,
+                                        cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "tailcut":
 
         func = TailcutObjectiveFunction(input_files=input_files,
                                         cam_id=instrument,
                                         max_num_img=max_num_img,
+                                        kill_isolated_pixels=kill_islands,
                                         aggregation_method=aggregation_method,  # "mean" or "median"
-                                        kill_isolated_pixels=kill_islands)
+                                        cleaning_failure_score=cleaning_failure_score)
 
     else:
 
