@@ -57,7 +57,8 @@ PyWI-CTA has the following strict requirements:
 
 * `Python <https://www.python.org/>`_ 3.5 or 3.6
 * `Numpy <http://www.numpy.org/>`_
-* ctapipe_ 0.5.3
+* ctapipe_ 0.6.1
+* pyhessio 2.0.1
 
 PyWI-CTA also depends on other packages for optional features:
 
