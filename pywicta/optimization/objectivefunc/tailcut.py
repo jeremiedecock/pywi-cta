@@ -42,7 +42,7 @@ class ObjectiveFunction:
     def __init__(self,
                  input_files,
                  cam_id,
-                 optimization_metric="hillas2_delta_psi_norm",
+                 optimization_metric="delta_psi",
                  max_num_img=None,
                  aggregation_method="mean",
                  pixels_clusters_filtering="off",
