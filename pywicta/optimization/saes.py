@@ -26,6 +26,7 @@ import math
 import numpy as np
 
 import json
+from pywicta.optimization.objectivefunc.starlet import ObjectiveFunction as StarletObjectiveFunction
 from pywicta.optimization.objectivefunc.wavelets_mrfilter import ObjectiveFunction as WaveletMRFObjectiveFunction
 from pywicta.optimization.objectivefunc.wavelets_mrtransform import ObjectiveFunction as WaveletMRTObjectiveFunction
 from pywicta.optimization.objectivefunc.tailcut import ObjectiveFunction as TailcutObjectiveFunction
@@ -37,7 +38,8 @@ from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 def main():
 
     #algo = "wavelet_mrfilter"
-    algo = "wavelet_mrtransform"
+    #algo = "wavelet_mrtransform"
+    algo = "starlet"
     #algo = "tailcut"
 
     #instrument = "ASTRICam"
@@ -70,6 +72,9 @@ def main():
         elif algo == "wavelet_mrtransform":
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
+        elif algo == "starlet":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -83,6 +88,9 @@ def main():
             init_min_val = np.array([-3., -4., -3.])
             init_max_val = np.array([10., 8., 7.])
         elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
+        elif algo == "starlet":
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
@@ -100,6 +108,9 @@ def main():
         elif algo == "wavelet_mrtransform":
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
+        elif algo == "starlet":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -113,6 +124,9 @@ def main():
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
+        elif algo == "starlet":
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
@@ -130,6 +144,9 @@ def main():
         elif algo == "wavelet_mrtransform":
             init_min_val = np.array([0., 0., 0.])  # TODO
             init_max_val = np.array([5., 5., 5.])  # TODO
+        elif algo == "starlet":
+            init_min_val = np.array([0., 0., 0.])  # TODO
+            init_max_val = np.array([5., 5., 5.])  # TODO
         elif algo == "tailcut":
             init_min_val = np.array([1., 1.])    # TODO
             init_max_val = np.array([15., 15.])  # TODO
@@ -144,6 +161,9 @@ def main():
             init_min_val = np.array([1., 1., 1.])
             init_max_val = np.array([14., 9., 6.])
         elif algo == "wavelet_mrtransform":
+            init_min_val = np.array([0.,  0.])
+            init_max_val = np.array([15., 2.])
+        elif algo == "starlet":
             init_min_val = np.array([0.,  0.])
             init_max_val = np.array([15., 2.])
         elif algo == "tailcut":
@@ -174,6 +194,15 @@ def main():
                                            max_num_img=max_num_img,
                                            aggregation_method=aggregation_method,  # "mean" or "median"
                                            kill_isolated_pixels=kill_islands)
+
+    elif algo == "starlet":
+
+        func = StarletObjectiveFunction(input_files=input_files,
+                                        cam_id=instrument,
+                                        noise_distribution=noise_distribution,
+                                        max_num_img=max_num_img,
+                                        aggregation_method=aggregation_method,  # "mean" or "median"
+                                        kill_isolated_pixels=kill_islands)
 
     elif algo == "tailcut":
 

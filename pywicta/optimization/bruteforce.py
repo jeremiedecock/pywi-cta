@@ -25,6 +25,7 @@ __all__ = []
 import json
 from scipy import optimize
 
+from pywicta.optimization.objectivefunc.starlet import ObjectiveFunction as StarletObjectiveFunction
 from pywicta.optimization.objectivefunc.wavelets_mrfilter import ObjectiveFunction as WaveletMRFObjectiveFunction
 from pywicta.optimization.objectivefunc.wavelets_mrtransform import ObjectiveFunction as WaveletMRTObjectiveFunction
 from pywicta.optimization.objectivefunc.tailcut import ObjectiveFunction as TailcutObjectiveFunction
@@ -36,7 +37,8 @@ from pywicta.denoising.inverse_transform_sampling import EmpiricalDistribution
 def main():
 
     #algo = "wavelet_mrfilter"
-    algo = "wavelet_mrtransform"
+    #algo = "wavelet_mrtransform"
+    algo = "starlet"
     #algo = "tailcut"
 
     #instrument = "ASTRICam"
@@ -80,6 +82,11 @@ def main():
                              slice(1, 5, 1),           # Scale 1
                              slice(1, 5, 1),           # Scale 2
                              slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "starlet":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
         elif algo == "tailcut":
             search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
                              slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
@@ -95,6 +102,11 @@ def main():
                              slice(1, 5, 1),           # Scale 2
                              slice(1, 5, 1))           # Scale 3 (largest scale)
         elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "starlet":
             search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
                              slice(1, 5, 1),           # Scale 1
                              slice(1, 5, 1),           # Scale 2
@@ -118,6 +130,11 @@ def main():
                              slice(1, 5, 1),           # Scale 1
                              slice(1, 5, 1),           # Scale 2
                              slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "starlet":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
         elif algo == "tailcut":
             search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
                              slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
@@ -137,6 +154,11 @@ def main():
                              slice(1, 5, 1),           # Scale 1
                              slice(1, 5, 1),           # Scale 2
                              slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "starlet":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
         elif algo == "tailcut":
             search_ranges = (slice(-2., 10., 0.5),     # Core threshold (largest threshold)
                              slice(-2., 10., 0.5))     # Boundary threshold (smallest threshold)
@@ -152,6 +174,11 @@ def main():
                              slice(1, 5, 1),           # Scale 2
                              slice(1, 5, 1))           # Scale 3 (largest scale)
         elif algo == "wavelet_mrtransform":
+            search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
+                             slice(1, 5, 1),           # Scale 1
+                             slice(1, 5, 1),           # Scale 2
+                             slice(1, 5, 1))           # Scale 3 (largest scale)
+        elif algo == "starlet":
             search_ranges = (slice(1, 5, 1),           # Scale 0 (smallest scale)
                              slice(1, 5, 1),           # Scale 1
                              slice(1, 5, 1),           # Scale 2
@@ -184,6 +211,26 @@ def main():
                                  slice(1., 6.,  1.))      # Scale 2 (largest scale aside residuals)
 
         elif algo == "wavelet_mrtransform":
+
+            if num_scales == 3:
+
+                search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+                                 slice(0., 2.,  0.2))     # Scale 1 (larger scale)
+
+            elif num_scales == 4:
+
+                search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+                                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
+                                 slice(0., 0.75, 0.05))   # Scale 2
+
+            elif num_scales == 5:
+
+                search_ranges = (slice(0., 15., 1.),      # Scale 0 (smallest scale)
+                                 slice(0., 2.,  0.2),     # Scale 1 (larger scale)
+                                 slice(0., 0.75, 0.05),   # Scale 2
+                                 slice(0., 0.3, 0.05))    # Scale 3
+
+        elif algo == "starlet":
 
             if num_scales == 3:
 
@@ -240,6 +287,20 @@ def main():
                                            noise_distribution=noise_distribution,
                                            tmp_files_directory="/dev/shm/.jd/",
                                            cleaning_failure_score=cleaning_failure_score)
+
+    elif algo == "starlet":
+
+        func = StarletObjectiveFunction(input_files=input_files,
+                                        cam_id=instrument,
+                                        max_num_img=max_num_img,
+                                        aggregation_method=aggregation_method,
+                                        num_scales=num_scales,
+                                        type_of_filtering="cluster_filtering",
+                                        last_scale_treatment="mask",
+                                        detect_only_positive_structures=False,
+                                        kill_isolated_pixels=kill_islands,
+                                        noise_distribution=noise_distribution,
+                                        cleaning_failure_score=cleaning_failure_score)
 
     elif algo == "tailcut":
 

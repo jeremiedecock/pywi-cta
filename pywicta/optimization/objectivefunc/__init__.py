@@ -21,5 +21,6 @@
 # THE SOFTWARE.
 
 __all__ = ['tailcut',
+           'starlet',
            'wavelets_mrtransform',
            'wavelets_mrfilter']
