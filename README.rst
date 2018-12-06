@@ -142,17 +142,17 @@ Getting started: tutorial Notebooks
 PyWI-CTA provides some Jupyter notebooks that can be used as examples or tutorials: https://github.com/jeremiedecock/pywi-cta-notebooks.
 New users should check them in the following order:
 
-* Tutoriel #0: `Check PyWI-CTA install <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_0_check_install.ipynb>`_
-* Tutoriel #1a: `Load and plot a FITS image using PyWI-CTA <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_1a_load_and_plot_fits_image.ipynb>`_
-* Tutoriel #1b: `Load and plot a Simtel event using PyHESSIO <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_1b_load_simtel_event.ipynb>`_
-* Tutoriel #1c: `Load and plot a Simtel image using PyWI-CTA <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_1c_load_and_plot_simtel_image.ipynb>`_
-* Tutoriel #1d: `Plot Hillas parameters using PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_1d_plot_hillas_parameters.ipynb>`_
-* Tutoriel #2a: `Tailcut cleaning with PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2a_tailcut_cleaning.ipynb>`_
-* Tutoriel #2b: `Plot Starlet planes with PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2b_plot_starlet_planes.ipynb>`_
-* Tutoriel #2c: `Starlet cleaning with PyWI-CTA <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2c_starlet_cleaning.ipynb>`_
-* Tutoriel #3a: `Tailcut interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3a_interactive_tailcut_cleaning_with_bokeh.ipynb>`_
-* Tutoriel #3b: `Starlet cleaning interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3b_interactive_starlet_cleaning_with_bokeh.ipynb>`_
-* Tutoriel #3c: `Wavelet Sparce2D MrTransform interactive notebook <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_3c_interactive_mrtransform_cleaning_with_bokeh.ipynb>`_
+* Tutorial #0: `Check PyWI-CTA install <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_0_check_install.ipynb>`_
+* Tutorial #1a: `Load and plot a FITS image using PyWI-CTA <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_1a_load_and_plot_fits_image.ipynb>`_
+* Tutorial #1b: `Load and plot a Simtel event using PyHESSIO <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_1b_load_simtel_event.ipynb>`_
+* Tutorial #1c: `Load and plot a Simtel image using PyWI-CTA <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_1c_load_and_plot_simtel_image.ipynb>`_
+* Tutorial #1d: `Plot Hillas parameters using PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_1d_plot_hillas_parameters.ipynb>`_
+* Tutorial #2a: `Tailcut cleaning with PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2a_tailcut_cleaning.ipynb>`_
+* Tutorial #2b: `Plot Starlet planes with PyWI-CTA <https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2b_plot_starlet_planes.ipynb>`_
+* Tutorial #2c: `Starlet cleaning with PyWI-CTA <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_2c_starlet_cleaning.ipynb>`_
+* Tutorial #3a: `Tailcut interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3a_interactive_tailcut_cleaning_with_bokeh.ipynb>`_
+* Tutorial #3b: `Starlet cleaning interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3b_interactive_starlet_cleaning_with_bokeh.ipynb>`_
+* Tutorial #3c: `Wavelet Sparce2D MrTransform interactive notebook <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_3c_interactive_mrtransform_cleaning_with_bokeh.ipynb>`_
 
 .. PyWI Notebooks on Anaconda Cloud: https://anaconda.org/jdhp/notebooks
 
