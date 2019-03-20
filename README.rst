@@ -154,6 +154,12 @@ New users should check them in the following order:
 * Tutorial #3b: `Starlet cleaning interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3b_interactive_starlet_cleaning_with_bokeh.ipynb>`_
 * Tutorial #3c: `Wavelet Sparce2D MrTransform interactive notebook <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_3c_interactive_mrtransform_cleaning_with_bokeh.ipynb>`_
 
+Recommended Jupyter extensions for these tutorials (type the following commands in a terminal within the right conda environment)::
+
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager
+    jupyter labextension install @jupyterlab/toc
+    jupyter labextension install @ijmbarr/jupyterlab_spellchecker
+
 .. PyWI Notebooks on Anaconda Cloud: https://anaconda.org/jdhp/notebooks
 
 Console usage example
