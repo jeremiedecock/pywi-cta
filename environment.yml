@@ -17,6 +17,7 @@ dependencies:
   - jupyter
   - jupyterlab
   - matplotlib
+  - nodejs
   - notebook
   - numba
   - numpy
