@@ -4,4 +4,3 @@ This package contains optimization algorithms used to tune image processing para
 """
 
 from . import objectivefunc
-from . import saes
