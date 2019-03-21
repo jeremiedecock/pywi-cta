@@ -153,6 +153,10 @@ New users should check them in the following order:
 * Tutorial #3a: `Tailcut interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3a_interactive_tailcut_cleaning_with_bokeh.ipynb>`_
 * Tutorial #3b: `Starlet cleaning interactive notebook <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_3b_interactive_starlet_cleaning_with_bokeh.ipynb>`_
 * Tutorial #3c: `Wavelet Sparce2D MrTransform interactive notebook <https://nbviewer.jupyter.org/github/jeremiedecock/pywi-cta-notebooks/blob/master/tuto_3c_interactive_mrtransform_cleaning_with_bokeh.ipynb>`_
+* Tutoriel #4a: `Optimize Tailcut thresholds with exhaustive search <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_4a_optimize_tailcut_thresholds_using_bruteforce.ipynb>`_
+* Tutoriel #4b: `Optimize Starlet thresholds with exhaustive search <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_4b_optimize_starlet_thresholds_using_bruteforce.ipynb>`_
+* Tutoriel #4c: `Optimize Tailcut thresholds with Differential Evolution <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_4c_optimize_tailcut_thresholds_using_differential_evolution.ipynb>`_
+* Tutoriel #4d: `Optimize Starlet thresholds with Differential Evolution <https://mybinder.org/v2/gh/jeremiedecock/pywi-cta-notebooks/master?filepath=tuto_4d_optimize_starlet_thresholds_using_differential_evolution.ipynb>`_
 
 Recommended JupyterLab extensions for these tutorials (type the following commands in a terminal within the right conda environment)::
 
