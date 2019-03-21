@@ -52,5 +52,4 @@ dependencies:
   - pip:
       - pytest_runner
       - pywi
-      - ailib
       - sphinx-gallery
